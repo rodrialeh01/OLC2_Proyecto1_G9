@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <style type="text/css">
+        .split {
+            height: 93.3%;
+            width: 50%;
+            position: absolute;
+            top: auto;
+            overflow-x: hidden;
+        }
+
+        .left {
+            left: 0;
+            background-color: #DAE0F5;
+        }
+
+        .class {
+            font-family: monospace;
+        }
+
+        .right {
+            right: 0;
+            background-color: #678198;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        #myTextArea {
+            text-align: justify;
+        }
+    </style>
+    <div class="split left">
+        <ngx-codemirror id="myTextArea" name="myTextArea" [(ngModel)]="archivo.texto" [options]="{
+            mode: 'javascript',
+            lineNumbers: true,
+            theme: 'seti',
+            }">
+        </ngx-codemirror><br>
+        <div class="centered">
+            <button type="button" id="file_envio" name="file_envio" class="btn btn-primary" (click)="ejecutar()"><img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FFFFFF/play--v1.png" alt="play--v1"/>  Ejecutar</button>&nbsp;
+        </div>
+    </div>
+
+    <div class="split right">
+        <form action="" enctype="multipart/form-data">
+            <div><textarea readOnly class="form-control texta consola" id="TextArea" name="TextArea" rows="35" [(ngModel)]="consola.texto">
+            </textarea></div>
+        </form>
+    </div>
+
+</body>
+
+</html>

@@ -1,3 +1,14 @@
+# ************* IMPORTACIONES *************
+from AST.Expresiones.Logica import Logica
+from AST.Expresiones.Operacion import Operacion
+from AST.Expresiones.Primitivo import Primitivo
+from AST.Expresiones.Relacional import Relacional
+from AST.Instrucciones.Consolelog import Consolelog
+from AST.ListadoI import ListadoI
+from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
+                                TIPO_OPERACION_LOGICA,
+                                TIPO_OPERACION_RELACIONAL)
+
 # ********** ANALIZADOR LEXICO *****************
 
 reservadas = {
@@ -78,8 +89,8 @@ t_DIVIDIDO = r'/'
 t_POTENCIA = r'\^'
 t_MODULO = r'\%'
 
-t_PARI = r'\('
-t_PARD = r'\)'
+t_PARIZQ = r'\('
+t_PARDER = r'\)'
 t_CORIZQ = r'\['
 t_CORDER = r'\]'
 t_LLAIZQ = r'\{'
@@ -88,6 +99,7 @@ t_COMA = r'\,'
 t_PTOYCOMA = r';'
 t_DOSPUNTOS = r':'
 t_PUNTO = r'\.'
+t_IGUAL = r'\='
 
 t_MAYORIGUAL = r'\>\='
 t_MENORIGUAL = r'\<\='
@@ -163,7 +175,7 @@ def __init__(t):
     '''
     init : instrucciones
     '''
-    t[0] = t[1]
+    t[0] = ListadoI(t[1]) 
 
 # instrucciones -> instrucciones instruccion
 def p_instrucciones_lista(t):
@@ -186,7 +198,6 @@ def p_instruccion(t):
     '''
     instruccion : instruccion2 PTOYCOMA
                 | instruccion2
-                | funcion
     '''
     t[0] = t[1]
 
@@ -205,15 +216,7 @@ def p_instruccion2(t):
     '''
     instruccion2 : declaracion
                  | asignacion
-                 | condicional
-                 | ciclo_while
-                 | ciclo_for
-                 | ciclo_for_of
                  | impresion
-                 | llamada_funcion
-                 | return
-                 | break
-                 | continue
     '''
     t[0] = t[1]
 
@@ -240,6 +243,7 @@ def p_impresion(t):
     '''
     impresion : CONSOLE PUNTO LOG PARIZQ expresion PARDER
     '''
+    t[0] = Consolelog(t[5], t.lineno(1), t.lexpos(1))
 
 #expresiones aritmeticas
 # expresion -> expresion MAS expresion
@@ -260,26 +264,19 @@ def p_expresion_aritmetica(t):
             | MENOS expresion %prec UMENOS
     '''
     if len(t) == 3:
-        #unario
-        pass
+        t[0] = Operacion(t[2], None, TIPO_OPERACION_ARITMETICA.NEGATIVO, t.lineno(1), t.lexpos(1),True)
     elif t[2] == '+':
-        #suma
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.SUMA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '-':
-        #resta
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.RESTA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '*':
-        #multiplicacion
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.MULTIPLICACION, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '/':
-        #division
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.DIVISION, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '^':
-        #potencia
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.POTENCIA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '%':
-        #modulo
-        pass
+        t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.POTENCIA, t.lineno(1), t.lexpos(1),False)
 
 #expresiones relacionales
 # expresion -> expresion MAYOR expresion
@@ -298,23 +295,17 @@ def p_expresion_relacional(t):
             | expresion DISTINTO expresion
     '''
     if t[2] == '>':
-        #mayor
-        pass
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.MAYOR_QUE, t.lineno(1), t.lexpos(1))
     elif t[2] == '<':
-        #menor
-        pass
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.MENOR_QUE, t.lineno(1), t.lexpos(1))
     elif t[2] == '>=':
-        #mayor igual
-        pass
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL_QUE, t.lineno(1), t.lexpos(1))
     elif t[2] == '<=':
-        #menor igual
-        pass
-    elif t[2] == '==':
-        #igual
-        pass
-    elif t[2] == '!=':
-        #distinto
-        pass
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.MENOR_IGUAL_QUE, t.lineno(1), t.lexpos(1))
+    elif t[2] == '===':
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.IGUAL_IGUAL, t.lineno(1), t.lexpos(1))
+    elif t[2] == '!==':
+        t[0] = Relacional(t[1], t[3], TIPO_OPERACION_RELACIONAL.DIFERENTE, t.lineno(1), t.lexpos(1))
     
 
 #expresiones logicas
@@ -328,14 +319,11 @@ def p_expresion_logica(t):
             | NOT expresion
     '''
     if len(t) == 3:
-        #NOT
-        pass
+        t[0] = Logica(t[2], None, TIPO_OPERACION_LOGICA.NOT, t.lineno(1), t.lexpos(1), True)
     elif t[2] == '&&':
-        #AND
-        pass
+        t[0] = Logica(t[1], t[3], TIPO_OPERACION_LOGICA.AND, t.lineno(1), t.lexpos(1), False)
     elif t[2] == '||':
-        #OR
-        pass
+        t[0] = Logica(t[1], t[3], TIPO_OPERACION_LOGICA.OR, t.lineno(1), t.lexpos(1), False)
 
 #expresiones primitivas
 # expresion -> ENTERO
@@ -348,17 +336,20 @@ def p_expresion_primitiva(t):
     expresion : NUMERO
             | CADENA
             | ID
+            | TRUE
+            | FALSE
     '''
 
     if t.slice[1].type == 'NUMERO':
-        #numero
-        pass
+        t[0] = Primitivo(TIPO_DATO.NUMERO, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'CADENA':
-        #cadena
-        pass
+        t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'ID':
-        #id
         pass
+    elif t.slice[1].type == 'TRUE':
+        t[0] = Primitivo(TIPO_DATO.BOOLEANO, True, t.lineno(1), t.lexpos(1))
+    elif t.slice[1].type == 'FALSE':
+        t[0] = Primitivo(TIPO_DATO.BOOLEANO, False, t.lineno(1), t.lexpos(1))
 
 #Listado de tipos
 # tipo -> NUMBER
@@ -374,25 +365,21 @@ def p_tipo(t):
         | ANY
     '''
     if t[1] == 'number':
-        #number
-        pass
+        t[0] = TIPO_DATO.NUMERO
     elif t[1] == 'string':
-        #string
-        pass
+        t[0] = TIPO_DATO.CADENA
     elif t[1] == 'boolean':
-        #boolean
-        pass
+        t[0] = TIPO_DATO.BOOLEANO
     elif t[1] == 'any':
-        #any
-        pass
+        t[0] = TIPO_DATO.ANY
 
 #errores sintacticos	
 def p_error(t):
-    print("Error sintáctico en '%s'" % t.value + " en la linea " + str(t.lineno) + "y columna " + str(t.lexpos))
+    print("Error sintáctico en '%s'" % t.value + " en la linea " + str(t.lineno) + " y columna " + str(t.lexpos))
 
 import ply.yacc as yacc
 
-parser = yacc(debug=True)
+parser = yacc.yacc()
 
 def parse(input) :
     return parser.parse(input)

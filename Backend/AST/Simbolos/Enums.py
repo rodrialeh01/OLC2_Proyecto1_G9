@@ -9,6 +9,20 @@ class TIPO_DATO(Enum):
     ERROR = 4,
     ANY = 5,
 
+def obtTipoDato(i):
+    if i == TIPO_DATO.NUMERO:
+        return "Number"
+    elif i == TIPO_DATO.CADENA:
+        return "Cadena"
+    elif i == TIPO_DATO.BOOLEANO:
+        return "Boolean"
+    elif i == TIPO_DATO.NULL:
+        return "Null"
+    elif i == TIPO_DATO.ERROR:
+        return "Error"
+    elif i == TIPO_DATO.ANY:
+        return "Any"
+
 class ERROR(Enum):
     LEXICO = 1,
     SINTACTICO = 2,

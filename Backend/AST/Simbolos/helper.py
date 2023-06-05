@@ -4,6 +4,12 @@ class Helper:
         self.funcion = ""
         self.consola = ""
 
+    def getFuncion(self):
+        return self.funcion
+    
+    def setFuncion(self, funcion):
+        self.funcion = funcion
+
     def getCiclo(self):
         return self.ciclo
 

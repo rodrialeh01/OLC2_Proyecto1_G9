@@ -1,12 +1,13 @@
 import json
 
+from AST.Error import Error
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.helper import Helper
+from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from gramatica import gramatica
-from AST.SingletonErrores import SingletonErrores as Sing
-from AST.Error import Error
+
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -17,10 +18,10 @@ def ejecutar():
 
     #utilizando singleton para errores:
     singletonErr = Sing.getInstance()
-
+    singletonErr.reinicioErrores()
     parseado = gramatica.parse(texto)
-    retorno_consola = ""
-    entornoGlobal = Entorno(retorno_consola,None)
+
+    entornoGlobal = Entorno(None)
     helpe = Helper()
     if parseado is not None:
         for i in parseado:
@@ -32,8 +33,7 @@ def ejecutar():
                         singletonErr.addError(e)
                         print(e)
     
-    print(singletonErr.getErrores())
-
+    #print(singletonErr.getErrores())
 
     return jsonify({"message": helpe.getConsola()})
 

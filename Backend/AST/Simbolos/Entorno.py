@@ -1,5 +1,5 @@
 class Entorno:
-    def __init__ (self, consola, anterior = None):
+    def __init__ (self, anterior = None):
         self.anterior = anterior
         self.tablaSimbolos = {}
         self.actual = ""

@@ -1,10 +1,12 @@
 # ************* IMPORTACIONES *************
+from AST.Error import Error
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
 from AST.Instrucciones.Asignacion import Asignacion
+from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
 from AST.Instrucciones.Transferencia.Break import Break
@@ -15,7 +17,6 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
 from AST.SingletonErrores import SingletonErrores
-from AST.Error import Error
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -170,6 +171,7 @@ def t_error(t):
 t_ignore = " \t\r"
 
 import ply.lex as lex
+
 lex.lex()
 
 # ********** ANALIZADOR SINTACTICO *****************
@@ -216,6 +218,43 @@ def p_instruccion(t):
     '''
     t[0] = t[1]
 
+# instruccion3 -> instruccion3 instruccion2 
+def p_instruccion3(t):
+    '''
+    instruccion3 : instruccion3 instruccion2
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+# instruccion3 -> instruccion3 instruccion2 PTCOMA
+def p_instruccion3_ptcoma(t):
+    '''
+    instruccion3 : instruccion3 instruccion2 PTOYCOMA
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+# instruccion3 -> instruccion2
+def p_instruccion3_instruccion2(t):
+    '''
+    instruccion3 : instruccion2
+    '''
+    t[0] = [t[1]]
+
+#instruccion3 -> instruccion2 PTCOMA
+def p_instruccion3_instruccion2_ptcoma(t):
+    '''
+    instruccion3 : instruccion2 PTOYCOMA
+    '''
+    t[0] = [t[1]]
+
+# bloque -> LLAVIZQ instruccion3 LLAVDER
+def p_bloque(t):
+    '''
+    bloque : LLAIZQ instruccion3 LLADER
+    '''
+    t[0] = t[2]
+
 # instruccion 2 -> declaracion
 #                | asignacion
 #                | condicional
@@ -235,6 +274,7 @@ def p_instruccion2(t):
                  | return
                  | break
                  | continue
+                 | condicional_if
     '''
     t[0] = t[1]
 
@@ -423,6 +463,54 @@ def p_break(t):
     break : BREAK
     '''
     t[0] = Break(t.lineno(1), t.lexpos(1))
+
+# condicional_if -> IF PARIZQ expresion PARDER bloque
+def p_condicional_if(t):
+    '''
+    condicional_if : IF PARIZQ expresion PARDER bloque
+    '''
+    t[0] = If(t[3], t[5], None, None, t.lineno(1), t.lexpos(1))
+# condicional_if -> IF PARIZQ expresion PARDER bloque ELSE bloque
+def p_condicional_if_else(t):
+    '''
+    condicional_if : IF PARIZQ expresion PARDER bloque ELSE bloque
+    '''
+    t[0] = If(t[3],t[5],None,t[7],t.lineno(1),t.lexpos(1))
+
+# condicional_if -> IF PARIZQ expresion PARDER bloque lista_elif
+def p_condicional_if_elif(t):
+    '''
+    condicional_if : IF PARIZQ expresion PARDER bloque lista_elif
+    '''
+    t[0] = If(t[3], t[5], t[6], None, t.lineno(1), t.lexpos(1))
+# condicional_if -> IF PARIZQ expresion PARDER bloque lista_elif ELSE bloque
+def p_condicional_if_elif_else(t):
+    '''
+    condicional_if : IF PARIZQ expresion PARDER bloque lista_elif ELSE bloque
+    '''
+    t[0] = If(t[3],t[5],t[6],t[8],t.lineno(1),t.lexpos(1))
+
+# lista_elif -> lista_elif ELSE IF PARIZQ expresion PARDER bloque
+def p_lista_elif(t):
+    '''
+    lista_elif : lista_elif elif
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+# lista_elif -> ELSE IF PARIZQ expresion PARDER bloque
+def p_lista_elif_else(t):
+    '''
+    lista_elif : elif
+    '''
+    t[0] =[t[1]]
+
+def p_lista_elif_elif(t):
+    '''
+    elif : ELSE IF PARIZQ expresion PARDER bloque
+    '''
+    t[0] =If(t[4],t[6],None,None,t.lineno(1),t.lexpos(1))
+
 
 #errores sintacticos
 def p_error_inst(t):

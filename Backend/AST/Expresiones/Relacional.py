@@ -18,31 +18,32 @@ class Relacional(Expresion):
         val1 = self.exp1.ejecutar(entorno, helper)
         val2 = self.exp2.ejecutar(entorno, helper)
 
-        if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR:
+        if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                print
                 return Retorno(val1.valor > val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 pass
 
-        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR:
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor < val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 pass
             
-        elif self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL:
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor >= val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 pass
 
-        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_IGUAL:
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_IGUAL_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor <= val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 pass
 
-        elif self.operador == TIPO_OPERACION_RELACIONAL.IGUAL:
+        elif self.operador == TIPO_OPERACION_RELACIONAL.IGUAL_IGUAL:
             if val1.tipo == val2.tipo:
                 return Retorno(val1.valor == val2.valor, TIPO_DATO.BOOLEANO)
             else:

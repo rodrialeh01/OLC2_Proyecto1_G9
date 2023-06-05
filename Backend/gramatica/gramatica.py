@@ -14,6 +14,8 @@ from AST.ListadoI import ListadoI
 from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
+from AST.SingletonErrores import SingletonErrores
+from AST.Error import Error
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -152,15 +154,22 @@ def t_COMENTARIO_MULTILINEA(t):
     r'/\*(.|\n)*?\*/'
     t.lexer.lineno += t.value.count('\n')
 
+def f_columna(input,token):
+    line_s = input.rfind('\n',0,token.lexpos) + 1
+    return (token.lexpos - line_s) + 1
+
 #Errores lexicos
 def t_error(t):
-    print(f"Se encontro un error lexico '%s'" % t.value[0])
+    #singleton:
+    s = SingletonErrores.getInstance()
+    columna = f_columna(entrada, t)
+    s.addError(Error(str(t.lexer.lineno), str(columna) ,"Error Lexico", "No se reconoce "+t.value[0]+" como parte del lenguaje") )
+    #print(f"AAAAAAAAAAAAAAAAAAAAAAAA Se encontro un error lexico '%s'" % t.value[0])
     t.lexer.skip(1)
 
 t_ignore = " \t\r"
 
 import ply.lex as lex
-
 lex.lex()
 
 # ********** ANALIZADOR SINTACTICO *****************
@@ -415,13 +424,35 @@ def p_break(t):
     '''
     t[0] = Break(t.lineno(1), t.lexpos(1))
 
-#errores sintacticos	
+#errores sintacticos
+def p_error_inst(t):
+    '''
+    instruccion : error PTOYCOMA
+    '''
+    t[0] = -1
+    s = SingletonErrores.getInstance()
+    s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + t[1].value + " en esa posición") )
+
+def p_error_inst2(t):
+    '''
+    instruccion : error
+    '''
+    t[0] = -1
+    s = SingletonErrores.getInstance()
+    s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + t[1].value + " en esa posición") )
+
+    
 def p_error(t):
-    print("Error sintáctico en '%s'" % t.value + " en la linea " + str(t.lineno) + " y columna " + str(t.lexpos))
+   pass
+   # s = SingletonErrores.getInstance()
+   # s.addError(Error(str(t.lineno), str(t.lexpos) , "Error Sintáctico", "No se esperaba " + t.value + " en esa posición") )
+   # print("Error sintáctico en '%s'" % t.value + " en la linea " + str(t.lineno) + " y columna " + str(t.lexpos))
 
 import ply.yacc as yacc
 
 parser = yacc.yacc()
 
 def parse(input) :
+    global entrada
+    entrada = input
     return parser.parse(input)

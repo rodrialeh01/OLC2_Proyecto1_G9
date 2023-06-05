@@ -71,6 +71,8 @@ Rule 41    return -> RETURN
 Rule 42    return -> RETURN expresion
 Rule 43    continue -> CONTINUE
 Rule 44    break -> BREAK
+Rule 45    instruccion -> error PTOYCOMA
+Rule 46    instruccion -> error
 
 Terminals, with rules where they appear
 
@@ -119,7 +121,7 @@ PARDER               : 14 22
 PARIZQ               : 14 22
 POR                  : 17
 POTENCIA             : 19
-PTOYCOMA             : 3
+PTOYCOMA             : 3 45
 PUNTO                : 14
 RETURN               : 41 42
 SPLIT                : 
@@ -131,7 +133,7 @@ TOSTRING             :
 TOUPPERCASE          : 
 TRUE                 : 35
 WHILE                : 
-error                : 
+error                : 45 46
 
 Nonterminals, with rules where they appear
 
@@ -156,6 +158,8 @@ state 0
     (2) instrucciones -> . instruccion
     (3) instruccion -> . instruccion2 PTOYCOMA
     (4) instruccion -> . instruccion2
+    (45) instruccion -> . error PTOYCOMA
+    (46) instruccion -> . error
     (5) instruccion2 -> . declaracion
     (6) instruccion2 -> . asignacion
     (7) instruccion2 -> . impresion
@@ -171,22 +175,23 @@ state 0
     (44) break -> . BREAK
     (43) continue -> . CONTINUE
 
-    LET             shift and go to state 10
-    ID              shift and go to state 11
-    CONSOLE         shift and go to state 12
-    RETURN          shift and go to state 13
-    BREAK           shift and go to state 14
-    CONTINUE        shift and go to state 15
+    error           shift and go to state 4
+    LET             shift and go to state 11
+    ID              shift and go to state 12
+    CONSOLE         shift and go to state 13
+    RETURN          shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
 
     instrucciones                  shift and go to state 1
     instruccion                    shift and go to state 2
     instruccion2                   shift and go to state 3
-    declaracion                    shift and go to state 4
-    asignacion                     shift and go to state 5
-    impresion                      shift and go to state 6
-    return                         shift and go to state 7
-    break                          shift and go to state 8
-    continue                       shift and go to state 9
+    declaracion                    shift and go to state 5
+    asignacion                     shift and go to state 6
+    impresion                      shift and go to state 7
+    return                         shift and go to state 8
+    break                          shift and go to state 9
+    continue                       shift and go to state 10
 
 state 1
 
@@ -194,6 +199,8 @@ state 1
     (1) instrucciones -> instrucciones . instruccion
     (3) instruccion -> . instruccion2 PTOYCOMA
     (4) instruccion -> . instruccion2
+    (45) instruccion -> . error PTOYCOMA
+    (46) instruccion -> . error
     (5) instruccion2 -> . declaracion
     (6) instruccion2 -> . asignacion
     (7) instruccion2 -> . impresion
@@ -209,26 +216,28 @@ state 1
     (44) break -> . BREAK
     (43) continue -> . CONTINUE
 
-    LET             shift and go to state 10
-    ID              shift and go to state 11
-    CONSOLE         shift and go to state 12
-    RETURN          shift and go to state 13
-    BREAK           shift and go to state 14
-    CONTINUE        shift and go to state 15
+    error           shift and go to state 4
+    LET             shift and go to state 11
+    ID              shift and go to state 12
+    CONSOLE         shift and go to state 13
+    RETURN          shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
 
-    instruccion                    shift and go to state 16
+    instruccion                    shift and go to state 17
     instruccion2                   shift and go to state 3
-    declaracion                    shift and go to state 4
-    asignacion                     shift and go to state 5
-    impresion                      shift and go to state 6
-    return                         shift and go to state 7
-    break                          shift and go to state 8
-    continue                       shift and go to state 9
+    declaracion                    shift and go to state 5
+    asignacion                     shift and go to state 6
+    impresion                      shift and go to state 7
+    return                         shift and go to state 8
+    break                          shift and go to state 9
+    continue                       shift and go to state 10
 
 state 2
 
     (2) instrucciones -> instruccion .
 
+    error           reduce using rule 2 (instrucciones -> instruccion .)
     LET             reduce using rule 2 (instrucciones -> instruccion .)
     ID              reduce using rule 2 (instrucciones -> instruccion .)
     CONSOLE         reduce using rule 2 (instrucciones -> instruccion .)
@@ -243,7 +252,8 @@ state 3
     (3) instruccion -> instruccion2 . PTOYCOMA
     (4) instruccion -> instruccion2 .
 
-    PTOYCOMA        shift and go to state 17
+    PTOYCOMA        shift and go to state 18
+    error           reduce using rule 4 (instruccion -> instruccion2 .)
     LET             reduce using rule 4 (instruccion -> instruccion2 .)
     ID              reduce using rule 4 (instruccion -> instruccion2 .)
     CONSOLE         reduce using rule 4 (instruccion -> instruccion2 .)
@@ -255,9 +265,26 @@ state 3
 
 state 4
 
+    (45) instruccion -> error . PTOYCOMA
+    (46) instruccion -> error .
+
+    PTOYCOMA        shift and go to state 19
+    error           reduce using rule 46 (instruccion -> error .)
+    LET             reduce using rule 46 (instruccion -> error .)
+    ID              reduce using rule 46 (instruccion -> error .)
+    CONSOLE         reduce using rule 46 (instruccion -> error .)
+    RETURN          reduce using rule 46 (instruccion -> error .)
+    BREAK           reduce using rule 46 (instruccion -> error .)
+    CONTINUE        reduce using rule 46 (instruccion -> error .)
+    $end            reduce using rule 46 (instruccion -> error .)
+
+
+state 5
+
     (5) instruccion2 -> declaracion .
 
     PTOYCOMA        reduce using rule 5 (instruccion2 -> declaracion .)
+    error           reduce using rule 5 (instruccion2 -> declaracion .)
     LET             reduce using rule 5 (instruccion2 -> declaracion .)
     ID              reduce using rule 5 (instruccion2 -> declaracion .)
     CONSOLE         reduce using rule 5 (instruccion2 -> declaracion .)
@@ -267,11 +294,12 @@ state 4
     $end            reduce using rule 5 (instruccion2 -> declaracion .)
 
 
-state 5
+state 6
 
     (6) instruccion2 -> asignacion .
 
     PTOYCOMA        reduce using rule 6 (instruccion2 -> asignacion .)
+    error           reduce using rule 6 (instruccion2 -> asignacion .)
     LET             reduce using rule 6 (instruccion2 -> asignacion .)
     ID              reduce using rule 6 (instruccion2 -> asignacion .)
     CONSOLE         reduce using rule 6 (instruccion2 -> asignacion .)
@@ -281,11 +309,12 @@ state 5
     $end            reduce using rule 6 (instruccion2 -> asignacion .)
 
 
-state 6
+state 7
 
     (7) instruccion2 -> impresion .
 
     PTOYCOMA        reduce using rule 7 (instruccion2 -> impresion .)
+    error           reduce using rule 7 (instruccion2 -> impresion .)
     LET             reduce using rule 7 (instruccion2 -> impresion .)
     ID              reduce using rule 7 (instruccion2 -> impresion .)
     CONSOLE         reduce using rule 7 (instruccion2 -> impresion .)
@@ -295,11 +324,12 @@ state 6
     $end            reduce using rule 7 (instruccion2 -> impresion .)
 
 
-state 7
+state 8
 
     (8) instruccion2 -> return .
 
     PTOYCOMA        reduce using rule 8 (instruccion2 -> return .)
+    error           reduce using rule 8 (instruccion2 -> return .)
     LET             reduce using rule 8 (instruccion2 -> return .)
     ID              reduce using rule 8 (instruccion2 -> return .)
     CONSOLE         reduce using rule 8 (instruccion2 -> return .)
@@ -309,11 +339,12 @@ state 7
     $end            reduce using rule 8 (instruccion2 -> return .)
 
 
-state 8
+state 9
 
     (9) instruccion2 -> break .
 
     PTOYCOMA        reduce using rule 9 (instruccion2 -> break .)
+    error           reduce using rule 9 (instruccion2 -> break .)
     LET             reduce using rule 9 (instruccion2 -> break .)
     ID              reduce using rule 9 (instruccion2 -> break .)
     CONSOLE         reduce using rule 9 (instruccion2 -> break .)
@@ -323,11 +354,12 @@ state 8
     $end            reduce using rule 9 (instruccion2 -> break .)
 
 
-state 9
+state 10
 
     (10) instruccion2 -> continue .
 
     PTOYCOMA        reduce using rule 10 (instruccion2 -> continue .)
+    error           reduce using rule 10 (instruccion2 -> continue .)
     LET             reduce using rule 10 (instruccion2 -> continue .)
     ID              reduce using rule 10 (instruccion2 -> continue .)
     CONSOLE         reduce using rule 10 (instruccion2 -> continue .)
@@ -337,29 +369,29 @@ state 9
     $end            reduce using rule 10 (instruccion2 -> continue .)
 
 
-state 10
+state 11
 
     (11) declaracion -> LET . ID DOSPUNTOS tipo IGUAL expresion
     (12) declaracion -> LET . ID IGUAL expresion
 
-    ID              shift and go to state 18
-
-
-state 11
-
-    (13) asignacion -> ID . IGUAL expresion
-
-    IGUAL           shift and go to state 19
+    ID              shift and go to state 20
 
 
 state 12
 
-    (14) impresion -> CONSOLE . PUNTO LOG PARIZQ expresion PARDER
+    (13) asignacion -> ID . IGUAL expresion
 
-    PUNTO           shift and go to state 20
+    IGUAL           shift and go to state 21
 
 
 state 13
+
+    (14) impresion -> CONSOLE . PUNTO LOG PARIZQ expresion PARDER
+
+    PUNTO           shift and go to state 22
+
+
+state 14
 
     (41) return -> RETURN .
     (42) return -> RETURN . expresion
@@ -388,30 +420,32 @@ state 13
 
   ! shift/reduce conflict for ID resolved as shift
     PTOYCOMA        reduce using rule 41 (return -> RETURN .)
+    error           reduce using rule 41 (return -> RETURN .)
     LET             reduce using rule 41 (return -> RETURN .)
     CONSOLE         reduce using rule 41 (return -> RETURN .)
     RETURN          reduce using rule 41 (return -> RETURN .)
     BREAK           reduce using rule 41 (return -> RETURN .)
     CONTINUE        reduce using rule 41 (return -> RETURN .)
     $end            reduce using rule 41 (return -> RETURN .)
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
   ! ID              [ reduce using rule 41 (return -> RETURN .) ]
 
-    expresion                      shift and go to state 21
+    expresion                      shift and go to state 23
 
-state 14
+state 15
 
     (44) break -> BREAK .
 
     PTOYCOMA        reduce using rule 44 (break -> BREAK .)
+    error           reduce using rule 44 (break -> BREAK .)
     LET             reduce using rule 44 (break -> BREAK .)
     ID              reduce using rule 44 (break -> BREAK .)
     CONSOLE         reduce using rule 44 (break -> BREAK .)
@@ -421,11 +455,12 @@ state 14
     $end            reduce using rule 44 (break -> BREAK .)
 
 
-state 15
+state 16
 
     (43) continue -> CONTINUE .
 
     PTOYCOMA        reduce using rule 43 (continue -> CONTINUE .)
+    error           reduce using rule 43 (continue -> CONTINUE .)
     LET             reduce using rule 43 (continue -> CONTINUE .)
     ID              reduce using rule 43 (continue -> CONTINUE .)
     CONSOLE         reduce using rule 43 (continue -> CONTINUE .)
@@ -435,10 +470,11 @@ state 15
     $end            reduce using rule 43 (continue -> CONTINUE .)
 
 
-state 16
+state 17
 
     (1) instrucciones -> instrucciones instruccion .
 
+    error           reduce using rule 1 (instrucciones -> instrucciones instruccion .)
     LET             reduce using rule 1 (instrucciones -> instrucciones instruccion .)
     ID              reduce using rule 1 (instrucciones -> instrucciones instruccion .)
     CONSOLE         reduce using rule 1 (instrucciones -> instrucciones instruccion .)
@@ -448,10 +484,11 @@ state 16
     $end            reduce using rule 1 (instrucciones -> instrucciones instruccion .)
 
 
-state 17
+state 18
 
     (3) instruccion -> instruccion2 PTOYCOMA .
 
+    error           reduce using rule 3 (instruccion -> instruccion2 PTOYCOMA .)
     LET             reduce using rule 3 (instruccion -> instruccion2 PTOYCOMA .)
     ID              reduce using rule 3 (instruccion -> instruccion2 PTOYCOMA .)
     CONSOLE         reduce using rule 3 (instruccion -> instruccion2 PTOYCOMA .)
@@ -461,16 +498,30 @@ state 17
     $end            reduce using rule 3 (instruccion -> instruccion2 PTOYCOMA .)
 
 
-state 18
+state 19
+
+    (45) instruccion -> error PTOYCOMA .
+
+    error           reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    LET             reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    ID              reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    CONSOLE         reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    RETURN          reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    BREAK           reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    CONTINUE        reduce using rule 45 (instruccion -> error PTOYCOMA .)
+    $end            reduce using rule 45 (instruccion -> error PTOYCOMA .)
+
+
+state 20
 
     (11) declaracion -> LET ID . DOSPUNTOS tipo IGUAL expresion
     (12) declaracion -> LET ID . IGUAL expresion
 
-    DOSPUNTOS       shift and go to state 30
-    IGUAL           shift and go to state 31
+    DOSPUNTOS       shift and go to state 32
+    IGUAL           shift and go to state 33
 
 
-state 19
+state 21
 
     (13) asignacion -> ID IGUAL . expresion
     (15) expresion -> . expresion MAS expresion
@@ -496,25 +547,25 @@ state 19
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 32
+    expresion                      shift and go to state 34
 
-state 20
+state 22
 
     (14) impresion -> CONSOLE PUNTO . LOG PARIZQ expresion PARDER
 
-    LOG             shift and go to state 33
+    LOG             shift and go to state 35
 
 
-state 21
+state 23
 
     (42) return -> RETURN expresion .
     (15) expresion -> expresion . MAS expresion
@@ -533,6 +584,7 @@ state 21
     (30) expresion -> expresion . OR expresion
 
     PTOYCOMA        reduce using rule 42 (return -> RETURN expresion .)
+    error           reduce using rule 42 (return -> RETURN expresion .)
     LET             reduce using rule 42 (return -> RETURN expresion .)
     ID              reduce using rule 42 (return -> RETURN expresion .)
     CONSOLE         reduce using rule 42 (return -> RETURN expresion .)
@@ -540,23 +592,23 @@ state 21
     BREAK           reduce using rule 42 (return -> RETURN expresion .)
     CONTINUE        reduce using rule 42 (return -> RETURN expresion .)
     $end            reduce using rule 42 (return -> RETURN expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 22
+state 24
 
     (21) expresion -> MENOS . expresion
     (15) expresion -> . expresion MAS expresion
@@ -582,18 +634,18 @@ state 22
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 48
+    expresion                      shift and go to state 50
 
-state 23
+state 25
 
     (22) expresion -> PARIZQ . expresion PARDER
     (15) expresion -> . expresion MAS expresion
@@ -619,18 +671,18 @@ state 23
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 49
+    expresion                      shift and go to state 51
 
-state 24
+state 26
 
     (31) expresion -> NOT . expresion
     (15) expresion -> . expresion MAS expresion
@@ -656,18 +708,18 @@ state 24
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 50
+    expresion                      shift and go to state 52
 
-state 25
+state 27
 
     (32) expresion -> NUMERO .
 
@@ -686,6 +738,7 @@ state 25
     AND             reduce using rule 32 (expresion -> NUMERO .)
     OR              reduce using rule 32 (expresion -> NUMERO .)
     PTOYCOMA        reduce using rule 32 (expresion -> NUMERO .)
+    error           reduce using rule 32 (expresion -> NUMERO .)
     LET             reduce using rule 32 (expresion -> NUMERO .)
     ID              reduce using rule 32 (expresion -> NUMERO .)
     CONSOLE         reduce using rule 32 (expresion -> NUMERO .)
@@ -696,7 +749,7 @@ state 25
     PARDER          reduce using rule 32 (expresion -> NUMERO .)
 
 
-state 26
+state 28
 
     (33) expresion -> CADENA .
 
@@ -715,6 +768,7 @@ state 26
     AND             reduce using rule 33 (expresion -> CADENA .)
     OR              reduce using rule 33 (expresion -> CADENA .)
     PTOYCOMA        reduce using rule 33 (expresion -> CADENA .)
+    error           reduce using rule 33 (expresion -> CADENA .)
     LET             reduce using rule 33 (expresion -> CADENA .)
     ID              reduce using rule 33 (expresion -> CADENA .)
     CONSOLE         reduce using rule 33 (expresion -> CADENA .)
@@ -725,7 +779,7 @@ state 26
     PARDER          reduce using rule 33 (expresion -> CADENA .)
 
 
-state 27
+state 29
 
     (34) expresion -> ID .
 
@@ -744,6 +798,7 @@ state 27
     AND             reduce using rule 34 (expresion -> ID .)
     OR              reduce using rule 34 (expresion -> ID .)
     PTOYCOMA        reduce using rule 34 (expresion -> ID .)
+    error           reduce using rule 34 (expresion -> ID .)
     LET             reduce using rule 34 (expresion -> ID .)
     ID              reduce using rule 34 (expresion -> ID .)
     CONSOLE         reduce using rule 34 (expresion -> ID .)
@@ -754,7 +809,7 @@ state 27
     PARDER          reduce using rule 34 (expresion -> ID .)
 
 
-state 28
+state 30
 
     (35) expresion -> TRUE .
 
@@ -773,6 +828,7 @@ state 28
     AND             reduce using rule 35 (expresion -> TRUE .)
     OR              reduce using rule 35 (expresion -> TRUE .)
     PTOYCOMA        reduce using rule 35 (expresion -> TRUE .)
+    error           reduce using rule 35 (expresion -> TRUE .)
     LET             reduce using rule 35 (expresion -> TRUE .)
     ID              reduce using rule 35 (expresion -> TRUE .)
     CONSOLE         reduce using rule 35 (expresion -> TRUE .)
@@ -783,7 +839,7 @@ state 28
     PARDER          reduce using rule 35 (expresion -> TRUE .)
 
 
-state 29
+state 31
 
     (36) expresion -> FALSE .
 
@@ -802,6 +858,7 @@ state 29
     AND             reduce using rule 36 (expresion -> FALSE .)
     OR              reduce using rule 36 (expresion -> FALSE .)
     PTOYCOMA        reduce using rule 36 (expresion -> FALSE .)
+    error           reduce using rule 36 (expresion -> FALSE .)
     LET             reduce using rule 36 (expresion -> FALSE .)
     ID              reduce using rule 36 (expresion -> FALSE .)
     CONSOLE         reduce using rule 36 (expresion -> FALSE .)
@@ -812,7 +869,7 @@ state 29
     PARDER          reduce using rule 36 (expresion -> FALSE .)
 
 
-state 30
+state 32
 
     (11) declaracion -> LET ID DOSPUNTOS . tipo IGUAL expresion
     (37) tipo -> . NUMBER
@@ -820,14 +877,14 @@ state 30
     (39) tipo -> . BOOLEAN
     (40) tipo -> . ANY
 
-    NUMBER          shift and go to state 52
-    STRING          shift and go to state 53
-    BOOLEAN         shift and go to state 54
-    ANY             shift and go to state 55
+    NUMBER          shift and go to state 54
+    STRING          shift and go to state 55
+    BOOLEAN         shift and go to state 56
+    ANY             shift and go to state 57
 
-    tipo                           shift and go to state 51
+    tipo                           shift and go to state 53
 
-state 31
+state 33
 
     (12) declaracion -> LET ID IGUAL . expresion
     (15) expresion -> . expresion MAS expresion
@@ -853,18 +910,18 @@ state 31
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 56
+    expresion                      shift and go to state 58
 
-state 32
+state 34
 
     (13) asignacion -> ID IGUAL expresion .
     (15) expresion -> expresion . MAS expresion
@@ -883,6 +940,7 @@ state 32
     (30) expresion -> expresion . OR expresion
 
     PTOYCOMA        reduce using rule 13 (asignacion -> ID IGUAL expresion .)
+    error           reduce using rule 13 (asignacion -> ID IGUAL expresion .)
     LET             reduce using rule 13 (asignacion -> ID IGUAL expresion .)
     ID              reduce using rule 13 (asignacion -> ID IGUAL expresion .)
     CONSOLE         reduce using rule 13 (asignacion -> ID IGUAL expresion .)
@@ -890,30 +948,30 @@ state 32
     BREAK           reduce using rule 13 (asignacion -> ID IGUAL expresion .)
     CONTINUE        reduce using rule 13 (asignacion -> ID IGUAL expresion .)
     $end            reduce using rule 13 (asignacion -> ID IGUAL expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 33
+state 35
 
     (14) impresion -> CONSOLE PUNTO LOG . PARIZQ expresion PARDER
 
-    PARIZQ          shift and go to state 57
+    PARIZQ          shift and go to state 59
 
 
-state 34
+state 36
 
     (15) expresion -> expresion MAS . expresion
     (15) expresion -> . expresion MAS expresion
@@ -939,18 +997,18 @@ state 34
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 58
+    expresion                      shift and go to state 60
 
-state 35
+state 37
 
     (16) expresion -> expresion MENOS . expresion
     (15) expresion -> . expresion MAS expresion
@@ -976,18 +1034,18 @@ state 35
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 59
+    expresion                      shift and go to state 61
 
-state 36
+state 38
 
     (17) expresion -> expresion POR . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1013,18 +1071,18 @@ state 36
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 60
+    expresion                      shift and go to state 62
 
-state 37
+state 39
 
     (18) expresion -> expresion DIVIDIDO . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1050,18 +1108,18 @@ state 37
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 61
+    expresion                      shift and go to state 63
 
-state 38
+state 40
 
     (19) expresion -> expresion POTENCIA . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1087,18 +1145,18 @@ state 38
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 62
+    expresion                      shift and go to state 64
 
-state 39
+state 41
 
     (20) expresion -> expresion MODULO . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1124,18 +1182,18 @@ state 39
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 63
+    expresion                      shift and go to state 65
 
-state 40
+state 42
 
     (23) expresion -> expresion MAYOR . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1161,18 +1219,18 @@ state 40
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 64
+    expresion                      shift and go to state 66
 
-state 41
+state 43
 
     (24) expresion -> expresion MENOR . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1198,18 +1256,18 @@ state 41
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 65
+    expresion                      shift and go to state 67
 
-state 42
+state 44
 
     (25) expresion -> expresion MAYORIGUAL . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1235,18 +1293,18 @@ state 42
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 66
+    expresion                      shift and go to state 68
 
-state 43
+state 45
 
     (26) expresion -> expresion MENORIGUAL . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1272,18 +1330,18 @@ state 43
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 67
+    expresion                      shift and go to state 69
 
-state 44
+state 46
 
     (27) expresion -> expresion IGUALACION . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1309,18 +1367,18 @@ state 44
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 68
+    expresion                      shift and go to state 70
 
-state 45
+state 47
 
     (28) expresion -> expresion DISTINTO . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1346,18 +1404,18 @@ state 45
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 69
+    expresion                      shift and go to state 71
 
-state 46
+state 48
 
     (29) expresion -> expresion AND . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1383,18 +1441,18 @@ state 46
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 70
+    expresion                      shift and go to state 72
 
-state 47
+state 49
 
     (30) expresion -> expresion OR . expresion
     (15) expresion -> . expresion MAS expresion
@@ -1420,18 +1478,18 @@ state 47
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 71
+    expresion                      shift and go to state 73
 
-state 48
+state 50
 
     (21) expresion -> MENOS expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1464,6 +1522,7 @@ state 48
     AND             reduce using rule 21 (expresion -> MENOS expresion .)
     OR              reduce using rule 21 (expresion -> MENOS expresion .)
     PTOYCOMA        reduce using rule 21 (expresion -> MENOS expresion .)
+    error           reduce using rule 21 (expresion -> MENOS expresion .)
     LET             reduce using rule 21 (expresion -> MENOS expresion .)
     ID              reduce using rule 21 (expresion -> MENOS expresion .)
     CONSOLE         reduce using rule 21 (expresion -> MENOS expresion .)
@@ -1473,23 +1532,23 @@ state 48
     $end            reduce using rule 21 (expresion -> MENOS expresion .)
     PARDER          reduce using rule 21 (expresion -> MENOS expresion .)
 
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POR             [ shift and go to state 36 ]
-  ! DIVIDIDO        [ shift and go to state 37 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MODULO          [ shift and go to state 39 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POR             [ shift and go to state 38 ]
+  ! DIVIDIDO        [ shift and go to state 39 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MODULO          [ shift and go to state 41 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 49
+state 51
 
     (22) expresion -> PARIZQ expresion . PARDER
     (15) expresion -> expresion . MAS expresion
@@ -1507,24 +1566,24 @@ state 49
     (29) expresion -> expresion . AND expresion
     (30) expresion -> expresion . OR expresion
 
-    PARDER          shift and go to state 72
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    PARDER          shift and go to state 74
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 50
+state 52
 
     (31) expresion -> NOT expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1557,6 +1616,7 @@ state 50
     AND             reduce using rule 31 (expresion -> NOT expresion .)
     OR              reduce using rule 31 (expresion -> NOT expresion .)
     PTOYCOMA        reduce using rule 31 (expresion -> NOT expresion .)
+    error           reduce using rule 31 (expresion -> NOT expresion .)
     LET             reduce using rule 31 (expresion -> NOT expresion .)
     ID              reduce using rule 31 (expresion -> NOT expresion .)
     CONSOLE         reduce using rule 31 (expresion -> NOT expresion .)
@@ -1566,58 +1626,58 @@ state 50
     $end            reduce using rule 31 (expresion -> NOT expresion .)
     PARDER          reduce using rule 31 (expresion -> NOT expresion .)
 
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POR             [ shift and go to state 36 ]
-  ! DIVIDIDO        [ shift and go to state 37 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MODULO          [ shift and go to state 39 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POR             [ shift and go to state 38 ]
+  ! DIVIDIDO        [ shift and go to state 39 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MODULO          [ shift and go to state 41 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 51
+state 53
 
     (11) declaracion -> LET ID DOSPUNTOS tipo . IGUAL expresion
 
-    IGUAL           shift and go to state 73
+    IGUAL           shift and go to state 75
 
 
-state 52
+state 54
 
     (37) tipo -> NUMBER .
 
     IGUAL           reduce using rule 37 (tipo -> NUMBER .)
 
 
-state 53
+state 55
 
     (38) tipo -> STRING .
 
     IGUAL           reduce using rule 38 (tipo -> STRING .)
 
 
-state 54
+state 56
 
     (39) tipo -> BOOLEAN .
 
     IGUAL           reduce using rule 39 (tipo -> BOOLEAN .)
 
 
-state 55
+state 57
 
     (40) tipo -> ANY .
 
     IGUAL           reduce using rule 40 (tipo -> ANY .)
 
 
-state 56
+state 58
 
     (12) declaracion -> LET ID IGUAL expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1636,6 +1696,7 @@ state 56
     (30) expresion -> expresion . OR expresion
 
     PTOYCOMA        reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
+    error           reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
     LET             reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
     ID              reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
     CONSOLE         reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
@@ -1643,23 +1704,23 @@ state 56
     BREAK           reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
     CONTINUE        reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
     $end            reduce using rule 12 (declaracion -> LET ID IGUAL expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 57
+state 59
 
     (14) impresion -> CONSOLE PUNTO LOG PARIZQ . expresion PARDER
     (15) expresion -> . expresion MAS expresion
@@ -1685,18 +1746,18 @@ state 57
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 74
+    expresion                      shift and go to state 76
 
-state 58
+state 60
 
     (15) expresion -> expresion MAS expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1726,6 +1787,7 @@ state 58
     AND             reduce using rule 15 (expresion -> expresion MAS expresion .)
     OR              reduce using rule 15 (expresion -> expresion MAS expresion .)
     PTOYCOMA        reduce using rule 15 (expresion -> expresion MAS expresion .)
+    error           reduce using rule 15 (expresion -> expresion MAS expresion .)
     LET             reduce using rule 15 (expresion -> expresion MAS expresion .)
     ID              reduce using rule 15 (expresion -> expresion MAS expresion .)
     CONSOLE         reduce using rule 15 (expresion -> expresion MAS expresion .)
@@ -1734,27 +1796,27 @@ state 58
     CONTINUE        reduce using rule 15 (expresion -> expresion MAS expresion .)
     $end            reduce using rule 15 (expresion -> expresion MAS expresion .)
     PARDER          reduce using rule 15 (expresion -> expresion MAS expresion .)
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! POR             [ reduce using rule 15 (expresion -> expresion MAS expresion .) ]
   ! DIVIDIDO        [ reduce using rule 15 (expresion -> expresion MAS expresion .) ]
   ! MODULO          [ reduce using rule 15 (expresion -> expresion MAS expresion .) ]
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 59
+state 61
 
     (16) expresion -> expresion MENOS expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1784,6 +1846,7 @@ state 59
     AND             reduce using rule 16 (expresion -> expresion MENOS expresion .)
     OR              reduce using rule 16 (expresion -> expresion MENOS expresion .)
     PTOYCOMA        reduce using rule 16 (expresion -> expresion MENOS expresion .)
+    error           reduce using rule 16 (expresion -> expresion MENOS expresion .)
     LET             reduce using rule 16 (expresion -> expresion MENOS expresion .)
     ID              reduce using rule 16 (expresion -> expresion MENOS expresion .)
     CONSOLE         reduce using rule 16 (expresion -> expresion MENOS expresion .)
@@ -1792,27 +1855,27 @@ state 59
     CONTINUE        reduce using rule 16 (expresion -> expresion MENOS expresion .)
     $end            reduce using rule 16 (expresion -> expresion MENOS expresion .)
     PARDER          reduce using rule 16 (expresion -> expresion MENOS expresion .)
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! POR             [ reduce using rule 16 (expresion -> expresion MENOS expresion .) ]
   ! DIVIDIDO        [ reduce using rule 16 (expresion -> expresion MENOS expresion .) ]
   ! MODULO          [ reduce using rule 16 (expresion -> expresion MENOS expresion .) ]
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 60
+state 62
 
     (17) expresion -> expresion POR expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1845,6 +1908,7 @@ state 60
     AND             reduce using rule 17 (expresion -> expresion POR expresion .)
     OR              reduce using rule 17 (expresion -> expresion POR expresion .)
     PTOYCOMA        reduce using rule 17 (expresion -> expresion POR expresion .)
+    error           reduce using rule 17 (expresion -> expresion POR expresion .)
     LET             reduce using rule 17 (expresion -> expresion POR expresion .)
     ID              reduce using rule 17 (expresion -> expresion POR expresion .)
     CONSOLE         reduce using rule 17 (expresion -> expresion POR expresion .)
@@ -1854,23 +1918,23 @@ state 60
     $end            reduce using rule 17 (expresion -> expresion POR expresion .)
     PARDER          reduce using rule 17 (expresion -> expresion POR expresion .)
 
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POR             [ shift and go to state 36 ]
-  ! DIVIDIDO        [ shift and go to state 37 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MODULO          [ shift and go to state 39 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POR             [ shift and go to state 38 ]
+  ! DIVIDIDO        [ shift and go to state 39 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MODULO          [ shift and go to state 41 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 61
+state 63
 
     (18) expresion -> expresion DIVIDIDO expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1903,6 +1967,7 @@ state 61
     AND             reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     OR              reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     PTOYCOMA        reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
+    error           reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     LET             reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     ID              reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     CONSOLE         reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
@@ -1912,23 +1977,23 @@ state 61
     $end            reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
     PARDER          reduce using rule 18 (expresion -> expresion DIVIDIDO expresion .)
 
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POR             [ shift and go to state 36 ]
-  ! DIVIDIDO        [ shift and go to state 37 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MODULO          [ shift and go to state 39 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POR             [ shift and go to state 38 ]
+  ! DIVIDIDO        [ shift and go to state 39 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MODULO          [ shift and go to state 41 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 62
+state 64
 
     (19) expresion -> expresion POTENCIA expresion .
     (15) expresion -> expresion . MAS expresion
@@ -1961,6 +2026,7 @@ state 62
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
     PTOYCOMA        reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
+    error           reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
     LET             reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
     ID              reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
     CONSOLE         reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
@@ -1969,20 +2035,20 @@ state 62
     CONTINUE        reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
     $end            reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
     PARDER          reduce using rule 19 (expresion -> expresion POTENCIA expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
   ! MAS             [ reduce using rule 19 (expresion -> expresion POTENCIA expresion .) ]
   ! MENOS           [ reduce using rule 19 (expresion -> expresion POTENCIA expresion .) ]
@@ -2000,7 +2066,7 @@ state 62
   ! OR              [ reduce using rule 19 (expresion -> expresion POTENCIA expresion .) ]
 
 
-state 63
+state 65
 
     (20) expresion -> expresion MODULO expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2033,6 +2099,7 @@ state 63
     AND             reduce using rule 20 (expresion -> expresion MODULO expresion .)
     OR              reduce using rule 20 (expresion -> expresion MODULO expresion .)
     PTOYCOMA        reduce using rule 20 (expresion -> expresion MODULO expresion .)
+    error           reduce using rule 20 (expresion -> expresion MODULO expresion .)
     LET             reduce using rule 20 (expresion -> expresion MODULO expresion .)
     ID              reduce using rule 20 (expresion -> expresion MODULO expresion .)
     CONSOLE         reduce using rule 20 (expresion -> expresion MODULO expresion .)
@@ -2042,23 +2109,23 @@ state 63
     $end            reduce using rule 20 (expresion -> expresion MODULO expresion .)
     PARDER          reduce using rule 20 (expresion -> expresion MODULO expresion .)
 
-  ! MAS             [ shift and go to state 34 ]
-  ! MENOS           [ shift and go to state 35 ]
-  ! POR             [ shift and go to state 36 ]
-  ! DIVIDIDO        [ shift and go to state 37 ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MODULO          [ shift and go to state 39 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! MAS             [ shift and go to state 36 ]
+  ! MENOS           [ shift and go to state 37 ]
+  ! POR             [ shift and go to state 38 ]
+  ! DIVIDIDO        [ shift and go to state 39 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MODULO          [ shift and go to state 41 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 64
+state 66
 
     (23) expresion -> expresion MAYOR expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2086,6 +2153,7 @@ state 64
     AND             reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     OR              reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     PTOYCOMA        reduce using rule 23 (expresion -> expresion MAYOR expresion .)
+    error           reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     LET             reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     ID              reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     CONSOLE         reduce using rule 23 (expresion -> expresion MAYOR expresion .)
@@ -2094,29 +2162,29 @@ state 64
     CONTINUE        reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     $end            reduce using rule 23 (expresion -> expresion MAYOR expresion .)
     PARDER          reduce using rule 23 (expresion -> expresion MAYOR expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 23 (expresion -> expresion MAYOR expresion .) ]
   ! MENOS           [ reduce using rule 23 (expresion -> expresion MAYOR expresion .) ]
   ! POR             [ reduce using rule 23 (expresion -> expresion MAYOR expresion .) ]
   ! DIVIDIDO        [ reduce using rule 23 (expresion -> expresion MAYOR expresion .) ]
   ! MODULO          [ reduce using rule 23 (expresion -> expresion MAYOR expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 65
+state 67
 
     (24) expresion -> expresion MENOR expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2144,6 +2212,7 @@ state 65
     AND             reduce using rule 24 (expresion -> expresion MENOR expresion .)
     OR              reduce using rule 24 (expresion -> expresion MENOR expresion .)
     PTOYCOMA        reduce using rule 24 (expresion -> expresion MENOR expresion .)
+    error           reduce using rule 24 (expresion -> expresion MENOR expresion .)
     LET             reduce using rule 24 (expresion -> expresion MENOR expresion .)
     ID              reduce using rule 24 (expresion -> expresion MENOR expresion .)
     CONSOLE         reduce using rule 24 (expresion -> expresion MENOR expresion .)
@@ -2152,29 +2221,29 @@ state 65
     CONTINUE        reduce using rule 24 (expresion -> expresion MENOR expresion .)
     $end            reduce using rule 24 (expresion -> expresion MENOR expresion .)
     PARDER          reduce using rule 24 (expresion -> expresion MENOR expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 24 (expresion -> expresion MENOR expresion .) ]
   ! MENOS           [ reduce using rule 24 (expresion -> expresion MENOR expresion .) ]
   ! POR             [ reduce using rule 24 (expresion -> expresion MENOR expresion .) ]
   ! DIVIDIDO        [ reduce using rule 24 (expresion -> expresion MENOR expresion .) ]
   ! MODULO          [ reduce using rule 24 (expresion -> expresion MENOR expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 66
+state 68
 
     (25) expresion -> expresion MAYORIGUAL expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2202,6 +2271,7 @@ state 66
     AND             reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     OR              reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     PTOYCOMA        reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
+    error           reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     LET             reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     ID              reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     CONSOLE         reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
@@ -2210,29 +2280,29 @@ state 66
     CONTINUE        reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     $end            reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
     PARDER          reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .) ]
   ! MENOS           [ reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .) ]
   ! POR             [ reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .) ]
   ! DIVIDIDO        [ reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .) ]
   ! MODULO          [ reduce using rule 25 (expresion -> expresion MAYORIGUAL expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 67
+state 69
 
     (26) expresion -> expresion MENORIGUAL expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2260,6 +2330,7 @@ state 67
     AND             reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     OR              reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     PTOYCOMA        reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
+    error           reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     LET             reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     ID              reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     CONSOLE         reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
@@ -2268,29 +2339,29 @@ state 67
     CONTINUE        reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     $end            reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
     PARDER          reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .) ]
   ! MENOS           [ reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .) ]
   ! POR             [ reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .) ]
   ! DIVIDIDO        [ reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .) ]
   ! MODULO          [ reduce using rule 26 (expresion -> expresion MENORIGUAL expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 68
+state 70
 
     (27) expresion -> expresion IGUALACION expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2318,6 +2389,7 @@ state 68
     AND             reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     OR              reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     PTOYCOMA        reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
+    error           reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     LET             reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     ID              reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     CONSOLE         reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
@@ -2326,29 +2398,29 @@ state 68
     CONTINUE        reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     $end            reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
     PARDER          reduce using rule 27 (expresion -> expresion IGUALACION expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 27 (expresion -> expresion IGUALACION expresion .) ]
   ! MENOS           [ reduce using rule 27 (expresion -> expresion IGUALACION expresion .) ]
   ! POR             [ reduce using rule 27 (expresion -> expresion IGUALACION expresion .) ]
   ! DIVIDIDO        [ reduce using rule 27 (expresion -> expresion IGUALACION expresion .) ]
   ! MODULO          [ reduce using rule 27 (expresion -> expresion IGUALACION expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 69
+state 71
 
     (28) expresion -> expresion DISTINTO expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2376,6 +2448,7 @@ state 69
     AND             reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     OR              reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     PTOYCOMA        reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
+    error           reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     LET             reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     ID              reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     CONSOLE         reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
@@ -2384,29 +2457,29 @@ state 69
     CONTINUE        reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     $end            reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
     PARDER          reduce using rule 28 (expresion -> expresion DISTINTO expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
 
   ! MAS             [ reduce using rule 28 (expresion -> expresion DISTINTO expresion .) ]
   ! MENOS           [ reduce using rule 28 (expresion -> expresion DISTINTO expresion .) ]
   ! POR             [ reduce using rule 28 (expresion -> expresion DISTINTO expresion .) ]
   ! DIVIDIDO        [ reduce using rule 28 (expresion -> expresion DISTINTO expresion .) ]
   ! MODULO          [ reduce using rule 28 (expresion -> expresion DISTINTO expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! MAYOR           [ shift and go to state 40 ]
-  ! MENOR           [ shift and go to state 41 ]
-  ! MAYORIGUAL      [ shift and go to state 42 ]
-  ! MENORIGUAL      [ shift and go to state 43 ]
-  ! IGUALACION      [ shift and go to state 44 ]
-  ! DISTINTO        [ shift and go to state 45 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! MAYOR           [ shift and go to state 42 ]
+  ! MENOR           [ shift and go to state 43 ]
+  ! MAYORIGUAL      [ shift and go to state 44 ]
+  ! MENORIGUAL      [ shift and go to state 45 ]
+  ! IGUALACION      [ shift and go to state 46 ]
+  ! DISTINTO        [ shift and go to state 47 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 70
+state 72
 
     (29) expresion -> expresion AND expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2428,6 +2501,7 @@ state 70
     AND             reduce using rule 29 (expresion -> expresion AND expresion .)
     OR              reduce using rule 29 (expresion -> expresion AND expresion .)
     PTOYCOMA        reduce using rule 29 (expresion -> expresion AND expresion .)
+    error           reduce using rule 29 (expresion -> expresion AND expresion .)
     LET             reduce using rule 29 (expresion -> expresion AND expresion .)
     ID              reduce using rule 29 (expresion -> expresion AND expresion .)
     CONSOLE         reduce using rule 29 (expresion -> expresion AND expresion .)
@@ -2436,17 +2510,17 @@ state 70
     CONTINUE        reduce using rule 29 (expresion -> expresion AND expresion .)
     $end            reduce using rule 29 (expresion -> expresion AND expresion .)
     PARDER          reduce using rule 29 (expresion -> expresion AND expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
 
   ! MAS             [ reduce using rule 29 (expresion -> expresion AND expresion .) ]
   ! MENOS           [ reduce using rule 29 (expresion -> expresion AND expresion .) ]
@@ -2459,12 +2533,12 @@ state 70
   ! MENORIGUAL      [ reduce using rule 29 (expresion -> expresion AND expresion .) ]
   ! IGUALACION      [ reduce using rule 29 (expresion -> expresion AND expresion .) ]
   ! DISTINTO        [ reduce using rule 29 (expresion -> expresion AND expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! AND             [ shift and go to state 46 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! AND             [ shift and go to state 48 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 71
+state 73
 
     (30) expresion -> expresion OR expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2485,6 +2559,7 @@ state 71
     POTENCIA        reduce using rule 30 (expresion -> expresion OR expresion .)
     OR              reduce using rule 30 (expresion -> expresion OR expresion .)
     PTOYCOMA        reduce using rule 30 (expresion -> expresion OR expresion .)
+    error           reduce using rule 30 (expresion -> expresion OR expresion .)
     LET             reduce using rule 30 (expresion -> expresion OR expresion .)
     ID              reduce using rule 30 (expresion -> expresion OR expresion .)
     CONSOLE         reduce using rule 30 (expresion -> expresion OR expresion .)
@@ -2493,18 +2568,18 @@ state 71
     CONTINUE        reduce using rule 30 (expresion -> expresion OR expresion .)
     $end            reduce using rule 30 (expresion -> expresion OR expresion .)
     PARDER          reduce using rule 30 (expresion -> expresion OR expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
 
   ! MAS             [ reduce using rule 30 (expresion -> expresion OR expresion .) ]
   ! MENOS           [ reduce using rule 30 (expresion -> expresion OR expresion .) ]
@@ -2518,11 +2593,11 @@ state 71
   ! IGUALACION      [ reduce using rule 30 (expresion -> expresion OR expresion .) ]
   ! DISTINTO        [ reduce using rule 30 (expresion -> expresion OR expresion .) ]
   ! AND             [ reduce using rule 30 (expresion -> expresion OR expresion .) ]
-  ! POTENCIA        [ shift and go to state 38 ]
-  ! OR              [ shift and go to state 47 ]
+  ! POTENCIA        [ shift and go to state 40 ]
+  ! OR              [ shift and go to state 49 ]
 
 
-state 72
+state 74
 
     (22) expresion -> PARIZQ expresion PARDER .
 
@@ -2541,6 +2616,7 @@ state 72
     AND             reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
     OR              reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
     PTOYCOMA        reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
+    error           reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
     LET             reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
     ID              reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
     CONSOLE         reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
@@ -2551,7 +2627,7 @@ state 72
     PARDER          reduce using rule 22 (expresion -> PARIZQ expresion PARDER .)
 
 
-state 73
+state 75
 
     (11) declaracion -> LET ID DOSPUNTOS tipo IGUAL . expresion
     (15) expresion -> . expresion MAS expresion
@@ -2577,18 +2653,18 @@ state 73
     (35) expresion -> . TRUE
     (36) expresion -> . FALSE
 
-    MENOS           shift and go to state 22
-    PARIZQ          shift and go to state 23
-    NOT             shift and go to state 24
-    NUMERO          shift and go to state 25
-    CADENA          shift and go to state 26
-    ID              shift and go to state 27
-    TRUE            shift and go to state 28
-    FALSE           shift and go to state 29
+    MENOS           shift and go to state 24
+    PARIZQ          shift and go to state 25
+    NOT             shift and go to state 26
+    NUMERO          shift and go to state 27
+    CADENA          shift and go to state 28
+    ID              shift and go to state 29
+    TRUE            shift and go to state 30
+    FALSE           shift and go to state 31
 
-    expresion                      shift and go to state 75
+    expresion                      shift and go to state 77
 
-state 74
+state 76
 
     (14) impresion -> CONSOLE PUNTO LOG PARIZQ expresion . PARDER
     (15) expresion -> expresion . MAS expresion
@@ -2606,24 +2682,24 @@ state 74
     (29) expresion -> expresion . AND expresion
     (30) expresion -> expresion . OR expresion
 
-    PARDER          shift and go to state 76
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    PARDER          shift and go to state 78
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 75
+state 77
 
     (11) declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .
     (15) expresion -> expresion . MAS expresion
@@ -2642,6 +2718,7 @@ state 75
     (30) expresion -> expresion . OR expresion
 
     PTOYCOMA        reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
+    error           reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     LET             reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     ID              reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     CONSOLE         reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
@@ -2649,27 +2726,28 @@ state 75
     BREAK           reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     CONTINUE        reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     $end            reduce using rule 11 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
-    MAS             shift and go to state 34
-    MENOS           shift and go to state 35
-    POR             shift and go to state 36
-    DIVIDIDO        shift and go to state 37
-    POTENCIA        shift and go to state 38
-    MODULO          shift and go to state 39
-    MAYOR           shift and go to state 40
-    MENOR           shift and go to state 41
-    MAYORIGUAL      shift and go to state 42
-    MENORIGUAL      shift and go to state 43
-    IGUALACION      shift and go to state 44
-    DISTINTO        shift and go to state 45
-    AND             shift and go to state 46
-    OR              shift and go to state 47
+    MAS             shift and go to state 36
+    MENOS           shift and go to state 37
+    POR             shift and go to state 38
+    DIVIDIDO        shift and go to state 39
+    POTENCIA        shift and go to state 40
+    MODULO          shift and go to state 41
+    MAYOR           shift and go to state 42
+    MENOR           shift and go to state 43
+    MAYORIGUAL      shift and go to state 44
+    MENORIGUAL      shift and go to state 45
+    IGUALACION      shift and go to state 46
+    DISTINTO        shift and go to state 47
+    AND             shift and go to state 48
+    OR              shift and go to state 49
 
 
-state 76
+state 78
 
     (14) impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .
 
     PTOYCOMA        reduce using rule 14 (impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .)
+    error           reduce using rule 14 (impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .)
     LET             reduce using rule 14 (impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .)
     ID              reduce using rule 14 (impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .)
     CONSOLE         reduce using rule 14 (impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER .)
@@ -2681,18 +2759,18 @@ state 76
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for ID in state 13 resolved as shift
-WARNING: shift/reduce conflict for MAS in state 62 resolved as shift
-WARNING: shift/reduce conflict for MENOS in state 62 resolved as shift
-WARNING: shift/reduce conflict for POR in state 62 resolved as shift
-WARNING: shift/reduce conflict for DIVIDIDO in state 62 resolved as shift
-WARNING: shift/reduce conflict for POTENCIA in state 62 resolved as shift
-WARNING: shift/reduce conflict for MODULO in state 62 resolved as shift
-WARNING: shift/reduce conflict for MAYOR in state 62 resolved as shift
-WARNING: shift/reduce conflict for MENOR in state 62 resolved as shift
-WARNING: shift/reduce conflict for MAYORIGUAL in state 62 resolved as shift
-WARNING: shift/reduce conflict for MENORIGUAL in state 62 resolved as shift
-WARNING: shift/reduce conflict for IGUALACION in state 62 resolved as shift
-WARNING: shift/reduce conflict for DISTINTO in state 62 resolved as shift
-WARNING: shift/reduce conflict for AND in state 62 resolved as shift
-WARNING: shift/reduce conflict for OR in state 62 resolved as shift
+WARNING: shift/reduce conflict for ID in state 14 resolved as shift
+WARNING: shift/reduce conflict for MAS in state 64 resolved as shift
+WARNING: shift/reduce conflict for MENOS in state 64 resolved as shift
+WARNING: shift/reduce conflict for POR in state 64 resolved as shift
+WARNING: shift/reduce conflict for DIVIDIDO in state 64 resolved as shift
+WARNING: shift/reduce conflict for POTENCIA in state 64 resolved as shift
+WARNING: shift/reduce conflict for MODULO in state 64 resolved as shift
+WARNING: shift/reduce conflict for MAYOR in state 64 resolved as shift
+WARNING: shift/reduce conflict for MENOR in state 64 resolved as shift
+WARNING: shift/reduce conflict for MAYORIGUAL in state 64 resolved as shift
+WARNING: shift/reduce conflict for MENORIGUAL in state 64 resolved as shift
+WARNING: shift/reduce conflict for IGUALACION in state 64 resolved as shift
+WARNING: shift/reduce conflict for DISTINTO in state 64 resolved as shift
+WARNING: shift/reduce conflict for AND in state 64 resolved as shift
+WARNING: shift/reduce conflict for OR in state 64 resolved as shift

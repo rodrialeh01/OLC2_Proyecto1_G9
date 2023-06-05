@@ -8,6 +8,6 @@ class Simbolo:
         self.nombre = ""
         self.tipo = TIPO_DATO.ERROR
         self.valor = None
-        self.env = None
+        self.entorno = None
     
     

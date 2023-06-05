@@ -1,9 +1,15 @@
 # ************* IMPORTACIONES *************
+from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
+from AST.Instrucciones.Asignacion import Asignacion
 from AST.Instrucciones.Consolelog import Consolelog
+from AST.Instrucciones.Declaracion import Declaracion
+from AST.Instrucciones.Transferencia.Break import Break
+from AST.Instrucciones.Transferencia.Continue import Continue
+from AST.Instrucciones.Transferencia.Return import Return
 from AST.ListadoI import ListadoI
 from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
@@ -217,6 +223,9 @@ def p_instruccion2(t):
     instruccion2 : declaracion
                  | asignacion
                  | impresion
+                 | return
+                 | break
+                 | continue
     '''
     t[0] = t[1]
 
@@ -225,18 +234,21 @@ def p_declaracion1(t):
     '''
     declaracion : LET ID DOSPUNTOS tipo IGUAL expresion
     '''
+    t[0] = Declaracion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # declaracion -> LET ID IGUAL expresion
 def p_declaracion2(t):
     '''
     declaracion : LET ID IGUAL expresion
     '''
+    t[0] = Declaracion(t[2], None, t[4], t.lineno(1), t.lexpos(1))
 
 # asignacion -> ID IGUAL expresion
 def p_asignacion(t):
     '''
     asignacion : ID IGUAL expresion
     '''
+    t[0] = Asignacion(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 # impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER
 def p_impresion(t):
@@ -262,6 +274,7 @@ def p_expresion_aritmetica(t):
             | expresion POTENCIA expresion
             | expresion MODULO expresion
             | MENOS expresion %prec UMENOS
+            | PARIZQ expresion PARDER
     '''
     if len(t) == 3:
         t[0] = Operacion(t[2], None, TIPO_OPERACION_ARITMETICA.NEGATIVO, t.lineno(1), t.lexpos(1),True)
@@ -277,6 +290,8 @@ def p_expresion_aritmetica(t):
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.POTENCIA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '%':
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.POTENCIA, t.lineno(1), t.lexpos(1),False)
+    elif t[1] == '(':
+        t[0] = t[2]
 
 #expresiones relacionales
 # expresion -> expresion MAYOR expresion
@@ -345,7 +360,7 @@ def p_expresion_primitiva(t):
     elif t.slice[1].type == 'CADENA':
         t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'ID':
-        pass
+        t[0] = Identificador(t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'TRUE':
         t[0] = Primitivo(TIPO_DATO.BOOLEANO, True, t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'FALSE':
@@ -372,6 +387,33 @@ def p_tipo(t):
         t[0] = TIPO_DATO.BOOLEANO
     elif t[1] == 'any':
         t[0] = TIPO_DATO.ANY
+
+# return -> RETURN
+#         | RETURN expresion
+
+def p_retorno(t):
+    '''
+    return : RETURN
+           | RETURN expresion
+    '''
+    if len(t) == 2:
+        t[0] = Return(None, t.lineno(1), t.lexpos(1));
+    else:
+        t[0] = Return(t[2], t.lineno(1), t.lexpos(1));
+
+#continue -> CONTINUE
+def p_continue(t):
+    '''
+    continue : CONTINUE
+    '''
+    t[0] = Continue(t.lineno(1), t.lexpos(1))
+
+#break
+def p_break(t):
+    '''
+    break : BREAK
+    '''
+    t[0] = Break(t.lineno(1), t.lexpos(1))
 
 #errores sintacticos	
 def p_error(t):

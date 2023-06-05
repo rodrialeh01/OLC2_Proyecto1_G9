@@ -1,6 +1,7 @@
 class Helper:
     def __init__(self):
         self.ciclo = ""
+        self.funcion = ""
         self.consola = ""
 
     def getCiclo(self):

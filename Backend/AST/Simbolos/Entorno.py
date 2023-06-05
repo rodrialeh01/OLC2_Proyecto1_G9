@@ -33,5 +33,12 @@ class Entorno:
             env = env.anterior
         return None
     
+    #actualizar simbolo:
+    def ActualizarSimbolo(self, id, simbolo):
+        env = self
+        while env != None:
+            if id in env.tablaSimbolos:
+                env.tablaSimbolos[id] = simbolo
+            env = env.anterior
 
 

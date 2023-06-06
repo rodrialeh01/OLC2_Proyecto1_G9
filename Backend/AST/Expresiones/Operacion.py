@@ -26,6 +26,12 @@ class Operacion(Expresion):
         val1 = self.exp1.ejecutar(entorno, helper)
         val2 = self.exp2.ejecutar(entorno, helper)
 
+        print("=====VALUEANDO VALORES=====")
+        print("valor1: " + str(val1.valor))
+        print("tipo1: " + str(val1.tipo))
+        print("valor2: " + str(val2.valor))
+        print("tipo2: " + str(val2.tipo))
+
         # Validando las distintas operaciones aritméticas
         #MAS
         if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:

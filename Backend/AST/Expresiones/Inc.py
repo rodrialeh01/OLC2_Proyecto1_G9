@@ -1,6 +1,7 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Simbolos.Retorno import Retorno
 
+
 class Inc(Expresion):
     def __init__(self, id, orden, fila, columna):
         self.id = id
@@ -19,7 +20,7 @@ class Inc(Expresion):
             elif self.orden == "postInc":
                 obtenido.valor = obtenido.valor + 1
                 entorno.ActualizarSimbolo(self.id, obtenido)
-                return Retorno(valor, obtenido.tipo)
+                return Retorno(obtenido.valor, obtenido.tipo)
             
         else:
             return Retorno("No se encontro la variable", "error")

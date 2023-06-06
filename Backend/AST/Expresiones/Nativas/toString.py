@@ -10,6 +10,10 @@ class ToString(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
+        '''
+        NOTA: Esta funcion cuando quiero hacer un x.toString() + y.toString() no funciona el y.toString() pero si hago esto:
+        x.toString() + (y.toString()) si funciona
+        '''
+
         valor = self.expresion.ejecutar(entorno, helper)
-        print(str(valor.valor))
         return Retorno(str(valor.valor), TIPO_DATO.CADENA)

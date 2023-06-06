@@ -74,6 +74,7 @@ tokens = [
     'MODULO',
     'IGUAL',
     'DECREMENTO',
+    'INCREMENTO',
 
     'PARIZQ',
     'PARDER',
@@ -112,6 +113,7 @@ t_DIVIDIDO = r'/'
 t_POTENCIA = r'\^'
 t_MODULO = r'\%'
 t_DECREMENTO = r'\-\-'
+t_INCREMENTO = r'\+\+'
 
 t_PARIZQ = r'\('
 t_PARDER = r'\)'
@@ -201,12 +203,16 @@ lex.lex()
 
 #PRECEDENCIA
 precedence = (
+    ('right','INCREMENTO','DECREMENTO'),
     ('left','OR'),
     ('left','AND'),
-    ('nonassoc', 'MAYOR', 'MENORIGUAL', 'MENOR', 'MAYORIGUAL', 'IGUALACION', 'DISTINTO'),
+    ('right','NOT'),
+    ('left', 'MAYOR', 'MENORIGUAL', 'MENOR', 'MAYORIGUAL', 'IGUALACION', 'DISTINTO'),
     ('left', 'MAS', 'MENOS'),
     ('left', 'POR', 'DIVIDIDO', 'MODULO'),
-    ('right', 'NOT', 'UMENOS')
+    ('left','POTENCIA'),
+    ('nonassoc','PARIZQ','PARDER'),
+    ('right', 'UMENOS')
 )
 
 # PRODUCCIONES
@@ -316,7 +322,6 @@ def p_declaracion1(t):
     '''
     declaracion : LET ID DOSPUNTOS tipo IGUAL expresion
     '''
-    print("#id: ", t[2])
     t[0] = Declaracion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # declaracion -> LET ID IGUAL expresion
@@ -324,7 +329,7 @@ def p_declaracion2(t):
     '''
     declaracion : LET ID IGUAL expresion
     '''
-    print("ID". t[2])
+
     t[0] = Declaracion(t[2], None, t[4], t.lineno(1), t.lexpos(1))
 
 # asignacion -> ID IGUAL expresion
@@ -349,6 +354,7 @@ def p_impresion(t):
 #           | expresion POTENCIA expresion
 #           | expresion MODULO expresion
 #           | MENOS expresion %prec UMENOS
+#           | PARIZQ expresion PARDER
 def p_expresion_aritmetica(t):
     '''
     expresion : expresion MAS expresion
@@ -363,6 +369,7 @@ def p_expresion_aritmetica(t):
     if len(t) == 3:
         t[0] = Operacion(t[2], None, TIPO_OPERACION_ARITMETICA.NEGATIVO, t.lineno(1), t.lexpos(1),True)
     elif t[2] == '+':
+        print("entro a suma")
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.SUMA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '-':
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.RESTA, t.lineno(1), t.lexpos(1),False)
@@ -449,7 +456,6 @@ def p_expresion_primitiva(t):
     elif t.slice[1].type == 'CADENA':
         t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'ID':
-        print("ID: ", t[1])
         t[0] = Identificador(t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'TRUE':
         t[0] = Primitivo(TIPO_DATO.BOOLEANO, True, t.lineno(1), t.lexpos(1))
@@ -463,9 +469,9 @@ def p_expresion_primitiva(t):
 #            | MENOS MENOS identificador
 def p_expresion_incremento_decremento(t):
     '''
-    expresion : ID MAS MAS
+    expresion : ID INCREMENTO
             | ID DECREMENTO
-            | MAS MAS ID
+            | INCREMENTO ID
             | DECREMENTO ID
     '''
     if len(t) == 4:
@@ -518,6 +524,7 @@ def p_to_string(t):
     '''
     to_string : expresion PUNTO TOSTRING PARIZQ PARDER
     '''
+    print("to_string: EXPRESION=" + str(t[1]))
     t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
 
 #to_minusculas -> expresion PUNTO TOLOWERCASE PARIZQ PARDER
@@ -695,12 +702,13 @@ def p_error_inst(t):
     instruccion : error PTOYCOMA
     '''
     t[0] = -1
+    print(str(t[1].value))
     s = SingletonErrores.getInstance()
-    s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + t[1].value + " en esa posición") )
+    s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
    
 def p_error(t):
     s = SingletonErrores.getInstance()
-    s.addError(Error(str(t.lineno), str(t.lexpos) , "Error Sintáctico", "No se esperaba " + t.value + " en esa posición") )
+    s.addError(Error(str(t.lineno), str(t.lexpos) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )
     print("Error sintáctico en '%s'" % t.value + " en la linea " + str(t.lineno) + " y columna " + str(t.lexpos))
 
 import ply.yacc as yacc

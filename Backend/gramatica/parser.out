@@ -81,7 +81,6 @@ Rule 55    lista_elif -> lista_elif elif
 Rule 56    lista_elif -> elif
 Rule 57    elif -> ELSE IF PARIZQ expresion PARDER bloque
 Rule 58    instruccion -> error PTOYCOMA
-Rule 59    instruccion -> error
 
 Terminals, with rules where they appear
 
@@ -142,7 +141,7 @@ TOSTRING             :
 TOUPPERCASE          : 
 TRUE                 : 41
 WHILE                : 
-error                : 58 59
+error                : 58
 
 Nonterminals, with rules where they appear
 
@@ -173,7 +172,6 @@ state 0
     (3) instruccion -> . instruccion2 PTOYCOMA
     (4) instruccion -> . instruccion2
     (58) instruccion -> . error PTOYCOMA
-    (59) instruccion -> . error
     (10) instruccion2 -> . declaracion
     (11) instruccion2 -> . asignacion
     (12) instruccion2 -> . impresion
@@ -221,7 +219,6 @@ state 1
     (3) instruccion -> . instruccion2 PTOYCOMA
     (4) instruccion -> . instruccion2
     (58) instruccion -> . error PTOYCOMA
-    (59) instruccion -> . error
     (10) instruccion2 -> . declaracion
     (11) instruccion2 -> . asignacion
     (12) instruccion2 -> . impresion
@@ -296,18 +293,8 @@ state 3
 state 4
 
     (58) instruccion -> error . PTOYCOMA
-    (59) instruccion -> error .
 
     PTOYCOMA        shift and go to state 21
-    error           reduce using rule 59 (instruccion -> error .)
-    LET             reduce using rule 59 (instruccion -> error .)
-    ID              reduce using rule 59 (instruccion -> error .)
-    CONSOLE         reduce using rule 59 (instruccion -> error .)
-    RETURN          reduce using rule 59 (instruccion -> error .)
-    BREAK           reduce using rule 59 (instruccion -> error .)
-    CONTINUE        reduce using rule 59 (instruccion -> error .)
-    IF              reduce using rule 59 (instruccion -> error .)
-    $end            reduce using rule 59 (instruccion -> error .)
 
 
 state 5

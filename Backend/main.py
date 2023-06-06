@@ -37,5 +37,11 @@ def ejecutar():
 
     return jsonify({"message": helpe.getConsola()})
 
+@app.route('/errores', methods=['GET'])
+def errores():
+    singletonErr = Sing.getInstance()
+    return jsonify({"texto": singletonErr.getErrores()})
+
+
 if __name__ == "__main__":
     app.run(host="localhost", port=3000, debug=True)

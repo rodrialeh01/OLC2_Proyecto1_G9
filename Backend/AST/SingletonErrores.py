@@ -17,14 +17,14 @@ class SingletonErrores:
     def getErrores(self):
         codigo_html = ""
         codigo_html += '''
-        <table align="center" class="table table-striped"> \n
-        <thead><tr> <th colspan="5">TABLA DE ERRORES</th> </tr></thead><tr>\n
-        <th>No.</th><th>Tipo de Error</th><th>Descripción</th><th>Linea</th><th>Columna</th><th>Fecha y Hora</th></tr>\n
+        <table align="center" class="table table-striped "> \n
+        <thead><tr> <th colspan="6">TABLA DE ERRORES</th> </tr></thead>\n
+        <tr class="table-dark"><th >No.</th ><th>Tipo de Error</th><th>Descripción</th><th>Linea</th><th>Columna</th><th>Fecha y Hora</th></tr>\n
         '''
         contador = 1
         for i in self.ListaErrores:
             codigo_html += "<tr>"
-            codigo_html += "<td>" + str(contador) + "</td>\n"
+            codigo_html += "<th scope=\"row\">" + str(contador) + "</th>\n"
             codigo_html += "<td>" + i.tipo + "</td>\n"
             codigo_html += "<td>" + i.desc + "</td>\n"
             codigo_html += "<td>" + str(i.fila) + "</td>\n"

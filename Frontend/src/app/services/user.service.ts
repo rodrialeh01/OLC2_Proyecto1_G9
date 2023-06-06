@@ -18,4 +18,8 @@ export class UserService {
   getConsola(){
     return this.http.get(`${this.API}/consola`);
   }
+
+  getTablaErrores(){
+    return this.http.get(`${this.API}/errores`);
+  }
 }

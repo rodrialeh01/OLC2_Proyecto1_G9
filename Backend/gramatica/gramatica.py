@@ -6,6 +6,7 @@ from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
 from AST.Instrucciones.Asignacion import Asignacion
+from AST.Instrucciones.Ciclos.While import While
 from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
@@ -255,6 +256,13 @@ def p_bloque(t):
     '''
     t[0] = t[2]
 
+# bloque -> LLAVIZQ LLAVDER
+def p_bloque2(t):
+    '''
+    bloque : LLAIZQ LLADER
+    '''
+    t[0] = []
+
 # instruccion 2 -> declaracion
 #                | asignacion
 #                | condicional
@@ -275,6 +283,7 @@ def p_instruccion2(t):
                  | break
                  | continue
                  | condicional_if
+                 | ciclo_while
     '''
     t[0] = t[1]
 
@@ -511,6 +520,14 @@ def p_lista_elif_elif(t):
     '''
     t[0] =If(t[4],t[6],None,None,t.lineno(1),t.lexpos(1))
 
+# ciclo_while -> WHILE PARIZQ expresion PARDER bloque
+
+def p_ciclo_while(t):
+    '''
+    ciclo_while : WHILE PARIZQ expresion PARDER bloque
+    '''
+    t[0] = While(t[3], t[5], t.lineno(1), t.lexpos(1))
+    
 
 #errores sintacticos
 def p_error_inst(t):

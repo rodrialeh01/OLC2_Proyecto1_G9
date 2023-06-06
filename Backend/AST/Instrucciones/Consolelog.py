@@ -10,5 +10,5 @@ class Consolelog(Instruccion):
     def ejecutar(self, entorno, helper):
         val = self.expresion.ejecutar(entorno, helper)
         helper.setConsola(val.valor)
-        print(val.valor)
+        #print(val.valor)
         

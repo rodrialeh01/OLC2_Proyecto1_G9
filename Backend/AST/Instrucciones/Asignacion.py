@@ -12,6 +12,7 @@ class Asignacion(Instruccion):
         existe = entorno.ExisteSimbolo(self.id)
         if existe:
             valorG = self.valor.ejecutar(entorno, helper)
+
             simb = entorno.ObtenerSimbolo(self.id)
             if simb.tipo == valorG.tipo:
                 simb.valor = valorG.valor

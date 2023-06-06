@@ -20,7 +20,6 @@ class Relacional(Expresion):
 
         if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
-                print
                 return Retorno(val1.valor > val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 pass

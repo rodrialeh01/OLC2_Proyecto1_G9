@@ -21,6 +21,7 @@ from AST.SingletonErrores import SingletonErrores
 from AST.Instrucciones.Ciclos.For import For
 from AST.Expresiones.Inc import Inc
 from AST.Expresiones.Dec import Dec
+from AST.Instrucciones.Ciclos.ForOf import ForOf
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -290,6 +291,7 @@ def p_instruccion2(t):
                  | condicional_if
                  | ciclo_while
                  | ciclo_for
+                 | ciclo_for_of
     '''
     t[0] = t[1]
 
@@ -586,7 +588,14 @@ def p_ciclo_for4(t):
     '''
     t[0] = For(t[3], t[5], t[7], t[9], t.lineno(1), t.lexpos(1))
 
-
+#ciclo_for_of -> FOR PARIZQ LET ID OF expresion PARDER bloque
+def p_ciclo_for_of(t):
+    '''
+    ciclo_for_of : FOR PARIZQ LET ID OF expresion PARDER bloque
+    '''
+    print("hola XD")
+    t[0] = ForOf(t[4], t[6], t[8], t.lineno(1), t.lexpos(1))
+    
 
 #errores sintacticos
 def p_error_inst(t):

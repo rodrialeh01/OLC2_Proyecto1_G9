@@ -18,6 +18,9 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
 from AST.SingletonErrores import SingletonErrores
+from AST.Instrucciones.Ciclos.For import For
+from AST.Expresiones.Inc import Inc
+from AST.Expresiones.Dec import Dec
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -62,6 +65,7 @@ tokens = [
     'POTENCIA',
     'MODULO',
     'IGUAL',
+    'DECREMENTO',
 
     'PARIZQ',
     'PARDER',
@@ -98,6 +102,7 @@ t_POR = r'\*'
 t_DIVIDIDO = r'/'
 t_POTENCIA = r'\^'
 t_MODULO = r'\%'
+t_DECREMENTO = r'\-\-'
 
 t_PARIZQ = r'\('
 t_PARDER = r'\)'
@@ -284,6 +289,7 @@ def p_instruccion2(t):
                  | continue
                  | condicional_if
                  | ciclo_while
+                 | ciclo_for
     '''
     t[0] = t[1]
 
@@ -424,6 +430,30 @@ def p_expresion_primitiva(t):
     elif t.slice[1].type == 'FALSE':
         t[0] = Primitivo(TIPO_DATO.BOOLEANO, False, t.lineno(1), t.lexpos(1))
 
+#expresiones para incremento o decremento:
+# expresion -> identificador MAS MAS
+#            | identificador MENOS MENOS
+#            | MAS MAS identificador
+#            | MENOS MENOS identificador
+def p_expresion_incremento_decremento(t):
+    '''
+    expresion : ID MAS MAS
+            | ID DECREMENTO
+            | MAS MAS ID
+            | DECREMENTO ID
+    '''
+    if len(t) == 4:
+        if t[3] == '+':
+            t[0] = Inc(t[1], "postInc", t.lineno(1), t.lexpos(1));
+        elif t[1] == '+':
+            t[0] = Inc(t[3], "preInc", t.lineno(1), t.lexpos(1));
+    else:
+        if t[2] == '--':
+            t[0] = Dec(t[1], "postDec", t.lineno(1), t.lexpos(1));
+        elif t[1] == '--':
+            t[0] = Dec(t[2], "preDec", t.lineno(1), t.lexpos(1));
+
+
 #Listado de tipos
 # tipo -> NUMBER
 #      | STRING
@@ -454,7 +484,7 @@ def p_retorno(t):
     return : RETURN
            | RETURN expresion
     '''
-    if len(t) == 2:
+    if len(t) == 2: 
         t[0] = Return(None, t.lineno(1), t.lexpos(1));
     else:
         t[0] = Return(t[2], t.lineno(1), t.lexpos(1));
@@ -528,6 +558,35 @@ def p_ciclo_while(t):
     '''
     t[0] = While(t[3], t[5], t.lineno(1), t.lexpos(1))
     
+# ciclo_for -> FOR PARIZQ declaracion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque 
+def p_ciclo_for(t):
+    '''
+    ciclo_for : FOR PARIZQ declaracion PTOYCOMA expresion PTOYCOMA asignacion PARDER bloque
+    '''
+    t[0] = For(t[3], t[5], t[7], t[9], t.lineno(1), t.lexpos(1))
+
+#ciclo_for -> FOR PARIZQ asignacion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque
+def p_ciclo_for2(t):
+    '''
+    ciclo_for : FOR PARIZQ asignacion PTOYCOMA expresion PTOYCOMA asignacion PARDER bloque
+    '''
+    t[0] = For(t[3], t[5], t[7], t[9], t.lineno(1), t.lexpos(1))
+
+#ciclo_for -> FOR PARIZQ declaracion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque
+def p_ciclo_for3(t):
+    '''
+    ciclo_for : FOR PARIZQ declaracion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque
+    '''
+    t[0] = For(t[3], t[5], t[7], t[9], t.lineno(1), t.lexpos(1))
+
+#ciclo_for -> FOR PARIZQ asignacion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque
+def p_ciclo_for4(t):
+    '''
+    ciclo_for : FOR PARIZQ asignacion PTOYCOMA expresion PTOYCOMA expresion PARDER bloque
+    '''
+    t[0] = For(t[3], t[5], t[7], t[9], t.lineno(1), t.lexpos(1))
+
+
 
 #errores sintacticos
 def p_error_inst(t):

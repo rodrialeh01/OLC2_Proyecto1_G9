@@ -1,11 +1,22 @@
 # ************* IMPORTACIONES *************
 from AST.Error import Error
+from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
+from AST.Expresiones.Inc import Inc
 from AST.Expresiones.Logica import Logica
+from AST.Expresiones.Nativas.Concat import Concat
+from AST.Expresiones.Nativas.Split import Split
+from AST.Expresiones.Nativas.toExponential import ToExponential
+from AST.Expresiones.Nativas.toFixed import ToFixed
+from AST.Expresiones.Nativas.toLowerCase import ToLowerCase
+from AST.Expresiones.Nativas.toString import ToString
+from AST.Expresiones.Nativas.toUpperCase import ToUpperCase
 from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
 from AST.Instrucciones.Asignacion import Asignacion
+from AST.Instrucciones.Ciclos.For import For
+from AST.Instrucciones.Ciclos.ForOf import ForOf
 from AST.Instrucciones.Ciclos.While import While
 from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
@@ -18,10 +29,6 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
 from AST.SingletonErrores import SingletonErrores
-from AST.Instrucciones.Ciclos.For import For
-from AST.Expresiones.Inc import Inc
-from AST.Expresiones.Dec import Dec
-from AST.Instrucciones.Ciclos.ForOf import ForOf
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -91,7 +98,8 @@ tokens = [
     'NOT',
     
     'ID',
-    'NUMERO',
+    'ENTERO',
+    'DECIMAL',
     'CADENA',
 
 ] + list(reservadas.values())
@@ -129,14 +137,22 @@ t_OR = r'\|\|'
 t_NOT = r'\!'
 
 #Expresiones regulares
-def t_NUMERO(t):
-    r'\d+(\.\d+)?'
+def t_ENTERO(t):
+    r'\d+'
     try:
-        t.value = float(t.value)
+        t.value = int(t.value)
     except ValueError:
         print("F")
         t.value = 0
     return t
+
+def t_DECIMAL(t):
+    r'\d+\.\d+'
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        print("F")
+        t.value = 0.0
 
 def t_CADENA(t):
     r'\"[^\"\n]*\"'
@@ -144,7 +160,7 @@ def t_CADENA(t):
     return t
 
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-zA-Z_]([a-zA-Z0-9_])*'
     t.type = reservadas.get(t.value,'ID')
     return t
     
@@ -300,6 +316,7 @@ def p_declaracion1(t):
     '''
     declaracion : LET ID DOSPUNTOS tipo IGUAL expresion
     '''
+    print("#id: ", t[2])
     t[0] = Declaracion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # declaracion -> LET ID IGUAL expresion
@@ -307,6 +324,7 @@ def p_declaracion2(t):
     '''
     declaracion : LET ID IGUAL expresion
     '''
+    print("ID". t[2])
     t[0] = Declaracion(t[2], None, t[4], t.lineno(1), t.lexpos(1))
 
 # asignacion -> ID IGUAL expresion
@@ -411,21 +429,27 @@ def p_expresion_logica(t):
 #           | DECIMAL
 #           | CADENA
 #           | ID
+#           | TRUE
+#           | FALSE
 
 def p_expresion_primitiva(t):
     '''
-    expresion : NUMERO
+    expresion : ENTERO
+            | DECIMAL
             | CADENA
             | ID
             | TRUE
             | FALSE
     '''
 
-    if t.slice[1].type == 'NUMERO':
+    if t.slice[1].type == 'ENTERO':
+        t[0] = Primitivo(TIPO_DATO.NUMERO, t[1], t.lineno(1), t.lexpos(1))
+    elif t.slice[1].type == 'DECIMAL':
         t[0] = Primitivo(TIPO_DATO.NUMERO, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'CADENA':
         t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'ID':
+        print("ID: ", t[1])
         t[0] = Identificador(t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'TRUE':
         t[0] = Primitivo(TIPO_DATO.BOOLEANO, True, t.lineno(1), t.lexpos(1))
@@ -455,6 +479,74 @@ def p_expresion_incremento_decremento(t):
         elif t[1] == '--':
             t[0] = Dec(t[2], "preDec", t.lineno(1), t.lexpos(1));
 
+#Expresiones nativas
+# expresion -> aproximacion
+#           | exponencial
+#           | to_string
+#           | to_minusculas
+#           | to_mayusculas
+#           | separador
+#           | concatenacion
+def p_expresion_nativa(t):
+    '''
+    expresion : aproximacion
+            | exponencial
+            | to_string
+            | to_minusculas
+            | to_mayusculas
+            | separador
+            | concatenacion
+    '''
+    t[0] = t[1]
+
+#aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER
+def p_aproximacion(t):
+    '''
+    aproximacion : expresion PUNTO TOFIXED PARIZQ expresion PARDER
+    '''
+    t[0] = ToFixed(t[1],t[5], t.lineno(1), t.lexpos(1))
+
+#exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+def p_exponencial(t):
+    '''
+    exponencial : expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    '''
+    t[0] = ToExponential(t[1],t[5], t.lineno(1), t.lexpos(1))
+
+#to_string -> expresion PUNTO TOSTRING PARIZQ PARDER
+def p_to_string(t):
+    '''
+    to_string : expresion PUNTO TOSTRING PARIZQ PARDER
+    '''
+    t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
+
+#to_minusculas -> expresion PUNTO TOLOWERCASE PARIZQ PARDER
+def p_to_minusculas(t):
+    '''
+    to_minusculas : expresion PUNTO TOLOWERCASE PARIZQ PARDER
+    '''
+    t[0] = ToLowerCase(t[1], t.lineno(1), t.lexpos(1))
+
+#to_mayusculas -> expresion PUNTO TOUPPERCASE PARIZQ PARDER
+def p_to_mayusculas(t):
+    '''
+    to_mayusculas : expresion PUNTO TOUPPERCASE PARIZQ PARDER
+    '''
+    t[0] = ToUpperCase(t[1], t.lineno(1), t.lexpos(1))
+
+#separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER
+def p_separador(t):
+    '''
+    separador : expresion PUNTO SPLIT PARIZQ expresion PARDER
+    '''
+    t[0] = Split(t[1],t[5], t.lineno(1), t.lexpos(1))
+
+#concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER
+def p_concatenacion(t):
+    '''
+    concatenacion : expresion PUNTO CONCAT PARIZQ expresion PARDER
+    '''
+    t[0] = Concat(t[1],t[5], t.lineno(1), t.lexpos(1))
 
 #Listado de tipos
 # tipo -> NUMBER

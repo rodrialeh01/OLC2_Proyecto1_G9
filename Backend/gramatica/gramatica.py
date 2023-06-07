@@ -4,6 +4,7 @@ from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Inc import Inc
 from AST.Expresiones.Logica import Logica
+from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
 from AST.Expresiones.Nativas.Split import Split
 from AST.Expresiones.Nativas.toExponential import ToExponential
@@ -45,6 +46,7 @@ reservadas = {
     'toFixed' : 'TOFIXED',
     'toExponential' : 'TOEXPONENTIAL',
     'toString'  : 'TOSTRING',
+    'String' : 'CAST_STRING',
     'split' : 'SPLIT',
     'concat' : 'CONCAT',
     'console' : 'CONSOLE',
@@ -109,7 +111,7 @@ tokens = [
 t_MAS = r'\+'
 t_MENOS = r'\-'
 t_POR = r'\*'
-t_DIVIDIDO = r'/'
+t_DIVIDIDO = r'\/'
 t_POTENCIA = r'\^'
 t_MODULO = r'\%'
 t_DECREMENTO = r'\-\-'
@@ -172,7 +174,7 @@ def t_newline(t):
 
 #cometarios de linea
 def t_COMENTARIO(t):
-    r'//.*\n'
+    r'\/\/.*\n'
     t.lexer.lineno += 1
 
 #comentarios de bloque
@@ -331,6 +333,20 @@ def p_declaracion2(t):
     '''
 
     t[0] = Declaracion(t[2], None, t[4], t.lineno(1), t.lexpos(1))
+
+# declaracion -> LET ID DOSPUNTOS tipo
+def p_declaracion3(t):
+    '''
+    declaracion : LET ID DOSPUNTOS tipo
+    '''
+    t[0] = Declaracion(t[2], t[4], None, t.lineno(1), t.lexpos(1))
+
+# declaracion -> LET ID
+def p_declaracion4(t):
+    '''
+    declaracion : LET ID
+    '''
+    t[0] = Declaracion(t[2], None, None, t.lineno(1), t.lexpos(1))
 
 # asignacion -> ID IGUAL expresion
 def p_asignacion(t):
@@ -502,6 +518,7 @@ def p_expresion_nativa(t):
             | to_mayusculas
             | separador
             | concatenacion
+            | casteo_string
     '''
     t[0] = t[1]
 
@@ -554,6 +571,13 @@ def p_concatenacion(t):
     concatenacion : expresion PUNTO CONCAT PARIZQ expresion PARDER
     '''
     t[0] = Concat(t[1],t[5], t.lineno(1), t.lexpos(1))
+
+#casteo_string -> CAST_STRING PARIZQ expresion PARDER
+def p_casteo_string(t):
+    '''
+    casteo_string : CAST_STRING PARIZQ expresion PARDER
+    '''
+    t[0] = Cast_String(t[3], t.lineno(1), t.lexpos(1))
 
 #Listado de tipos
 # tipo -> NUMBER
@@ -645,6 +669,7 @@ def p_lista_elif_else(t):
     '''
     t[0] =[t[1]]
 
+# elif -> ELSE IF PARIZQ expresion PARDER bloque
 def p_lista_elif_elif(t):
     '''
     elif : ELSE IF PARIZQ expresion PARDER bloque
@@ -652,7 +677,6 @@ def p_lista_elif_elif(t):
     t[0] =If(t[4],t[6],None,None,t.lineno(1),t.lexpos(1))
 
 # ciclo_while -> WHILE PARIZQ expresion PARDER bloque
-
 def p_ciclo_while(t):
     '''
     ciclo_while : WHILE PARIZQ expresion PARDER bloque

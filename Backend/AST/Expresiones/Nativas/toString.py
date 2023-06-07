@@ -14,6 +14,18 @@ class ToString(Expresion):
         NOTA: Esta funcion cuando quiero hacer un x.toString() + y.toString() no funciona el y.toString() pero si hago esto:
         x.toString() + (y.toString()) si funciona
         '''
-
-        valor = self.expresion.ejecutar(entorno, helper)
-        return Retorno(str(valor.valor), TIPO_DATO.CADENA)
+        print("EJECUTANDO TOSTRING")
+        print(self.expresion)
+        found = entorno.ObtenerSimbolo(self.expresion)
+        print(found)
+        if entorno.ExisteSimbolo(self.expresion):
+            print("EXISTE SIMBOLO")
+            valor = found.valor
+            return Retorno(str(valor), TIPO_DATO.CADENA)
+        else:
+            print("NO EXISTE SIMBOLO")
+            valor = self.expresion.ejecutar(entorno, helper)
+            print(valor.tipo)
+            print(valor.valor)
+            return Retorno(str(valor.valor), TIPO_DATO.CADENA)
+        

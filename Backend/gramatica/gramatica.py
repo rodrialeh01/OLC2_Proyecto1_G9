@@ -1,4 +1,5 @@
 # ************* IMPORTACIONES *************
+from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
 from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
@@ -355,6 +356,35 @@ def p_asignacion(t):
     '''
     t[0] = Asignacion(t[1], t[3], t.lineno(1), t.lexpos(1))
 
+# asignacion -> ID MASMAS
+def p_asignacion_incremento(t):
+    '''
+    instruccion2 : ID INCREMENTO
+    '''
+    print("entro")
+    t[0] = Inc(t[1],"postInc", t.lineno(1), t.lexpos(1))
+
+def p_asignacion_incremento2(t):
+    '''
+    instruccion2 : INCREMENTO ID
+    '''
+    print("entro2")
+    t[0] = Inc(t[2],"preInc", t.lineno(1), t.lexpos(1))
+
+# asignacion -> ID MENOSMENOS
+def p_asignacion_decremento(t):
+    '''
+    instruccion2 : ID DECREMENTO
+    '''
+    t[0] = Dec(t[1],"postDec", t.lineno(1), t.lexpos(1))
+
+def p_asignacion_decremento2(t):
+    '''
+    instruccion2 : DECREMENTO ID
+    '''
+    t[0] = Dec(t[2],"preDec", t.lineno(1), t.lexpos(1))
+
+
 # impresion -> CONSOLE PUNTO LOG PARIZQ expresion PARDER
 def p_impresion(t):
     '''
@@ -490,16 +520,15 @@ def p_expresion_incremento_decremento(t):
             | INCREMENTO ID
             | DECREMENTO ID
     '''
-    if len(t) == 4:
-        if t[3] == '+':
-            t[0] = Inc(t[1], "postInc", t.lineno(1), t.lexpos(1));
-        elif t[1] == '+':
-            t[0] = Inc(t[3], "preInc", t.lineno(1), t.lexpos(1));
-    else:
-        if t[2] == '--':
-            t[0] = Dec(t[1], "postDec", t.lineno(1), t.lexpos(1));
-        elif t[1] == '--':
-            t[0] = Dec(t[2], "preDec", t.lineno(1), t.lexpos(1));
+
+    if t[2] == '++':
+        t[0] = Inc(t[1], "postInc", t.lineno(1), t.lexpos(1));
+    elif t[1] == '++':
+        t[0] = Inc(t[2], "preInc", t.lineno(1), t.lexpos(1));
+    if t[2] == '--':
+        t[0] = Dec(t[1], "postDec", t.lineno(1), t.lexpos(1));
+    elif t[1] == '--':
+        t[0] = Dec(t[2], "preDec", t.lineno(1), t.lexpos(1));
 
 #Expresiones nativas
 # expresion -> aproximacion
@@ -513,7 +542,6 @@ def p_expresion_nativa(t):
     '''
     expresion : aproximacion
             | exponencial
-            | to_string
             | to_minusculas
             | to_mayusculas
             | separador
@@ -539,10 +567,16 @@ def p_exponencial(t):
 #to_string -> expresion PUNTO TOSTRING PARIZQ PARDER
 def p_to_string(t):
     '''
-    to_string : expresion PUNTO TOSTRING PARIZQ PARDER
+    expresion : ID PUNTO TOSTRING PARIZQ PARDER
     '''
-    print("to_string: EXPRESION=" + str(t[1]))
     t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
+
+
+# def p_to_string2(t):
+#     '''
+#     expresion : expresion PUNTO TOSTRING PARIZQ PARDER
+#     '''
+#     t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
 
 #to_minusculas -> expresion PUNTO TOLOWERCASE PARIZQ PARDER
 def p_to_minusculas(t):
@@ -720,6 +754,57 @@ def p_ciclo_for_of(t):
     t[0] = ForOf(t[4], t[6], t[8], t.lineno(1), t.lexpos(1))
     
 
+# funcion -> FUNCTION ID PARIZQ lista_parametros PARDER bloque
+def p_funcion(t):
+    '''
+    funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
+    '''
+
+# funcion -> FUNCTION ID PARIZQ PARDER bloque
+def p_funcion2(t):
+    '''
+    funcion : FUNCTION ID PARIZQ PARDER bloque
+    '''
+    
+
+# lista_parametros -> lista_parametros COMA ID
+def p_lista_parametros(t):
+    '''
+    lista_parametros : lista_parametros COMA ID
+    '''
+
+
+# lista_parametros -> ID
+def p_lista_parametros2(t):
+    '''
+    lista_parametros : ID
+    '''
+
+#llamda de funcion -> ID PARIZQ lista_argumentos PARDER
+def p_llamada_funcion(t):
+    '''
+    llamada_funcion : ID PARIZQ lista_argumentos PARDER
+    '''
+    
+#llamda de funcion -> ID PARIZQ PARDER
+def p_llamada_funcion2(t):
+    '''
+    llamada_funcion : ID PARIZQ PARDER
+    '''
+
+#lista_argumentos -> lista_argumentos COMA expresion
+def p_lista_argumentos(t):
+    '''
+    lista_argumentos : lista_argumentos COMA expresion
+    '''
+
+#lista_argumentos -> expresion
+def p_lista_argumentos2(t):
+    '''
+    lista_argumentos : expresion
+    '''
+    
+
 #errores sintacticos
 def p_error_inst(t):
     '''
@@ -729,7 +814,7 @@ def p_error_inst(t):
     print(str(t[1].value))
     s = SingletonErrores.getInstance()
     s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
-   
+    
 def p_error(t):
     s = SingletonErrores.getInstance()
     s.addError(Error(str(t.lineno), str(t.lexpos) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )

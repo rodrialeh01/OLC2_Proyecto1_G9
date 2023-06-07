@@ -10,6 +10,7 @@ class Inc(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
+        print("EJECUTANDO INC")
         obtenido = entorno.ObtenerSimbolo(self.id)
         if obtenido != None:
             valor = obtenido.valor
@@ -20,7 +21,7 @@ class Inc(Expresion):
             elif self.orden == "postInc":
                 obtenido.valor = obtenido.valor + 1
                 entorno.ActualizarSimbolo(self.id, obtenido)
-                return Retorno(obtenido.valor, obtenido.tipo)
+                return Retorno(valor, obtenido.tipo)
             
         else:
             return Retorno("No se encontro la variable", "error")

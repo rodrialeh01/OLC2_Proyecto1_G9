@@ -20,7 +20,7 @@ class Dec(Expresion):
             elif self.orden == "postDec":
                 obtenido.valor = obtenido.valor - 1
                 entorno.ActualizarSimbolo(self.id, obtenido)
-                return Retorno(obtenido.valor, obtenido.tipo)
+                return Retorno(valor, obtenido.tipo)
         else:
             return Retorno("No se encontro la variable", "error")
             

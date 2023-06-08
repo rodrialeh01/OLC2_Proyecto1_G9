@@ -31,6 +31,9 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
 from AST.SingletonErrores import SingletonErrores
+from AST.Instrucciones.Funcion import Funcion
+from AST.Expresiones.Llamada import Llamada
+from AST.Instrucciones.Parametro import Parametro
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -317,6 +320,8 @@ def p_instruccion2(t):
                  | ciclo_while
                  | ciclo_for
                  | ciclo_for_of
+                 | funcion
+                 | llamada_funcion
     '''
     t[0] = t[1]
 
@@ -759,51 +764,67 @@ def p_funcion(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
     '''
+    print("Funcion con parametros")
+    t[0] = Funcion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # funcion -> FUNCTION ID PARIZQ PARDER bloque
 def p_funcion2(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER bloque
     '''
-    
+    print("Funcion sin parametros")
+    t[0] = Funcion(t[2], None, t[5], t.lineno(1), t.lexpos(1))
 
 # lista_parametros -> lista_parametros COMA ID
 def p_lista_parametros(t):
     '''
-    lista_parametros : lista_parametros COMA ID
+    lista_parametros : lista_parametros COMA parametro
     '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
 
 # lista_parametros -> ID
 def p_lista_parametros2(t):
     '''
-    lista_parametros : ID
+    lista_parametros : parametro
     '''
+    t[0] = [t[1]]
+
+def p_lista_parametros3(t):
+    '''
+    parametro : ID DOSPUNTOS tipo
+    '''
+    t[0] = Parametro(t[1], t[3], None, t.lineno(1), t.lexpos(1), False)
+
 
 #llamda de funcion -> ID PARIZQ lista_argumentos PARDER
 def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARIZQ lista_argumentos PARDER
     '''
-    
+    t[0] = Llamada(t[1], t[3], t.lineno(1), t.lexpos(1))
 #llamda de funcion -> ID PARIZQ PARDER
 def p_llamada_funcion2(t):
     '''
     llamada_funcion : ID PARIZQ PARDER
     '''
+    t[0] = Llamada(t[1], None, t.lineno(1), t.lexpos(1))
 
 #lista_argumentos -> lista_argumentos COMA expresion
 def p_lista_argumentos(t):
     '''
     lista_argumentos : lista_argumentos COMA expresion
     '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
 #lista_argumentos -> expresion
 def p_lista_argumentos2(t):
     '''
     lista_argumentos : expresion
     '''
-    
+    t[0] = [t[1]]
 
 #errores sintacticos
 def p_error_inst(t):

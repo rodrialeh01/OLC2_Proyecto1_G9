@@ -6,7 +6,8 @@ from AST.Simbolos.helper import Helper
 from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from gramatica import gramatica, gramatica2
+from AST.Instrucciones.Funcion import Funcion
+from gramatica import gramatica
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -27,7 +28,17 @@ def ejecutar():
         for i in parseado:
             if i is not None:
                 try:
-                    i.ejecutar(entornoGlobal,helpe)
+                    if isinstance(i, Funcion):
+                        print("Estoy en una funcion")
+                        print(i.nombre)
+                        verif = entornoGlobal.ExisteFuncion(i.nombre)
+                        print("soy verif" + str(verif))
+                        if not verif:
+                            print("Agregando funcion")
+                            entornoGlobal.AgregarFuncion(i.nombre, i)
+                    else:       
+                        i.ejecutar(entornoGlobal,helpe)
+                        print("Estoy en una instruccion")
                 except Exception as e:
                     if isinstance(e, Error):
                         singletonErr.addError(e)

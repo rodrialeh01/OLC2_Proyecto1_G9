@@ -9,5 +9,12 @@ class Simbolo:
         self.tipo = TIPO_DATO.ERROR
         self.valor = None
         self.entorno = None
+        self.valorRef = None
     
-    
+    def crearFuncion(self, nombre, params, listaInstrucciones, linea, columna):
+        self.nombre = nombre
+        self.params = params
+        self.listaInstrucciones = listaInstrucciones
+        self.linea = linea
+        self.columna = columna
+

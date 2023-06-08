@@ -4,6 +4,7 @@ from AST.Error import Error
 from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Inc import Inc
+from AST.Expresiones.Llamada import Llamada
 from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
@@ -24,6 +25,8 @@ from AST.Instrucciones.Comentarios import Comentarios
 from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
+from AST.Instrucciones.Funcion import Funcion
+from AST.Instrucciones.Parametro import Parametro
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
@@ -525,33 +528,47 @@ def p_funcion(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
     '''
+    t[0] = Funcion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 def p_funcion_1(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo bloque
     '''
 
+
 def p_funcion_2(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER bloque
     '''
+    t[0] = Funcion(t[2], None, t[5], t.lineno(1), t.lexpos(1))
+
 
 def p_funcion_3(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER DOSPUNTOS tipo bloque
     '''
 
+
 # ? lista_parametros : lista_parametros COMA ID DOSPUNTOS tipo
 # ?                  | ID DOSPUNTOS tipo
 def p_lista_parametros(t):
     '''
-    lista_parametros : lista_parametros COMA ID DOSPUNTOS tipo
+    lista_parametros : lista_parametros COMA parametro
     '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
 def p_lista_parametros_1(t):
     '''
-    lista_parametros : ID DOSPUNTOS tipo
+    lista_parametros : parametro
     '''
+    t[0] = [t[1]]
+# ? parametro : ID DOSPUNTOS tipo
+def p_parametro(t):
+    '''
+    parametro : ID DOSPUNTOS tipo
+    '''
+    t[0] = Parametro(t[1], t[3], None, t.lineno(1), t.lexpos(1), False)
 
 # ? llamada_funcion : ID PARIZQ lista_argumentos PARDER
 # ?                 | ID PARIZQ PARDER
@@ -559,11 +576,13 @@ def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARIZQ lista_argumentos PARDER
     '''
+    t[0] = Llamada(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 def p_llamada_funcion_1(t):
     '''
     llamada_funcion : ID PARIZQ PARDER
     '''
+    t[0] = Llamada(t[1], None, t.lineno(1), t.lexpos(1))
 
 # ? lista_argumentos : lista_argumentos COMA expresion
 # ?                  | expresion
@@ -571,12 +590,13 @@ def p_lista_argumentos(t):
     '''
     lista_argumentos : lista_argumentos COMA expresion
     '''
-
+    t[1].append(t[3])
+    t[0] = t[1]
 def p_lista_argumentos_1(t):
     '''
     lista_argumentos : expresion
     '''
-
+    t[0] = [t[1]]
 # ? tipo : NUMBER
 # ?     | STRING
 # ?     | BOOLEAN

@@ -4,6 +4,7 @@ from AST.Error import Error
 from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Inc import Inc
+from AST.Expresiones.Llamada import Llamada
 from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
@@ -23,6 +24,8 @@ from AST.Instrucciones.Ciclos.While import While
 from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
+from AST.Instrucciones.Funcion import Funcion
+from AST.Instrucciones.Parametro import Parametro
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
@@ -31,9 +34,6 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 TIPO_OPERACION_LOGICA,
                                 TIPO_OPERACION_RELACIONAL)
 from AST.SingletonErrores import SingletonErrores
-from AST.Instrucciones.Funcion import Funcion
-from AST.Expresiones.Llamada import Llamada
-from AST.Instrucciones.Parametro import Parametro
 
 # ********** ANALIZADOR LEXICO *****************
 
@@ -772,7 +772,6 @@ def p_funcion2(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER bloque
     '''
-    print("Funcion sin parametros")
     t[0] = Funcion(t[2], None, t[5], t.lineno(1), t.lexpos(1))
 
 # lista_parametros -> lista_parametros COMA ID

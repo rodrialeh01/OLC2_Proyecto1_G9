@@ -16,12 +16,13 @@ class Llamada(Instruccion, Expresion):
         if fn is False:
             print("Error semántico, la función no existe")
             return
-        
+        print(">>>> ", fn)
 
         entornoFN = Entorno(entorno)
         func = entorno.ObtenerFuncion(self.id)
 
         argumentos = func.declaracionesParams(entornoFN, self.params, entorno, helper)
+
         print("argumentos")
         if argumentos is False:
             print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")

@@ -7,7 +7,7 @@ from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from AST.Instrucciones.Funcion import Funcion
-from gramatica import gramatica
+from gramatica import gramatica2
 
 app = Flask(__name__)
 cors = CORS(app)

@@ -6,7 +6,7 @@ from AST.Simbolos.helper import Helper
 from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from gramatica import gramatica
+from gramatica import gramatica, gramatica2
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -19,7 +19,7 @@ def ejecutar():
     #utilizando singleton para errores:
     singletonErr = Sing.getInstance()
     singletonErr.reinicioErrores()
-    parseado = gramatica.parse(texto)
+    parseado = gramatica2.parse(texto)
 
     entornoGlobal = Entorno(None)
     helpe = Helper()

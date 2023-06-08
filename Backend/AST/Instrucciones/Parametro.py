@@ -21,10 +21,9 @@ class Parametro(Instruccion):
         print("hola hola", self.valor)
         print("adios adios", self.utilizado)
         if self.valor != None or self.utilizado != None:
-            print("hola??????")
             print(self.utilizado)
             retorno = Retorno()
-            if self.valor != None:
+            if self.valor != None: 
                 retorno = self.valor.ejecutar(entorno, helper)
             else:
                 #ya tiene un valor

@@ -9,11 +9,6 @@ class Funcion(Simbolo, Instruccion):
     def __init__(self, nombre, params, listaInstrucciones, linea, columna) -> None:
         super().__init__()
         print("VOY A CREAR LA FUNCIÓN: ")
-        print(nombre)
-        print(params)
-        print(listaInstrucciones)
-        print(linea)
-        print(columna)
         print('---------------------')
         super().crearFuncion(nombre, params, listaInstrucciones, linea, columna)
         print("Creando funcion")
@@ -41,6 +36,8 @@ class Funcion(Simbolo, Instruccion):
 
             param.utilizado = exp[contador].ejecutar(entorno, helper)
             param.ejecutar(entorno, helper)
+
+            #funcion("hola", a);
 
             contador += 1
 

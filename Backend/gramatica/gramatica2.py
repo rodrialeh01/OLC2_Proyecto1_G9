@@ -26,7 +26,9 @@ from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
 from AST.Instrucciones.Funcion import Funcion
+from AST.Instrucciones.Interface import Interface
 from AST.Instrucciones.Parametro import Parametro
+from AST.Instrucciones.Params_Interface import Params_Interface
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
@@ -171,7 +173,7 @@ def t_CADENA(t):
     return t
 
 def t_ID(t):
-    r'[a-zA-Z_]([a-zA-Z0-9_])*'
+    r'[a-zA-Z_ñÑ]([a-zA-Z0-9_ñÑ])*'
     t.type = reservadas.get(t.value,'ID')
     return t
     
@@ -320,9 +322,11 @@ def p_bloque2(t):
 # ?              | ciclo_for
 # ?              | ciclo_for_of
 # ?              | llamada_funcion
+# ?              | instanciar
 # ?              | return
 # ?              | break
 # ?              | continue
+
 def p_instruccion3(t):
     '''
     instruccion3 : declaracion
@@ -337,6 +341,8 @@ def p_instruccion3(t):
                  | break
                  | continue
                  | comentarios
+                 | instanciar
+                 | declaracionInterface
     '''
     t[0] = t[1]
 
@@ -403,6 +409,11 @@ def p_asignacion_2(t):
     asignacion : inc
     '''
     t[0] = t[1]
+
+def p_asignacion_3(t):
+    '''
+    asignacion : asignacionInterface
+    '''
 
 # ? dec : ID DECREMENTO
 # ?     | DECREMENTO ID
@@ -875,6 +886,69 @@ def p_continue(t):
     '''
     t[0] = Continue(t.lineno(1), t.lexpos(1))
 
+def p_instanciar(t):
+    '''
+    instanciar : INTERFACE ID bloquestruct
+    '''
+    t[0] = Interface(t[2], t[3], t.lineno(1), t.lexpos(1))
+    
+def p_bloqueStruct(t):
+    '''
+    bloquestruct : LLAIZQ lista_params_struct LLADER
+    '''
+    t[0] = t[2]
+
+def p_bloqueStruct2(t):
+    '''
+    lista_params_struct : lista_params_struct param_struct
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+def p_bloqueStruct3(t):
+    '''
+    lista_params_struct : param_struct
+    '''
+    t[0] = [t[1]]
+
+def p_paramStruct(t):
+    '''
+    param_struct : ID DOSPUNTOS tipo PTOYCOMA
+    '''
+    t[0] = Params_Interface(t[1], t[3], t.lineno(1),t.lexpos(1))
+    #objeto de paramStruct
+def p_decInterface(t):
+    '''
+    declaracionInterface : LET ID DOSPUNTOS ID IGUAL LLAIZQ lista_d LLADER
+    '''
+
+def p_declInt(t):
+    '''
+    lista_d : lista_d COMA parDecl
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+def p_declInt2(t):
+    '''
+    lista_d : parDecl
+    '''
+    t[0] = [t[1]]
+
+def p_parDecl(t):
+    '''
+    parDecl : ID DOSPUNTOS expresion
+    '''
+
+def p_accesoInterface(t):
+    '''
+    expresion : ID PUNTO ID
+    '''
+
+def p_asignacionInterface2(t):
+    '''
+    asignacionInterface : ID PUNTO ID IGUAL expresion
+    '''
 
 #errores sintacticos
 def p_error_inst(t):

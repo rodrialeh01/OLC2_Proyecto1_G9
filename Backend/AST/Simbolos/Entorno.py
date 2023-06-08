@@ -3,6 +3,7 @@ class Entorno:
         self.anterior = anterior
         self.tablaSimbolos = {}
         self.tablaFunciones = {}
+        self.tablaInterfaces = {}
         self.actual = ""
 
     def getActual(self):
@@ -75,4 +76,27 @@ class Entorno:
     def AgregarFuncion(self, id, funcion):
         self.tablaFunciones[id] = funcion
 
+# -------------------------------- interfaces --------------------------------
+
+#guardar interface:
+    def AgregarInterface(self, id, interface):
+        self.tablaInterfaces[id] = interface
+
+#verificar existencia:
+    def ExisteInterface(self, id):
+        env = self
+        while env != None:
+            if id in env.tablaInterfaces:
+                return True
+            env = env.anterior
+        return False
+
+#obtener interface:
+    def ObtenerInterface(self, id):
+        env = self
+        while env != None:
+            if id in env.tablaInterfaces:
+                return env.tablaInterfaces[id]
+            env = env.anterior
+        return None
 

@@ -1,12 +1,13 @@
 import json
 
 from AST.Error import Error
+from AST.Instrucciones.Funcion import Funcion
+from AST.Instrucciones.Interface import Interface
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.helper import Helper
 from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from AST.Instrucciones.Funcion import Funcion
 from gramatica import gramatica2
 
 app = Flask(__name__)
@@ -36,6 +37,11 @@ def ejecutar():
                         if not verif:
                             print("Agregando funcion")
                             entornoGlobal.AgregarFuncion(i.nombre, i)
+                    elif isinstance(i, Interface):
+                        print("Estoy en una interface")
+                        verif = entornoGlobal.ExisteInterface(i.id)
+                        if not verif:
+                            entornoGlobal.AgregarInterface(i.id, i)
                     else:       
                         i.ejecutar(entornoGlobal,helpe)
                         print("Estoy en una instruccion")

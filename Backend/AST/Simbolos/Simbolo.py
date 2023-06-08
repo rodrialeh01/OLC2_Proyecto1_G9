@@ -18,3 +18,14 @@ class Simbolo:
         self.linea = linea
         self.columna = columna
 
+    def crearInterface(self, nombre, params, linea, columna):
+        self.nombre = nombre
+        self.params = params
+        self.linea = linea
+        self.columna = columna
+
+        print("ESTE ES EL NOMBRE DE LA INTERFAZ: ", self.nombre)
+        print("ESTOS SON LOS PARAMETROS DE LA INTERFAZ: :")
+        for param in self.params:
+            param.ejecutar(None,None)
+        

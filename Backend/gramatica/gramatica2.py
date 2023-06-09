@@ -1,7 +1,9 @@
 # ************* IMPORTACIONES *************
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
+from AST.Expresiones.AccesoArray import AccesoArray
 from AST.Expresiones.AccesoInterface import AccesoInterface
+from AST.Expresiones.Array import Array
 from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Inc import Inc
@@ -27,6 +29,7 @@ from AST.Instrucciones.Comentarios import Comentarios
 from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
+from AST.Instrucciones.DeclaracionArray import DeclaracionArray
 from AST.Instrucciones.Funcion import Funcion
 from AST.Instrucciones.Instancia import Instancia
 from AST.Instrucciones.Interface import Interface
@@ -347,6 +350,7 @@ def p_instruccion3(t):
                  | comentarios
                  | instanciar
                  | declaracionInterface
+                 | declaracionArray
     '''
     t[0] = t[1]
 
@@ -419,7 +423,6 @@ def p_asignacion_3(t):
     asignacion : asignacionInterface
     '''
     t[0] = t[1]
-    
 
 # ? dec : ID DECREMENTO
 # ?     | DECREMENTO ID
@@ -964,7 +967,156 @@ def p_asignacionInterface2(t):
     print(t[5])
     t[0] = AsignarInterface(t[1], t[3], t[5], t.lineno(1), t.lexpos(1))
     print(t[0])
+
+# ? Arrays
+# ? declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER -- 
+# ?                  | LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER  --
+# ?                  | LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL CORIZQ CORDER --
+# ?                  | LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR IGUAL CORIZQ lista_exp CORDER
+# ?                  | LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR IGUAL CORIZQ CORDER
+# ?                  | LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR
+# ?                  | LET ID IGUAL CORIZQ CORDER
+# ?                  | LET ID IGUAL CORIZQ lista_exp CORDER
+
+def p_declaracionArray3(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR IGUAL CORIZQ lista_exp CORDER
+    '''
+    exp = Array(t[10],t.lineno(1),t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[6], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray4(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR IGUAL CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[6], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray5(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[6], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray6(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
     
+
+def p_declaracionArray7(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
+    '''
+    exp = Array(t[9], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
+    #[Expresion, Expresion, Expresion]
+    #[Array, Array, Array]
+
+def p_declaracionArray8(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray9(t):
+    '''
+    declaracionArray : LET ID IGUAL CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], TIPO_DATO.ANY, exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray10(t):
+    '''
+    declaracionArray : LET ID IGUAL CORIZQ lista_exp CORDER
+    '''
+    exp = Array(t[5], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], TIPO_DATO.ANY, exp, t.lineno(1), t.lexpos(1))
+
+
+# ? lista_exp : lista_exp COMA expresion
+# ?           | expresion
+
+def p_lista_exp(t):
+    '''
+    lista_exp : lista_exp COMA expresion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+
+def p_lista_exp2(t):
+    '''
+    lista_exp : expresion
+    '''
+    t[0] = [t[1]]
+
+    
+def p_exp_array(t):
+    '''
+    expresion : arreglo
+    '''
+    t[0] = t[1]
+#let id = [[1,2,3], 8, 8]
+
+
+# ? array : CORIZQ lista_exp CORDER
+# ?       | CORIZQ CORDER
+
+def p_array(t):
+    '''
+    arreglo : CORIZQ lista_exp CORDER
+    '''
+    t[0] = Array(t[2], t.lineno(1), t.lexpos(1))
+
+def p_array2(t):
+    '''
+    arreglo : CORIZQ CORDER
+    '''
+    t[0] = Array([], t.lineno(1), t.lexpos(1))
+
+# ? Acceso a array
+# ? acceso_array : ID lista_acceso_array
+
+def p_exp_acceso_array(t):
+    '''
+    expresion : acceso_array
+    '''
+    t[0] = t[1]
+
+def p_acceso_array(t):
+    '''
+    acceso_array : ID lista_acceso_array
+    '''
+    t[0] = AccesoArray(t[1], t[2], t.lineno(1), t.lexpos(1))
+    
+# ? lista_acceso_array : lista_acceso_array acceso_array
+# ?                    | acceso_array
+
+def p_lista_acceso_array(t):
+    '''
+    lista_acceso_array : lista_acceso_array acceso_array_exp
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+def p_lista_acceso_array2(t):
+    '''
+    lista_acceso_array : acceso_array_exp
+    '''
+    t[0] = [t[1]]
+
+# ? acceso_array : CORIZQ expresion CORDER
+def p_acceso_array2(t):
+    '''
+    acceso_array_exp : CORIZQ expresion CORDER
+    '''
+    print("llego a la produccion")
+    t[0] = t[2]
+
 #errores sintacticos
 def p_error_inst(t):
     '''

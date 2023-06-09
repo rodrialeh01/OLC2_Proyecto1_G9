@@ -8,6 +8,10 @@ class TIPO_DATO(Enum):
     NULL = 3,
     ERROR = 4,
     ANY = 5,
+    ARRAY = 6,
+    ARRAY_NUMBER = 7,
+    ARRAY_STRING = 8,
+    ARRAY_BOOLEAN = 9
 
 def obtTipoDato(i):
     if i == TIPO_DATO.NUMERO:

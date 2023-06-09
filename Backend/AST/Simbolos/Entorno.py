@@ -27,6 +27,9 @@ class Entorno:
     def AgregarSimbolo(self, id, simbolo):
         print("agregando simbolo: " + id)
         self.tablaSimbolos[id] = simbolo
+        print("simbolo agregado: " + id)
+        print("VALORES: ", self.tablaSimbolos[id].valor)
+        
 
     #obtener simbolo:
     def ObtenerSimbolo(self, id):
@@ -133,7 +136,7 @@ class Entorno:
     def getSimbolos(self):
 
         actual = self
-        print(actual.getActual())
+        
 
         codigo_html = ""
         codigo_html += '''

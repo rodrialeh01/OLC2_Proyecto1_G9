@@ -45,7 +45,6 @@ def ejecutar():
                             entornoGlobal.AgregarFuncion(i.nombre, i)
                     else:       
                         i.ejecutar(entornoGlobal,helpe)
-                        print("ESTE ES EL PRINT QUE QUIERO VER, ", i)
                         
                 except Exception as e:
                     if isinstance(e, Error):

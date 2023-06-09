@@ -11,7 +11,6 @@ class Llamada(Instruccion, Expresion):
         self.params = params
 
     def ejecutar(self, entorno, helper):
-        print("ejecutar llamada")
         fn = entorno.ExisteFuncion(self.id)
         if fn is False:
             print("Error semántico, la función no existe")

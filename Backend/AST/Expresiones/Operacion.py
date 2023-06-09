@@ -16,10 +16,10 @@ class Operacion(Expresion):
         val1 = Retorno()
         val2 = Retorno()
         valUnario = Retorno()
-        print("HOLAAAAAAA????!??!?!?")
+
         #Validando el numero negativo (UNARIO)
         if self.unario:
-            print("EFESOTA")
+            
             valUnario = self.exp1.ejecutar(entorno, helper)
             valUnario.valor = valUnario.valor * -1
             return valUnario
@@ -29,13 +29,6 @@ class Operacion(Expresion):
         
         val1 = self.exp1.ejecutar(entorno, helper)
         val2 = self.exp2.ejecutar(entorno, helper)
-
-
-        print("=====VALUEANDO VALORES=====")
-        print("valor1: " + str(val1.valor))
-        print("tipo1: " + str(val1.tipo))
-        print("valor2: " + str(val2.valor))
-        print("tipo2: " + str(val2.tipo))
 
         # Validando las distintas operaciones aritméticas
         #MAS

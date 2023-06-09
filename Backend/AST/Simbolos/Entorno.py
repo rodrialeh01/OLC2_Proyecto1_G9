@@ -4,6 +4,7 @@ class Entorno:
         self.tablaSimbolos = {}
         self.tablaFunciones = {}
         self.tablaInterfaces = {}
+        self.tablaInterfacesDeclaradas = {}
         self.actual = ""
 
     def getActual(self):
@@ -100,6 +101,32 @@ class Entorno:
             env = env.anterior
         return None
 
+# -------------------------------- interfaces declaradas --------------------------------
+    def AgregarInterfaceDeclarada(self, id, interfazdeclarada):
+        self.tablaInterfacesDeclaradas[id] = interfazdeclarada
+    
+    def ExisteInterfaceDeclarada(self, id):
+        env = self
+        while env != None:
+            if id in env.tablaInterfacesDeclaradas:
+                return True
+            env = env.anterior
+        return False
+
+    def ObtenerInterfaceDeclarada(self, id):
+        env = self
+        while env != None:
+            if id in env.tablaInterfacesDeclaradas:
+                return env.tablaInterfacesDeclaradas[id]
+            env = env.anterior
+        return None
+
+    def ActualizarInterfaceDeclarada(self, id, interfazdeclarada):
+        env = self
+        while env != None:
+            if id in env.tablaInterfacesDeclaradas:
+                env.tablaInterfacesDeclaradas[id] = interfazdeclarada
+            env = env.anterior
 
 
 # para la tabla de simbolos HTML:

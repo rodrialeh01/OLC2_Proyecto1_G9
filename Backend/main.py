@@ -30,23 +30,23 @@ def ejecutar():
 
     entornoGlobal = Entorno(None)
     entornoGlobal.setActual("Global")
-    print("Estoy en el entorno global   ", entornoGlobal.getActual())
     helpe = Helper()
     if parseado is not None:
         for i in parseado:
             if i is not None:
                 try:
                     if isinstance(i, Funcion):
-                        print("Estoy en una funcion")
+
                         print(i.nombre)
                         verif = entornoGlobal.ExisteFuncion(i.nombre)
-                        print("soy verif" + str(verif))
+
                         if not verif:
-                            print("Agregando funcion")
+
                             entornoGlobal.AgregarFuncion(i.nombre, i)
                     else:       
                         i.ejecutar(entornoGlobal,helpe)
-                        print("Estoy en una instruccion")
+                        print("ESTE ES EL PRINT QUE QUIERO VER, ", i)
+                        
                 except Exception as e:
                     if isinstance(e, Error):
                         singletonErr.addError(e)
@@ -63,7 +63,6 @@ def errores():
 
 @app.route('/Ts', methods=['GET'])
 def ts():
-    print("---------------------------------- Estoy en el entorno global   ", entornoGlobal.getActual())
    # print(tablaS)
     return jsonify({"texto": entornoTemp})
 

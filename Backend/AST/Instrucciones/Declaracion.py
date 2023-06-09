@@ -13,6 +13,11 @@ class Declaracion(Instruccion):
     def ejecutar(self, entorno, helper):
         identificador = self.id
         tipo = self.tipo
+        existe = entorno.ExisteSimbolo(identificador)
+        if existe:
+            #error semantico
+            pass
+        
         if tipo != None:
             if self.valor != None:
                 valorG = self.valor.ejecutar(entorno, helper)

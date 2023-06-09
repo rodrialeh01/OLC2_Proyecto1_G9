@@ -24,8 +24,12 @@ class Simbolo:
         self.linea = linea
         self.columna = columna
 
-        print("ESTE ES EL NOMBRE DE LA INTERFAZ: ", self.nombre)
-        print("ESTOS SON LOS PARAMETROS DE LA INTERFAZ: :")
         for param in self.params:
             param.ejecutar(None,None)
+    
+    def crearStructDeclarado(self, nombre, paramsDeclarados, linea, columna):
         
+        self.nombre = nombre
+        self.paramDeclarados = paramsDeclarados 
+        self.linea = linea
+        self.columna = columna

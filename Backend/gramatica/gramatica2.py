@@ -1,6 +1,7 @@
 # ************* IMPORTACIONES *************
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
+from AST.Expresiones.AccesoInterface import AccesoInterface
 from AST.Expresiones.Dec import Dec
 from AST.Expresiones.Identificador import Identificador
 from AST.Expresiones.Inc import Inc
@@ -18,6 +19,7 @@ from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
 from AST.Instrucciones.Asignacion import Asignacion
+from AST.Instrucciones.AsignarInterface import AsignarInterface
 from AST.Instrucciones.Ciclos.For import For
 from AST.Instrucciones.Ciclos.ForOf import ForOf
 from AST.Instrucciones.Ciclos.While import While
@@ -26,8 +28,10 @@ from AST.Instrucciones.Condicional.If import If
 from AST.Instrucciones.Consolelog import Consolelog
 from AST.Instrucciones.Declaracion import Declaracion
 from AST.Instrucciones.Funcion import Funcion
+from AST.Instrucciones.Instancia import Instancia
 from AST.Instrucciones.Interface import Interface
 from AST.Instrucciones.Parametro import Parametro
+from AST.Instrucciones.Params_Declarado import Params_Declarado
 from AST.Instrucciones.Params_Interface import Params_Interface
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
@@ -414,6 +418,8 @@ def p_asignacion_3(t):
     '''
     asignacion : asignacionInterface
     '''
+    t[0] = t[1]
+    
 
 # ? dec : ID DECREMENTO
 # ?     | DECREMENTO ID
@@ -921,6 +927,7 @@ def p_decInterface(t):
     '''
     declaracionInterface : LET ID DOSPUNTOS ID IGUAL LLAIZQ lista_d LLADER
     '''
+    t[0] = Instancia(t[2],t[4], t[7], t.lineno(1), t.lexpos(1))
 
 def p_declInt(t):
     '''
@@ -939,17 +946,25 @@ def p_parDecl(t):
     '''
     parDecl : ID DOSPUNTOS expresion
     '''
+    t[0] = Params_Declarado(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 def p_accesoInterface(t):
     '''
     expresion : ID PUNTO ID
     '''
+    t[0] = AccesoInterface(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 def p_asignacionInterface2(t):
     '''
     asignacionInterface : ID PUNTO ID IGUAL expresion
     '''
-
+    print("asignacion interface")
+    print(t[1])
+    print(t[3])
+    print(t[5])
+    t[0] = AsignarInterface(t[1], t[3], t[5], t.lineno(1), t.lexpos(1))
+    print(t[0])
+    
 #errores sintacticos
 def p_error_inst(t):
     '''

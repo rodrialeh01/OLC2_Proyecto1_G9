@@ -10,7 +10,6 @@ class Inc(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print("EJECUTANDO INC")
         obtenido = entorno.ObtenerSimbolo(self.id)
         if obtenido != None:
             valor = obtenido.valor

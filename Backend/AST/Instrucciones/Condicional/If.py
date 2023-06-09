@@ -22,6 +22,7 @@ class If(Instruccion):
         condicion = self.expresion.ejecutar(entorno, helper)
 
         entornoLocal = Entorno(entorno)
+        entornoLocal.setActual("if")
         if condicion.tipo != TIPO_DATO.BOOLEANO:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )

@@ -33,7 +33,7 @@ class While(Instruccion):
 
                     #if condicion.valor:
                     entorno_local = Entorno(entorno)
-                    
+                    entorno_local.setActual("while")
                     for instruccion in self.instrucciones:
                         result = instruccion.ejecutar(entorno_local, helper)
     

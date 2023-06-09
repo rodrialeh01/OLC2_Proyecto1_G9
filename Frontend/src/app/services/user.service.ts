@@ -22,4 +22,8 @@ export class UserService {
   getTablaErrores(){
     return this.http.get(`${this.API}/errores`);
   }
+
+  getTablaSimbolos(){
+    return this.http.get(`${this.API}/Ts`) 
+  }
 }

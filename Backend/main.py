@@ -13,8 +13,13 @@ from gramatica import gramatica2
 app = Flask(__name__)
 cors = CORS(app)
 
+global entornoGlobal
+entornoGlobal = Entorno(None)
+entornoGlobal.setActual("Global")
+
 @app.route('/ejecutar', methods=['POST'])
 def ejecutar():
+    global entornoTemp
     texto = request.json["texto"]
     print(texto)
 
@@ -24,6 +29,8 @@ def ejecutar():
     parseado = gramatica2.parse(texto)
 
     entornoGlobal = Entorno(None)
+    entornoGlobal.setActual("Global")
+    print("Estoy en el entorno global   ", entornoGlobal.getActual())
     helpe = Helper()
     if parseado is not None:
         for i in parseado:
@@ -37,11 +44,6 @@ def ejecutar():
                         if not verif:
                             print("Agregando funcion")
                             entornoGlobal.AgregarFuncion(i.nombre, i)
-                    elif isinstance(i, Interface):
-                        print("Estoy en una interface")
-                        verif = entornoGlobal.ExisteInterface(i.id)
-                        if not verif:
-                            entornoGlobal.AgregarInterface(i.id, i)
                     else:       
                         i.ejecutar(entornoGlobal,helpe)
                         print("Estoy en una instruccion")
@@ -51,7 +53,7 @@ def ejecutar():
                         print(e)
     
     #print(singletonErr.getErrores())
-
+    entornoTemp = entornoGlobal.getSimbolos()
     return jsonify({"message": helpe.getConsola()})
 
 @app.route('/errores', methods=['GET'])
@@ -59,6 +61,11 @@ def errores():
     singletonErr = Sing.getInstance()
     return jsonify({"texto": singletonErr.getErrores()})
 
+@app.route('/Ts', methods=['GET'])
+def ts():
+    print("---------------------------------- Estoy en el entorno global   ", entornoGlobal.getActual())
+   # print(tablaS)
+    return jsonify({"texto": entornoTemp})
 
 if __name__ == "__main__":
     app.run(host="localhost", port=3000, debug=True)

@@ -100,3 +100,34 @@ class Entorno:
             env = env.anterior
         return None
 
+
+
+# para la tabla de simbolos HTML:
+    def getSimbolos(self):
+
+        actual = self
+        print(actual.getActual())
+
+        codigo_html = ""
+        codigo_html += '''
+        <table align="center" class="table table-striped "> \n
+        <thead><tr> <th colspan="5">TABLA DE SÍMBOLOS</th> </tr></thead>\n
+        <tr class="table-dark"><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Fila</th><th>Columna</th></tr>\n
+        '''
+        while actual != None:
+            for i in actual.tablaSimbolos:
+                print("-*-*-*-*-", str(actual.tablaSimbolos[i].tipo))
+                codigo_html += "<tr>"
+                codigo_html += "<td>" + str(i) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaSimbolos[i].tipo) + "</td>\n"
+                codigo_html += "<td>" + str(actual.actual) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaSimbolos[i].columna) + "</td>\n"
+                codigo_html += "</tr>"
+            actual = actual.anterior
+
+
+        codigo_html += "</table>"
+
+
+        return codigo_html

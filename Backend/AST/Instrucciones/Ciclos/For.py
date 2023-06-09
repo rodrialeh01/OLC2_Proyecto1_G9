@@ -31,6 +31,7 @@ class For(Instruccion):
                 break
             
             entornoLocal2 = Entorno(entornoLocal)
+            entornoLocal2.setActual("for")
             if self.instrucciones != None:
                 try:
                     for instruccion in self.instrucciones:

@@ -16,6 +16,7 @@ class ForOf(Instruccion):
 
     def ejecutar(self, entorno, helper):
         entornoLocal = Entorno(entorno)
+        entornoLocal.setActual("ForOf")
         val = self.exp1.ejecutar(entornoLocal, helper)
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")

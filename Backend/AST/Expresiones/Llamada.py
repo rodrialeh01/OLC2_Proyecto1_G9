@@ -18,6 +18,7 @@ class Llamada(Instruccion, Expresion):
             return
 
         entornoFN = Entorno(entorno)
+        entornoFN.actual = "Función " + str(self.id)
         func = entorno.ObtenerFuncion(self.id)
 
         argumentos = func.declaracionesParams(entornoFN, self.params, entorno, helper)

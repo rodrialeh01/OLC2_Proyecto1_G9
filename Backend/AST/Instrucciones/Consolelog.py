@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Simbolos.Enums import TIPO_DATO
 
 
 class Consolelog(Instruccion):
@@ -8,7 +9,32 @@ class Consolelog(Instruccion):
         self.columna = columna
         
     def ejecutar(self, entorno, helper):
-        val = self.expresion.ejecutar(entorno, helper)
-        helper.setConsola(val.valor)
+        print("--------------------------------", self.expresion.ejecutar(entorno, helper))
+        exp = self.expresion.ejecutar(entorno, helper)
+        try:
+            if exp.tipo == TIPO_DATO.ARRAY or exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY_STRING or exp.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+
+                array = []
+                impresion = self.ImpresionArrays(array, exp.valor)
+                print(impresion)
+                helper.setConsola(impresion)
+            else:
+                print(exp.valor)
+                helper.setConsola(exp.valor)
+
+        except Exception:
+            val = self.expresion.ejecutar(entorno, helper)
+            helper.setConsola(val.valor)
+            #print(val.valor)
         #print(val.valor)
         
+
+    def ImpresionArrays(self, arr, arrexist):
+        for a in arrexist:
+            if a.tipo == TIPO_DATO.ARRAY or a.tipo == TIPO_DATO.ARRAY_NUMBER or a.tipo == TIPO_DATO.ARRAY_STRING or a.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+                arr2 = []
+                arr2 = self.ImpresionArrays(arr2, a.valor)
+                arr.append(arr2)
+            else:
+                arr.append(a.valor)
+        return arr

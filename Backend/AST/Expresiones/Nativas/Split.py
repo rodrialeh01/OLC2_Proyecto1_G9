@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 
@@ -23,3 +24,13 @@ class Split(Expresion):
         return Retorno(str(cadena.valor).split(separador), TIPO_DATO.ARREGLO)
         '''
         pass
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("SPLIT")
+        nodo.agregarHijoNodo(self.expresion.genArbol())
+        nodo.agregarHijo(Nodo("."))
+        nodo.agregarHijo(Nodo("split"))
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.separador.genArbol())
+        nodo.agregarHijo(Nodo(")"))
+        return nodo

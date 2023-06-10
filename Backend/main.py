@@ -1,5 +1,3 @@
-import json
-
 from AST.Error import Error
 from AST.Instrucciones.Funcion import Funcion
 from AST.Instrucciones.Interface import Interface
@@ -62,7 +60,7 @@ def errores():
 
 @app.route('/Ts', methods=['GET'])
 def ts():
-   # print(tablaS)
+    # print(tablaS)
     return jsonify({"texto": entornoTemp})
 
 if __name__ == "__main__":

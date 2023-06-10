@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_ARITMETICA
 from AST.Simbolos.Retorno import Retorno
 
@@ -73,3 +74,25 @@ class Operacion(Expresion):
             else:
                 pass
 
+    def genArbol(self):
+        if self.unario:
+            nodo = Nodo("-")
+            nodo.agregarHijo(self.exp1.genArbol())
+            return nodo
+
+        if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
+            nodo = Nodo("+")
+        elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
+            nodo = Nodo("-")
+        elif self.operador == TIPO_OPERACION_ARITMETICA.MULTIPLICACION:
+            nodo = Nodo("*")
+        elif self.operador == TIPO_OPERACION_ARITMETICA.DIVISION:
+            nodo = Nodo("/")
+        elif self.operador == TIPO_OPERACION_ARITMETICA.POTENCIA:
+            nodo = Nodo("^")
+        elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
+            nodo = Nodo("%")
+        
+        nodo.agregarHijo(self.exp1.genArbol())
+        nodo.agregarHijo(self.exp2.genArbol())
+        return nodo

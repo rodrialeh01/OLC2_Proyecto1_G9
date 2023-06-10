@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 
@@ -19,3 +20,12 @@ class ToFixed(Expresion):
             pass
         return Retorno(round(float(valor_a_aproximar.valor),int(cantidad_de_decimales.valor)), TIPO_DATO.NUMERO)
 
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("TO_FIXED")
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(Nodo(","))
+        nodo.agregarHijo(self.cantidad.genArbol())
+        nodo.agregarHijo(Nodo(")"))
+
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_RELACIONAL
 from AST.Simbolos.Retorno import Retorno
 
@@ -54,4 +55,20 @@ class Relacional(Expresion):
             else:
                 pass
 
-    
+    def genArbol(self):
+        if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
+            nodo = Nodo(">")
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_QUE:
+            nodo = Nodo("<")
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL_QUE:
+            nodo = Nodo(">=")
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_IGUAL_QUE:
+            nodo = Nodo("<=")
+        elif self.operador == TIPO_OPERACION_RELACIONAL.IGUAL_IGUAL:
+            nodo = Nodo("===")
+        elif self.operador == TIPO_OPERACION_RELACIONAL.DIFERENTE:
+            nodo = Nodo("!==")
+        
+        nodo.agregarHijo(self.exp1.genArbol())
+        nodo.agregarHijo(self.exp2.genArbol())
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Retorno import Retorno
 
 
@@ -13,3 +14,5 @@ class Primitivo(Expresion):
     def ejecutar(self, entorno, helper) -> Retorno:
         return Retorno(self.valor, self.tipo)
     
+    def genArbol(self):
+        return Nodo(str(self.valor))

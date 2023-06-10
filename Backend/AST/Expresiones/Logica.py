@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_LOGICA
 from AST.Simbolos.Retorno import Retorno
 
@@ -36,5 +37,23 @@ class Logica(Expresion):
                 return Retorno(val1.valor or val2.valo, TIPO_DATO.BOOLEANO)
             else:
                 pass
+
+    def genArbol(self):
+        if self.negacion:
+            nodo = Nodo("!")
+            nodo.agregarHijo(self.exp1.genArbol())
+            return nodo
+        
+        if self.operador == TIPO_OPERACION_LOGICA.AND:
+            nodo = Nodo("&&")
+            nodo.agregarHijo(self.exp1.genArbol())
+            nodo.agregarHijo(self.exp2.genArbol())
+            return nodo
+        elif self.operador == TIPO_OPERACION_LOGICA.OR:
+            nodo = Nodo("||")
+            nodo.agregarHijo(self.exp1.genArbol())
+            nodo.agregarHijo(self.exp2.genArbol())
+            return nodo
+        
             
         

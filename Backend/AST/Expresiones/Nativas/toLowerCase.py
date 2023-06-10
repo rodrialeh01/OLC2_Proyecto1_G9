@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 
@@ -17,3 +18,10 @@ class ToLowerCase(Expresion):
         
         return Retorno(str(valor.valor).lower(), TIPO_DATO.CADENA)
             
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("TO_LOWER_CASE")
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(Nodo(")"))
+
+        return nodo

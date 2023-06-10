@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Retorno import Retorno
 
 
@@ -24,4 +25,10 @@ class Inc(Expresion):
             
         else:
             return Retorno("No se encontro la variable", "error")
-            
+    
+    def genArbol(self):
+        if self.orden == "preInc":
+            nodo = Nodo("++"+str(self.id))
+        elif self.orden == "postInc":
+            nodo = Nodo(str(self.id)+"++")
+        return nodo

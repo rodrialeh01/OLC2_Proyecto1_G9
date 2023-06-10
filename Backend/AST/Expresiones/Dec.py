@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Retorno import Retorno
 
 
@@ -23,4 +24,10 @@ class Dec(Expresion):
                 return Retorno(valor, obtenido.tipo)
         else:
             return Retorno("No se encontro la variable", "error")
-            
+    
+    def genArbol(self):
+        if self.orden == "preDec":
+            nodo = Nodo("--"+str(self.id))
+        elif self.orden == "postDec":
+            nodo = Nodo(str(self.id)+"--")
+        return nodo

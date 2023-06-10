@@ -1,5 +1,6 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 
 
@@ -29,3 +30,19 @@ class Llamada(Instruccion, Expresion):
 
         if func is not None:
             func.ejecutar(entornoFN, helper)
+
+    def genArbol(self):
+        nodo = Nodo("LLAMADA FUNCIÓN")
+        nodohijo = Nodo(self.id)
+        nodohijo2 = Nodo("(")
+        nodohijo3 = Nodo("PARAMETROS")
+        nodohijo4 = Nodo(")")
+        nodo.agregarHijo(nodohijo)
+        nodo.agregarHijo(nodohijo2)
+        for param in self.params:
+            nodohijo3.agregarHijo(param.genArbol())
+        nodo.agregarHijo(nodohijo3)
+        nodo.agregarHijo(nodohijo4)
+
+        return nodo
+    

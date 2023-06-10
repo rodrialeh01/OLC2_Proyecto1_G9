@@ -39,3 +39,4 @@ class Consolelog(Instruccion):
             else:
                 arr.append(a.valor)
         return arr
+    

@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 
 
 class AccesoInterface(Expresion):
@@ -18,3 +19,10 @@ class AccesoInterface(Expresion):
                 return p[self.id_param]
                 
         #error semantico
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("ACCESO INTERFACE")
+        nodo.agregarHijo(Nodo(str(self.id_interface)))
+        nodo.agregarHijo(Nodo("."))
+        nodo.agregarHijo(Nodo(str(self.id_param)))
+        return nodo

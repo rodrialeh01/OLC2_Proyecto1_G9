@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 
@@ -29,3 +30,10 @@ class ToString(Expresion):
             print(valor.valor)
             return Retorno(str(valor.valor), TIPO_DATO.CADENA)
         
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("TO_STRING")
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(Nodo(")"))
+
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Retorno import Retorno
 
 
@@ -19,3 +20,6 @@ class Identificador(Expresion):
             return Retorno(ret.valor, ret.tipo)
         else:
             return Retorno(None, None)
+        
+    def genArbol(self) -> Nodo:
+        return Nodo(self.nombre)

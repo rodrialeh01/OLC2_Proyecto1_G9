@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 
@@ -17,3 +18,12 @@ class Concat(Expresion):
         if valor1.tipo == TIPO_DATO.CADENA and valor2.tipo == TIPO_DATO.CADENA:
             return Retorno(str(valor1.valor) + str(valor2.valor), TIPO_DATO.CADENA)
         
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("CONCATENACION")
+        nodo.addHijoNodo(self.expresion1.genArbol())
+        nodo.addHijoNodo(Nodo("."))
+        nodo.addHijoNodo(Nodo("concat"))
+        nodo.addHijoNodo(Nodo("("))
+        nodo.addHijoNodo(self.expresion2.genArbol())
+        nodo.addHijoNodo(Nodo(")"))
+        return nodo

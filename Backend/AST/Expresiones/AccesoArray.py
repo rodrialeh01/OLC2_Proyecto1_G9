@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 
 
@@ -55,5 +56,14 @@ class AccesoArray(Expresion):
                     #error semantico
                     return None
 
-#lista = [[1, 2, 3], [-9,-7]]
-#lista[0] = [1, 2, 3]
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("ACCESO ARRAY")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        listaAcc = []
+        for a in self.accesos:
+            listaAcc.append(a.genArbol())
+        for a in listaAcc:
+            nodo.agregarHijo(Nodo("["))
+            nodo.agregarHijo(a)
+            nodo.agregarHijo(Nodo("]"))
+        return nodo

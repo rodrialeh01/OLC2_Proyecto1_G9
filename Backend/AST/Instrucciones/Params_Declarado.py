@@ -1,4 +1,5 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Nodo import Nodo
 
 
 class Params_Declarado(Expresion):
@@ -11,4 +12,10 @@ class Params_Declarado(Expresion):
 
     def ejecutar(self, entorno, helper):
         return self
-        
+    
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("PARAMS_DECLARADO")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo.agregarHijo(Nodo("="))
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 
 
 class Asignacion(Instruccion):
@@ -17,3 +18,10 @@ class Asignacion(Instruccion):
             if simb.tipo == valorG.tipo:
                 simb.valor = valorG.valor
                 entorno.ActualizarSimbolo(self.id, simb)
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("Asignacion")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo.agregarHijo(self.valor.genArbol())
+        return nodo
+    

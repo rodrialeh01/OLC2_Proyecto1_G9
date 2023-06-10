@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 
 
 class Break(Instruccion):
@@ -11,3 +12,6 @@ class Break(Instruccion):
             return self
         else:
             pass
+    
+    def genArbol(self) -> Nodo:
+        return Nodo("break")

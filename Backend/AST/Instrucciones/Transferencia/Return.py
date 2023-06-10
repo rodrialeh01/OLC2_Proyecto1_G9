@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 
 
 class Return(Instruccion):
@@ -18,3 +19,12 @@ class Return(Instruccion):
                 return self
         else:
             pass
+
+    def genArbol(self) -> Nodo:
+        if self.valor != None:
+            nodo = Nodo("RETURN")
+            nodo.addHijoValor(self.valor.genArbol())
+            return nodo
+        else:
+            nodo = Nodo("RETURN")
+            return nodo

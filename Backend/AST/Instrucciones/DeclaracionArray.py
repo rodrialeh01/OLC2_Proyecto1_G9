@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Simbolo import Simbolo
 
@@ -68,3 +69,10 @@ class DeclaracionArray(Instruccion):
                     bandera = True
             else:
                 bandera = True
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("DECLARACION ARRAY")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo.agregarHijo(Nodo(str(self.tipo)))
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
 
@@ -71,7 +72,16 @@ class Parametro(Instruccion):
 
             print(self.id, "no tiene valor")
 
-    
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("Parametro")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        if self.tipo != None:
+            nodo.agregarHijo(Nodo(str(self.tipo)))
+        if self.valor != None:
+            nodo.agregarHijo(self.valor.genArbol())
+
+            
+        return nodo
 
 
 

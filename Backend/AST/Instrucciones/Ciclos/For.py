@@ -1,9 +1,11 @@
 from AST.Abstract.Instruccion import Instruccion
-from AST.Simbolos.Entorno import Entorno
-from AST.Simbolos.Enums import TIPO_DATO
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
+from AST.Nodo import Nodo
+from AST.Simbolos.Entorno import Entorno
+from AST.Simbolos.Enums import TIPO_DATO
+
 
 class For(Instruccion):
     def __init__(self, exp1, condicion, incremento, instrucciones, fila, columna):
@@ -55,3 +57,16 @@ class For(Instruccion):
                 self.incremento.ejecutar(entornoLocal, helper)
 
         helper.setCiclo(helperTemp)
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("FOR")
+        nodo.agregarHijo(self.exp1.genArbol())
+        nodo.agregarHijo(Nodo(";"))
+        nodo.agregarHijoNodo(self.condicion.genArbol())
+        nodo.agregarHijo(Nodo(";"))
+        nodo.agregarHijoNodo(self.incremento.genArbol())
+        instrucciones = Nodo("INSTRUCCIONES")
+        for instruccion in self.instrucciones:
+            instrucciones.agregarHijoNodo(instruccion.genArbol())
+        nodo.agregarHijo(instrucciones)
+        return nodo

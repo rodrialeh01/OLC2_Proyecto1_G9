@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 
 
 class AsignarInterface(Instruccion):
@@ -11,16 +12,10 @@ class AsignarInterface(Instruccion):
 
 
     def ejecutar(self, entorno, helper):
-        print("hola?")
         existe = entorno.ExisteInterfaceDeclarada(self.id_interface)
         if not existe:
             return
         objeto = entorno.ObtenerInterfaceDeclarada(self.id_interface)
-        print("----------------AsignarInterface-------------------")
-        print(self.id_param)
-        print(objeto.paramDeclarados)
-
-        print(self.id_param in objeto.paramDeclarados)
         for p in objeto.paramDeclarados:
             if self.id_param in p:
                 if p[self.id_param].tipo != self.expresion.tipo:
@@ -31,3 +26,15 @@ class AsignarInterface(Instruccion):
                 return
                 
         #error semantico
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("ASIGNAR INTERFACE")
+        nodo.agregarHijo(Nodo(self.id_interface))
+        nodo.agregarHijo(Nodo("."))
+        nodo.agregarHijo(Nodo(self.id_param))
+        nodo.agregarHijo(Nodo("="))
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo
+
+
+

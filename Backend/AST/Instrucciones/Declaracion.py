@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Simbolo import Simbolo
 
 
@@ -45,4 +46,11 @@ class Declaracion(Instruccion):
                 entorno.AgregarSimbolo(identificador, simb)
         
 
-            
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("Declaracion")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        if self.tipo != None:
+            nodo.agregarHijo(Nodo(str(self.tipo)))
+        if self.valor != None:
+            nodo.agregarHijo(self.valor.genArbol())
+        return nodo

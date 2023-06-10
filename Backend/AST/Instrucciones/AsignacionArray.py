@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 
 
@@ -63,19 +64,6 @@ class AsignacionArray(Instruccion):
                 if len(pila) == 0:
 
                     e = expresion.ejecutar(entorno, helper)
-
-                    '''
-
-                        
-                        verif = True
-                        if e.tipo == TIPO_DATO.ARRAY:
-                            verif = funcion(tipo_a_verificar, expresion)
-
-                        if verif:
-                            lista[index] = e
-
-
-                    '''
                     verif = False
                     if e.tipo == TIPO_DATO.ARRAY:
                         verif = self.Verificar_Tipos_array(e.valor, tipo, verif)
@@ -113,16 +101,11 @@ class AsignacionArray(Instruccion):
                     bandera = True
             else:
                 bandera = True
-    '''
-    funcion(tipo_a_verificar, expresion):
-        verif = True
-        for e in expresion:
-            
-            if expresion.tipo == TIPO_DATO.ARRAY:
-                return funcion(tipo_a_verificar, expresion.valor)
-            else:
-                if expresion.tipo == tipo_a_verificar:
-                    return True
-                else:
-                    return False
-    '''
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("ASIGNACION ARRAY")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        for a in self.accesos:
+            nodo.agregarHijo(Nodo("[",a.genArbol(),"]"))
+        nodo.agregarHijo(Nodo(self.expresion.genArbol()))
+        return nodo

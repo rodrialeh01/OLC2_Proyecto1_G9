@@ -2,6 +2,7 @@ from AST.Abstract.Instruccion import Instruccion
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
+from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Simbolo import Simbolo
@@ -72,3 +73,13 @@ class ForOf(Instruccion):
 
         helper.setCiclo(helperTemp)
                 
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("FOR")
+        nodo.agregarHijo(Nodo(str(self.variable)))
+        nodo.agregarHijo(Nodo("of"))
+        nodo.agregarHijo(self.exp1.genArbol())
+        instrucciones = Nodo("INSTRUCCIONES")
+        for instruccion in self.instrucciones:
+            instrucciones.agregarHijoNodo(instruccion.genArbol())
+        nodo.agregarHijo(instrucciones)
+        return nodo

@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Simbolo import Simbolo
 
@@ -76,58 +77,14 @@ class Instancia(Instruccion, Simbolo):
         #creamos el simbolo
         self.crearStructDeclarado(self.nombreDeclarado, lista_ya_Declarada, self.linea, self.columna)
         entorno.AgregarInterfaceDeclarada(self.nombreDeclarado, self)
-        
-        '''
-            print("EXP: ", exp)
-            print("COMPARACION")
-            print(lista_parametros_objeto[i].tipo)
-            print(exp.tipo)
-            if lista_parametros_objeto[i].tipo != exp.tipo:
-                #error semantico
-                #print("Error semantico: El tipo de parametro no coincide")
-                return
-            print("COMPARACION2")
-            print(lista_parametros_objeto[i].id)
-            print(self.listaParams[i].id)
-            if lista_parametros_objeto[i].id != self.listaParams[i].id:
-                #error semantico
-                #print("Error semantico: El nombre de parametro no coincide")
-                return
-            
-            print("Parametro: " + lista_parametros_objeto[i].id + " = " + str(exp.valor))
-
-
-
-
-            
-            a: "a",
-            e: "b",
-            c: "c",
-            d: "d",
-
-            c: "c",
-            b: "b",
-            a: "a",
-            d: "d",
-
-            a-c = False
-            a-b = False
-            a-a = True
-            Ejecuta Instruccion
-            j = len(lista_parametros_objeto) -1
-
-            d-d = True
-            
-
-            verificacion = True:
-
-            for i in range(0, len(lista_parametros_objeto)):
-                if verificacion:
-                    verificacion = False               
-                    for j in range(0, len(self.listaParams)):
-                        if lista_parametros_objeto[i].id == self.listaParams[j].id:
-                            verificacion = True
-                            j = len(self.listaParams)
-                else:
-                    break;
-        '''
+    
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("INSTANCIA")
+        nodo.agregarHijo(Nodo(str(self.nombreDeclarado)))
+        nodo.agregarHijo(Nodo(str(self.id_interface)))
+        params = Nodo("PARAMETROS INTERFACE")
+        if self.listaParams != None:
+            for param in self.listaParams:
+                params.agregarHijo(param.genArbol())
+        nodo.agregarHijo(params)
+        return nodo

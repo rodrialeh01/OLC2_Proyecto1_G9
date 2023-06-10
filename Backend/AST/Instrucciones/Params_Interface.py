@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 
 
 class Params_Interface(Instruccion):
@@ -10,4 +11,10 @@ class Params_Interface(Instruccion):
         
 
     def ejecutar(self, entorno, helper):
-        print("PARAM: " , self.id , " - " , self.tipo)
+        pass
+
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("PARAMS_INTERFACE")
+        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo.agregarHijo(Nodo(str(self.tipo)))
+        return nodo

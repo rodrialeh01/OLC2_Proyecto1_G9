@@ -1,5 +1,6 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Instrucciones.Transferencia.Return import Return
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
@@ -12,6 +13,9 @@ class Funcion(Simbolo, Instruccion):
         print('---------------------')
         super().crearFuncion(nombre, params, listaInstrucciones, linea, columna)
         print("Creando funcion")
+        self.nombre = nombre
+        self.params = params
+        self.listaInstrucciones = listaInstrucciones
 
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
         print("EXP: ", exp)
@@ -72,3 +76,18 @@ class Funcion(Simbolo, Instruccion):
                         helper.setFuncion(tempHelper)
                         #si es de tipo any, null o error, es un proceso diferente
                         return Return(None, TIPO_DATO.NULL)
+                    
+        
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("Funcion")
+        nodo.agregarHijo(Nodo(str(self.nombre)))
+        nodo2 = Nodo("Parametros")
+        for param in self.params:
+            nodo2.agregarHijo(param.genArbol())
+        nodo.agregarHijo(nodo2)
+        nodo3 = Nodo("Instrucciones")
+        for instruccion in self.listaInstrucciones:
+            nodo3.agregarHijo(instruccion.genArbol())
+        nodo.agregarHijo(nodo3)
+        return nodo
+    

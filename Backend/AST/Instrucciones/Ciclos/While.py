@@ -2,6 +2,7 @@ from AST.Abstract.Instruccion import Instruccion
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
+from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO
 
@@ -52,3 +53,16 @@ class While(Instruccion):
                     continue
         
         helper.setCiclo(helperTemp)
+
+    def getNodo(self):
+        nodo = Nodo("WHILE")
+        nodo.agregarHijo(Nodo("while"))
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.condicion.getNodo())
+        nodo.agregarHijo(Nodo(")"))
+        if self.instrucciones != None:
+            ins = Nodo("INSTRUCCIONES")
+            for instruccion in self.instrucciones:
+                ins.agregarHijo(instruccion.getNodo())
+            nodo.agregarHijo(ins)
+        return nodo

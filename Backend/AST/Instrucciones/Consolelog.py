@@ -1,4 +1,5 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 
 
@@ -40,3 +41,7 @@ class Consolelog(Instruccion):
                 arr.append(a.valor)
         return arr
     
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("CONSOLE_LOG")
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo

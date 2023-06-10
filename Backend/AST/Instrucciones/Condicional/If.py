@@ -3,6 +3,7 @@ from AST.Error import Error
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
+from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
@@ -120,4 +121,27 @@ class If(Instruccion):
                                 pass
                     return
                 
+    def genArbol(self) -> Nodo:
+        nodo = Nodo("IF")
+        nodo.agregarHijo(self.expresion.genArbol())
+        instrucciones = Nodo("INSTRUCCIONES")
+        for instruccion in self.lista_instrucciones:
+            instrucciones.agregarHijoNodo(instruccion.genArbol())
+        nodo.agregarHijo(instrucciones)
+
         
+        if self.lista_elseifs is not None:
+            nodo2 = Nodo("ELSE IF")
+            for elseif in self.lista_elseifs:
+                nodo2.agregarHijo(elseif.genArbol())
+            nodo.agregarHijo(nodo2)
+
+        if self.lista_instrucciones2 is not None:
+            nodo3 = Nodo("ELSE")
+            for instruccion in self.lista_instrucciones2:
+                nodo3.agregarHijoNodo(instruccion.genArbol())
+        
+            nodo.agregarHijo(nodo3)
+
+        return nodo
+

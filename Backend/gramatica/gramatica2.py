@@ -21,6 +21,7 @@ from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
 from AST.Instrucciones.Asignacion import Asignacion
+from AST.Instrucciones.AsignacionArray import AsignacionArray
 from AST.Instrucciones.AsignarInterface import AsignarInterface
 from AST.Instrucciones.Ciclos.For import For
 from AST.Instrucciones.Ciclos.ForOf import ForOf
@@ -351,6 +352,7 @@ def p_instruccion3(t):
                  | instanciar
                  | declaracionInterface
                  | declaracionArray
+                 | asignacion_array
     '''
     t[0] = t[1]
 
@@ -538,7 +540,7 @@ def p_ciclo_for_of(t):
     '''
     ciclo_for_of : FOR PARIZQ LET ID OF expresion PARDER bloque
     '''
-    t[0] = ForOf(t[3], t[5], t[6], t[8], t.lineno(1), t.lexpos(1))
+    t[0] = ForOf(t[4], t[6], t[8], t.lineno(1), t.lexpos(1))
 
 # ? funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
 # ?     | FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo bloque
@@ -1114,8 +1116,16 @@ def p_acceso_array2(t):
     '''
     acceso_array_exp : CORIZQ expresion CORDER
     '''
-    print("llego a la produccion")
     t[0] = t[2]
+
+
+def p_asignacion_array(t):
+    '''
+    asignacion_array : ID lista_acceso_array IGUAL expresion
+    '''
+    t[0] = AsignacionArray(t[1], t[2], t[4], t.lineno(1), t.lexpos(1))
+    
+    
 
 #errores sintacticos
 def p_error_inst(t):

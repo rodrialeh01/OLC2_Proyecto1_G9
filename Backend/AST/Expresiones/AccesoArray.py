@@ -28,31 +28,29 @@ class AccesoArray(Expresion):
         for a in self.accesos:
             listaAccesos.append(a.ejecutar(entorno, helper).valor)
 
-        xd = self.accesar(listaAccesos, simbolo.valor, entorno, helper)
-        print('------------')
-        print(xd.valor)
+        xd = self.accesar(listaAccesos, simbolo, entorno, helper)
+        print('Te voy a enviar desde el acceso: ', xd)
         return xd
 
     def accesar(self, pila, lista, entorno, helper):
+        print('LISTA ESSSSSS:', lista)
         if len(pila) == 0:
-            print("se vacio la pila")
-            print(lista)
             return lista
         else:
             #{0,3,2}
             index = pila.pop(0)
             try:
-                valor = lista[index]
-                print(valor.tipo)
+                valor = lista.valor[index]
             except:
                 #error semantico
                 return None
             if valor.tipo == TIPO_DATO.ARRAY :
-                print("si")
-                return self.accesar(pila, valor.valor, entorno, helper)
+                return self.accesar(pila, valor, entorno, helper)
             else:
                 if len(pila) == 0:
-                    return lista[index]
+                    print('acceso tiene de la lista[index]:')
+                    print(lista.valor[index])
+                    return lista.valor[index]
                 else:
                     #error semantico
                     return None

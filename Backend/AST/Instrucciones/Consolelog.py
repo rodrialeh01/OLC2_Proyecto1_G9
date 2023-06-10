@@ -9,8 +9,9 @@ class Consolelog(Instruccion):
         self.columna = columna
         
     def ejecutar(self, entorno, helper):
-        print("--------------------------------", self.expresion.ejecutar(entorno, helper))
         exp = self.expresion.ejecutar(entorno, helper)
+        print("Estoy llegando al consolelog")
+        print(exp)
         try:
             if exp.tipo == TIPO_DATO.ARRAY or exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY_STRING or exp.tipo == TIPO_DATO.ARRAY_BOOLEAN:
 

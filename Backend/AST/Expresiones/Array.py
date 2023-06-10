@@ -22,4 +22,7 @@ class Array(Expresion):
         arr = []
         for exp in self.expresiones:
             arr.append(exp.ejecutar(entorno, helper))
-        return Retorno(arr, TIPO_DATO.ARRAY)
+        retor = Retorno(arr, TIPO_DATO.ARRAY)
+        print('DESDE ARRAYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        print(retor)
+        return retor

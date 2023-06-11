@@ -1139,7 +1139,7 @@ def p_error_inst(t):
     
 def p_error(t):
     s = SingletonErrores.getInstance()
-    s.addError(Error("str(t.lineno(1))", "str(t.lexpos(1))" , "Error Sintáctico", "No se esperaba " + "str(t.value)" + " en esa posición") )
+    s.addError(Error(str(t.lineno(1)), str(t.lexpos(1)) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )
     print("Error sintáctico")
 
 import ply.yacc as yacc

@@ -10,7 +10,7 @@ class Interface(Simbolo, Instruccion):
         self.linea = linea
         self.columna = columna
 
-        super().__init__()
+        #super().__init__()
     
     def ejecutar(self, entorno, helper):
         self.crearInterface(self.id, self.listaParametros, self.linea, self.columna);
@@ -19,10 +19,12 @@ class Interface(Simbolo, Instruccion):
             entorno.AgregarInterface(self.id , self)
 
     def genArbol(self) -> Nodo:
+        print("ENTRO A CREAR INTERFACE")
         nodo = Nodo("CREAR INTERFACE")
         nodo.agregarHijo(self.id)
         atribs = Nodo("ATRIBUTOS")
         if self.listaParametros != None:
-            atribs.agregarHijo(self.listaParametros.genArbol())
+            for param in self.listaParametros:
+                atribs.agregarHijo(param.genArbol())
         nodo.agregarHijo(atribs)
         return nodo

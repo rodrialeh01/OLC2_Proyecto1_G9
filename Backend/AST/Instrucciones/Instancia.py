@@ -85,6 +85,7 @@ class Instancia(Instruccion, Simbolo):
         params = Nodo("PARAMETROS INTERFACE")
         if self.listaParams != None:
             for param in self.listaParams:
+                print("+99999999999999999999999999999", param)
                 params.agregarHijo(param.genArbol())
         nodo.agregarHijo(params)
         return nodo

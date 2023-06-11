@@ -26,4 +26,8 @@ export class UserService {
   getTablaSimbolos(){
     return this.http.get(`${this.API}/Ts`) 
   }
+
+  getArbol(){
+    return this.http.get(`${this.API}/Arbol`);
+  }
 }

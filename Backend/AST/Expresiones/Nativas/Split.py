@@ -27,7 +27,7 @@ class Split(Expresion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("SPLIT")
-        nodo.agregarHijoNodo(self.expresion.genArbol())
+        nodo.agregarHijo(self.expresion.genArbol())
         nodo.agregarHijo(Nodo("."))
         nodo.agregarHijo(Nodo("split"))
         nodo.agregarHijo(Nodo("("))

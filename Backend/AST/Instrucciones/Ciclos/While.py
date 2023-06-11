@@ -18,10 +18,11 @@ class While(Instruccion):
         condTemp = True
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")
-        
+        entorno_local = Entorno(entorno)
+        #entorno_local = None
         while condTemp == True:
             condicion = self.condicion.ejecutar(entorno, helper)
-            
+            print("888888888888888888888888888888888888888888", condicion.valor)
             if condicion.tipo != TIPO_DATO.BOOLEANO:
                     #error semantico
                     pass
@@ -30,31 +31,36 @@ class While(Instruccion):
                     if condicion.valor != condTemp:
                         condTemp = False
                         helper.setCiclo(helperTemp)
+                        helper.setTs(entorno_local)
                         return
 
                     #if condicion.valor:
-                    entorno_local = Entorno(entorno)
-                    entorno_local.setActual("while")
+                    #entorno_local = Entorno(entorno)
+                    entorno_local.setActual("While")
                     for instruccion in self.instrucciones:
                         result = instruccion.ejecutar(entorno_local, helper)
-    
                         if isinstance(result, Break):
                             helper.setCiclo(helperTemp)
                             condTemp = False
+                            helper.setTs(entorno_local)
                             return result
                         
                         if isinstance(result, Continue):
+                            
                             raise Exception
                             
                         if isinstance(result, Return):
+                            
                             return result
 
                 except Exception:
                     continue
-        
+
+        #if entorno_local != None:
+        #helper.setTs(entorno_local)
         helper.setCiclo(helperTemp)
 
-    def getNodo(self):
+    def genArbol(self):
         nodo = Nodo("WHILE")
         nodo.agregarHijo(Nodo("while"))
         nodo.agregarHijo(Nodo("("))

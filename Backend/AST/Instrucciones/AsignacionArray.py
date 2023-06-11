@@ -103,9 +103,16 @@ class AsignacionArray(Instruccion):
                 bandera = True
 
     def genArbol(self) -> Nodo:
+        print("+**********************+++++++++++++++++++++++++++++++*********************")
         nodo = Nodo("ASIGNACION ARRAY")
+
         nodo.agregarHijo(Nodo(str(self.id)))
+        acc = Nodo("ACCESO")
+        nodo.agregarHijo(acc)
         for a in self.accesos:
-            nodo.agregarHijo(Nodo("[",a.genArbol(),"]"))
-        nodo.agregarHijo(Nodo(self.expresion.genArbol()))
+            acc.agregarHijo(Nodo("["))
+            acc.agregarHijo(a.genArbol())
+            acc.agregarHijo(Nodo("]"))
+        nodo.agregarHijo(Nodo("="))
+        nodo.agregarHijo(self.expresion.genArbol())
         return nodo

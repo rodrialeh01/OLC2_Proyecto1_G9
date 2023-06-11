@@ -1,5 +1,7 @@
 class Entorno:
-    def __init__ (self, anterior = None):
+    def __init__ (self, anterior):
+        print("creando entorno")
+        print("ANTERIOR; ", anterior)
         self.anterior = anterior
         self.tablaSimbolos = {}
         self.tablaFunciones = {}
@@ -12,6 +14,10 @@ class Entorno:
     
     def setActual(self, actual):
         self.actual = actual
+
+    def getAnterior(self):
+        return self.anterior
+    
 
 # -------------------------------- símbolos --------------------------------
     #verificacion de existencia:
@@ -131,22 +137,26 @@ class Entorno:
                 env.tablaInterfacesDeclaradas[id] = interfazdeclarada
             env = env.anterior
 
+    
+        
+
 
 # para la tabla de simbolos HTML:
     def getSimbolos(self):
 
         actual = self
-        
-
         codigo_html = ""
         codigo_html += '''
         <table align="center" class="table table-striped "> \n
         <thead><tr> <th colspan="5">TABLA DE SÍMBOLOS</th> </tr></thead>\n
+        <h6> NOTA: FALTA CAMBIAR LOS TIPOS DE ALGUNAS COSAS (EJ: TIPO_DATO.NUMBER -> NUMBER) </h6>\n
+        <h6> NOTA: FALTA AGREGAR SÍMBOLOS DE LAS FUNCIONES </h6>\n
         <tr class="table-dark"><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Fila</th><th>Columna</th></tr>\n
         '''
+
+        
         while actual != None:
             for i in actual.tablaSimbolos:
-                print("-*-*-*-*-", str(actual.tablaSimbolos[i].tipo))
                 codigo_html += "<tr>"
                 codigo_html += "<td>" + str(i) + "</td>\n"
                 codigo_html += "<td>" + str(actual.tablaSimbolos[i].tipo) + "</td>\n"
@@ -154,10 +164,28 @@ class Entorno:
                 codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
                 codigo_html += "<td>" + str(actual.tablaSimbolos[i].columna) + "</td>\n"
                 codigo_html += "</tr>"
-            actual = actual.anterior
 
+            for i in actual.tablaFunciones:
+                codigo_html += "<tr>"
+                codigo_html += "<td>" + str(actual.tablaFunciones[i].nombre) + "</td>\n"
+                codigo_html += "<td> FALTA EL TIPO DE FUNCIÓN AAAAAAAAAAAAAAAAAAAAAAAAA </td>\n"
+                # codigo_html += "<td>" + str(actual.tablaFunciones[i].tipo) + "</td>\n"
+                codigo_html += "<td>" + str(actual.actual) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaFunciones[i].linea) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaFunciones[i].columna) + "</td>\n"
+                codigo_html += "</tr>"
 
-        codigo_html += "</table>"
+            for i in actual.tablaInterfacesDeclaradas:
+                codigo_html += "<tr>"
+                codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].nombreDeclarado) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].id_interface) + "</td>\n"
+                codigo_html += "<td>" + str(actual.actual) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].linea) + "</td>\n"
+                codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].columna) + "</td>\n"
+                codigo_html += "</tr>"
+            actual = actual.getAnterior()
 
+        
+        #codigo_html += "</table>"
 
         return codigo_html

@@ -20,12 +20,14 @@ class ForOf(Instruccion):
         entornoLocal = Entorno(entorno)
         entornoLocal.setActual("ForOf")
         val = self.exp1.ejecutar(entornoLocal, helper)
+        entornoLocal2 = Entorno(entornoLocal)
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")
 
         print(str(val.tipo))
         if val.tipo == TIPO_DATO.CADENA:
             for v in val.valor:
+                
                 simboloInterno = Simbolo()
                 simboloInterno.linea = self.fila
                 simboloInterno.columna = self.columna
@@ -36,8 +38,10 @@ class ForOf(Instruccion):
                 try:
                     for instruccion in self.instrucciones:
                         result = instruccion.ejecutar(entornoLocal, helper)
+                        #helper.setTs(entornoLocal)
                         if isinstance(result, Break):
                             helper.setCiclo(helperTemp)
+                            helper.setTs(entornoLocal)
                             return result
                         
                         if isinstance(result, Continue):
@@ -49,6 +53,8 @@ class ForOf(Instruccion):
                     continue
         elif val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_BOOLEAN or val.tipo == TIPO_DATO.ARRAY_NUMBER or val.tipo == TIPO_DATO.ARRAY_STRING:
             for v in val.valor:
+                print("YO SOY VVVVVVVVVVVVVVVVVVVVVVVVVVVVVV: ", v);
+                entornoLocal2.setActual("ForOf")
                 simboloInterno = Simbolo()
                 simboloInterno.linea = self.fila
                 simboloInterno.columna = self.columna
@@ -58,8 +64,13 @@ class ForOf(Instruccion):
                 entornoLocal.AgregarSimbolo(simboloInterno.nombre, simboloInterno)
                 try:
                     for instruccion in self.instrucciones:
-                        result = instruccion.ejecutar(entornoLocal, helper)
+                        print(instruccion)
+                        print("877987897897987987879787987987897987897987987987987987987987")
+                        result = instruccion.ejecutar(entornoLocal2, helper)
+                        
                         if isinstance(result, Break):
+                            helper.setTs(entornoLocal)
+                            helper.setTs(entornoLocal2)
                             helper.setCiclo(helperTemp)
                             return result
                         
@@ -70,7 +81,8 @@ class ForOf(Instruccion):
                             return result
                 except Exception:
                     continue
-
+        helper.setTs(entornoLocal)
+        helper.setTs(entornoLocal2)
         helper.setCiclo(helperTemp)
                 
     def genArbol(self) -> Nodo:
@@ -80,6 +92,6 @@ class ForOf(Instruccion):
         nodo.agregarHijo(self.exp1.genArbol())
         instrucciones = Nodo("INSTRUCCIONES")
         for instruccion in self.instrucciones:
-            instrucciones.agregarHijoNodo(instruccion.genArbol())
+            instrucciones.agregarHijo(instruccion.genArbol())
         nodo.agregarHijo(instrucciones)
         return nodo

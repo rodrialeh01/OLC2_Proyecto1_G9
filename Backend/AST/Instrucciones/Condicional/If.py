@@ -21,9 +21,9 @@ class If(Instruccion):
         
     def ejecutar(self, entorno, helper):
         condicion = self.expresion.ejecutar(entorno, helper)
-
         entornoLocal = Entorno(entorno)
-        entornoLocal.setActual("if")
+
+        entornoLocal.setActual("If")
         if condicion.tipo != TIPO_DATO.BOOLEANO:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
@@ -34,6 +34,7 @@ class If(Instruccion):
             if self.lista_instrucciones is not None:
                 for instruccion in self.lista_instrucciones:
                     accion = instruccion.ejecutar(entornoLocal, helper)
+                    helper.setTs(entornoLocal)
                     if isinstance(accion, Return):
                         if helper.getFuncion() == "funcion":
                             return accion
@@ -63,6 +64,7 @@ class If(Instruccion):
             if self.lista_elseifs is not None:
                 for accion in self.lista_elseifs:
                     condicion2 = accion.expresion.ejecutar(entornoLocal, helper)
+                    helper.setTs(entornoLocal)
                     if condicion2.tipo != TIPO_DATO.BOOLEANO:
                         s = SingletonErrores.getInstance()
                         err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
@@ -97,6 +99,7 @@ class If(Instruccion):
                 
                 for InstElse in self.lista_instrucciones2:
                     accionElse = InstElse.ejecutar(entornoLocal, helper)
+                    helper.setTs(entornoLocal)
                     if accionElse is not None:
                         if isinstance(accionElse, Return):
                             if helper.getFuncion() == "funcion":
@@ -126,7 +129,7 @@ class If(Instruccion):
         nodo.agregarHijo(self.expresion.genArbol())
         instrucciones = Nodo("INSTRUCCIONES")
         for instruccion in self.lista_instrucciones:
-            instrucciones.agregarHijoNodo(instruccion.genArbol())
+            instrucciones.agregarHijo(instruccion.genArbol())
         nodo.agregarHijo(instrucciones)
 
         
@@ -139,7 +142,7 @@ class If(Instruccion):
         if self.lista_instrucciones2 is not None:
             nodo3 = Nodo("ELSE")
             for instruccion in self.lista_instrucciones2:
-                nodo3.agregarHijoNodo(instruccion.genArbol())
+                nodo3.agregarHijo(instruccion.genArbol())
         
             nodo.agregarHijo(nodo3)
 

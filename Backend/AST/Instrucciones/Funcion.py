@@ -48,8 +48,9 @@ class Funcion(Simbolo, Instruccion):
         return True
         
     def ejecutar(self, entorno, helper):
+        
         tempHelper = helper.getFuncion()
-        helper.setFuncion("funcion")
+        helper.setFuncion("Funcion")
 
         for instruccion in self.listaInstrucciones:
             #instruccion.ejecutar(entorno, helper)

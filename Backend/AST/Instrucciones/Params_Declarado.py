@@ -14,6 +14,7 @@ class Params_Declarado(Expresion):
         return self
     
     def genArbol(self) -> Nodo:
+        
         nodo = Nodo("PARAMS_DECLARADO")
         nodo.agregarHijo(Nodo(str(self.id)))
         nodo.agregarHijo(Nodo("="))

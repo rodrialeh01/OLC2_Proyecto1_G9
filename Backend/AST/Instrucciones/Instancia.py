@@ -1,7 +1,10 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Simbolo import Simbolo
+from AST.SingletonErrores import SingletonErrores
 
 
 class Instancia(Instruccion, Simbolo):
@@ -19,13 +22,17 @@ class Instancia(Instruccion, Simbolo):
 
         if not existe_interface:
             #error semantico
-            #print("Error semantico: No existe la interface: " + self.id_interface)
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La interface " + self.id_interface + " no existe" )
+            s.addError(err)
             return
     
         existe_nombre = entorno.ExisteSimbolo(self.nombreDeclarado)
         if existe_nombre:
             #error semantico
-            #print("Error semantico: Ya existe el simbolo: " + self.nombreDeclarado)
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombreDeclarado + " ya fue declarada anteriormente en el entorno actual" )
+            s.addError(err)
             return
 
         '''
@@ -40,11 +47,16 @@ class Instancia(Instruccion, Simbolo):
         #comparamos la lista de parametros del objeto con la lista de parametros que nos mandaron
         if self.listaParams == None:
             #error semantico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parametros para la interface no coincide" )
+            s.addError(err)
             return
 
         if len(lista_parametros_objeto) != len(self.listaParams):
             #error semantico
-            #print("Error semantico: La cantidad de parametros no coincide")
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parametros para la interface no coincide" )
+            s.addError(err)
             return
         
         lista_ya_Declarada = []
@@ -61,7 +73,9 @@ class Instancia(Instruccion, Simbolo):
                         exp = self.listaParams[j].expresion.ejecutar(entorno, helper)
                         if lista_parametros_objeto[i].tipo != exp.tipo:
                             #error semantico
-                            #print("Error semantico: El tipo de parametro no coincide")
+                            s = SingletonErrores.getInstance()
+                            err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
+                            s.addError(err)
                             return
                         
 

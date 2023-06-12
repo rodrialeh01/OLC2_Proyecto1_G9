@@ -1,3 +1,6 @@
+from AST.Simbolos.Enums import obtTipoDato
+
+
 class Entorno:
     def __init__ (self, anterior):
         print("creando entorno")
@@ -159,7 +162,7 @@ class Entorno:
             for i in actual.tablaSimbolos:
                 codigo_html += "<tr>"
                 codigo_html += "<td>" + str(i) + "</td>\n"
-                codigo_html += "<td>" + str(actual.tablaSimbolos[i].tipo) + "</td>\n"
+                codigo_html += "<td>" + obtTipoDato(actual.tablaSimbolos[i].tipo) + "</td>\n"
                 codigo_html += "<td>" + str(actual.actual) + "</td>\n"
                 codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
                 codigo_html += "<td>" + str(actual.tablaSimbolos[i].columna) + "</td>\n"

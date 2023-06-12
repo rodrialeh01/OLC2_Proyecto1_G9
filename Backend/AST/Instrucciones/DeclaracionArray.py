@@ -1,7 +1,10 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
+from AST.SingletonErrores import SingletonErrores
 
 
 class DeclaracionArray(Instruccion):
@@ -22,7 +25,9 @@ class DeclaracionArray(Instruccion):
         
         if not bandera:
             #error semantico
-            return
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato del array no coincide con el tipo de dato declarado")
+            s.addError(err)
         
         #crear el simbolo
         simbolo = Simbolo()
@@ -43,6 +48,9 @@ class DeclaracionArray(Instruccion):
         verifExistencia = entorno.ExisteSimbolo(simbolo.nombre)
         if verifExistencia:
             #error semantico
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "La variable " + simbolo.nombre + " ya existe en el entorno actual")
+            s.addError(err)
             return
         print("se va a agregar")
         entorno.AgregarSimbolo(self.id,simbolo)

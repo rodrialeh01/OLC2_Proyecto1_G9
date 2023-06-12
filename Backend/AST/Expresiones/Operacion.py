@@ -1,7 +1,10 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_ARITMETICA
+from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
+                                obtTipoDato)
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class Operacion(Expresion):
@@ -39,40 +42,61 @@ class Operacion(Expresion):
             elif val1.tipo == val2.tipo == TIPO_DATO.CADENA:
                 return Retorno(val1.valor + val2.valor, TIPO_DATO.CADENA)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica SUMA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
         #MENOS
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor - val2.valor, TIPO_DATO.NUMERO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica RESTA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
         #POR
         elif self.operador == TIPO_OPERACION_ARITMETICA.MULTIPLICACION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor * val2.valor, TIPO_DATO.NUMERO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
         #DIVIDIDO
         elif self.operador == TIPO_OPERACION_ARITMETICA.DIVISION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 if val2.tipo != 0:
                     return Retorno(val1.valor / val2.valor, TIPO_DATO.NUMERO)
                 else:
-                    pass
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmética DIVISIÓN con el valor 0")
+                    s.addError(err)
+                    return Retorno(None,None)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmpetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
         #POTENCIA
         elif self.operador == TIPO_OPERACION_ARITMETICA.POTENCIA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor ** val2.valor, TIPO_DATO.NUMERO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica POTENCIA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
         #MODULO
         elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 return Retorno(val1.valor % val2.valor, TIPO_DATO.NUMERO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica MODULO con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
 
     def genArbol(self):
         if self.unario:

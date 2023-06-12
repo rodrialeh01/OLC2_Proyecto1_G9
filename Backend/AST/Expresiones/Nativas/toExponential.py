@@ -1,7 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class ToExponential(Expresion):
@@ -15,8 +17,15 @@ class ToExponential(Expresion):
         valor = self.expresion.ejecutar(entorno, helper)
         cantidad = self.cantidad.ejecutar(entorno, helper)
         if valor.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.NUMERO:
-            #error semantico
-            pass
+            if valor.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+                s.addError(err)
+                return
+            if cantidad.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
+                s.addError(err)
 
         formato = "{:." + str(int(cantidad.valor)) + "e}"
         return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)

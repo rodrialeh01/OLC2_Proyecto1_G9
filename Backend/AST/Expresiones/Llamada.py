@@ -1,7 +1,11 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class Llamada(Instruccion, Expresion):
@@ -14,8 +18,10 @@ class Llamada(Instruccion, Expresion):
     def ejecutar(self, entorno, helper):
         fn = entorno.ExisteFuncion(self.id)
         if fn is False:
-            print("Error semántico, la función no existe")
-            return
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La función " + self.id + " no existe en el entorno actual")
+            s.addError(err)
+            return Retorno(None, None)
 
         entornoFN = Entorno(entorno)
         entornoFN.actual = "Función " + str(self.id)
@@ -24,8 +30,10 @@ class Llamada(Instruccion, Expresion):
         argumentos = func.declaracionesParams(entornoFN, self.params, entorno, helper)
 
         if argumentos is False:
-            print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")
-            return
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parámetros no coincide con la cantidad de argumentos")
+            s.addError(err)
+            return Retorno(None, None)
         
 
         if func is not None:

@@ -1,7 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class ToFixed(Expresion):
@@ -17,7 +19,17 @@ class ToFixed(Expresion):
 
         if valor_a_aproximar.tipo != TIPO_DATO.NUMERO or cantidad_de_decimales.tipo != TIPO_DATO.NUMERO:
             #error semantico
-            pass
+            if valor_a_aproximar.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor_a_aproximar.tipo) )
+                s.addError(err)
+                return
+            if cantidad_de_decimales.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad_de_decimales.tipo) )
+                s.addError(err)
+                return
+            
         return Retorno(round(float(valor_a_aproximar.valor),int(cantidad_de_decimales.valor)), TIPO_DATO.NUMERO)
 
     def genArbol(self) -> Nodo:

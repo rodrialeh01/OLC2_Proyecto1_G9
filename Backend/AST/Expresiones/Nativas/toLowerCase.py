@@ -1,7 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class ToLowerCase(Expresion):
@@ -14,7 +16,10 @@ class ToLowerCase(Expresion):
         valor = self.expresion.ejecutar(entorno, helper)
         if valor.tipo != TIPO_DATO.CADENA:
             #error semantico
-            pass
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, debe de ser de tipo cadena, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+            s.addError(err)
+            return
         
         return Retorno(str(valor.valor).lower(), TIPO_DATO.CADENA)
             

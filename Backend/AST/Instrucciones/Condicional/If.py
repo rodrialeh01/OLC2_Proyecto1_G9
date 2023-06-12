@@ -39,22 +39,31 @@ class If(Instruccion):
                         if helper.getFuncion() == "funcion":
                             return accion
                         else:
-                            pass
                             #error semántico
+                            s = SingletonErrores.getInstance()
+                            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede retornar en un ambito que no sea una función" )
+                            s.addError(err)
+                            return
                     
                     if isinstance(accion, Break):
                         if helper.getCiclo() == "ciclo":
                             return accion
                         else:
                             #error semántico
-                            pass
+                            s = SingletonErrores.getInstance()
+                            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar BREAK en un ambito que no sea un ciclo" )
+                            s.addError(err)
+                            return
 
                     if isinstance(accion, Continue):
                         if helper.getCiclo() == "ciclo":
                             return accion
                         else:
                             #error semántico
-                            pass
+                            s = SingletonErrores.getInstance()
+                            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar CONTINUE en un ambito que no sea un ciclo" )
+                            s.addError(err)
+                            return
 
                     if isinstance(accion, Retorno):
                         return accion
@@ -77,8 +86,11 @@ class If(Instruccion):
                                 if helper.getFuncion() == "funcion":
                                     return instruc
                                 else:
-                                    pass
                                     #error semántico
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede retornar en un ambito que no sea una función" )
+                                    s.addError(err)
+                                    return
                             
                             if isinstance(instruc, Break):
                                 if helper.getCiclo() == "ciclo":
@@ -86,14 +98,20 @@ class If(Instruccion):
                                     return instruc
                                 else:
                                     #error semántico
-                                    pass
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar BREAK en un ambito que no sea un ciclo" )
+                                    s.addError(err)
+                                    return
 
                             if isinstance(instruc, Continue):
                                 if helper.getCiclo() == "ciclo":
                                     return instruc
                                 else:
                                     #error semántico
-                                    pass
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar CONTINUE en un ambito que no sea un ciclo" )
+                                    s.addError(err)
+                                    return
                         return
             if self.lista_instrucciones2 is not None:
                 
@@ -105,8 +123,11 @@ class If(Instruccion):
                             if helper.getFuncion() == "funcion":
                                 return accionElse
                             else:
-                                pass
                                 #error semántico
+                                s = SingletonErrores.getInstance()
+                                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede retornar en un ambito que no sea una función" )
+                                s.addError(err)
+                                return
                                 
                         if isinstance(accionElse, Break):
                             if helper.getCiclo() == "ciclo":
@@ -114,14 +135,20 @@ class If(Instruccion):
                                 return accionElse
                             else:
                                 #error semántico
-                                pass
+                                s = SingletonErrores.getInstance()
+                                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar BREAK en un ambito que no sea un ciclo" )
+                                s.addError(err)
+                                return
 
                         if isinstance(accionElse, Continue):
                             if helper.getCiclo() == "ciclo":
                                 return accionElse
                             else:
                                 #error semántico
-                                pass
+                                s = SingletonErrores.getInstance()
+                                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar CONTINUE en un ambito que no sea un ciclo" )
+                                s.addError(err)
+                                return
                     return
                 
     def genArbol(self) -> Nodo:

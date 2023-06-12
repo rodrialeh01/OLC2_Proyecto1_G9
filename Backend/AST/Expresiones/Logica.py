@@ -1,7 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_LOGICA
+from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_LOGICA, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class Logica(Expresion):
@@ -30,13 +32,19 @@ class Logica(Expresion):
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
                 return Retorno(val1.valor and val2.valo, TIPO_DATO.BOOLEANO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica AND con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
 
         elif self.operador == TIPO_OPERACION_LOGICA.OR:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
                 return Retorno(val1.valor or val2.valo, TIPO_DATO.BOOLEANO)
             else:
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica OR con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                s.addError(err)
+                return Retorno(None,None)
 
     def genArbol(self):
         if self.negacion:

@@ -1,10 +1,12 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.SingletonErrores import SingletonErrores
 
 
 class For(Instruccion):
@@ -31,7 +33,10 @@ class For(Instruccion):
             condicion = self.condicion.ejecutar(entornoLocal, helper)
             if condicion.tipo != TIPO_DATO.BOOLEANO:
                 #error semantico
-                pass
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de FOR, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
+                s.addError(err)
+                return
             
             if condicion.valor == False:
                 helper.setTs(entornoLocal2)

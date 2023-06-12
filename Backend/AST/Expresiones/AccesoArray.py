@@ -1,6 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class AccesoArray(Expresion):
@@ -19,7 +22,10 @@ class AccesoArray(Expresion):
         print(existe)
         if not existe:
             #error semantico
-            return None
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.id + " no existe en el entorno actual" )
+            s.addError(err)
+            Retorno(None, None)
         
         simbolo = entorno.ObtenerSimbolo(self.id)
         
@@ -44,7 +50,10 @@ class AccesoArray(Expresion):
                 valor = lista.valor[index]
             except:
                 #error semantico
-                return None
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "El indice al que se intenta acceder no existe en el array")
+                s.addError(err)
+                return Retorno(None, None)
             if valor.tipo == TIPO_DATO.ARRAY :
                 return self.accesar(pila, valor, entorno, helper)
             else:
@@ -54,7 +63,10 @@ class AccesoArray(Expresion):
                     return lista.valor[index]
                 else:
                     #error semantico
-                    return None
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No se puede acceder al valor que se intenta acceder al array")
+                    s.addError(err)
+                    return Retorno(None, None)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("ACCESO ARRAY")

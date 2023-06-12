@@ -157,23 +157,27 @@ t_AND = r'\&\&'
 t_OR = r'\|\|'
 t_NOT = r'\!'
 
+def t_DECIMAL(t):
+    r'\d+\.\d+'
+    try:
+        print("DECIMAL")
+        t.value = float(t.value)
+        print(str(t.value))
+    except ValueError:
+        print("F")
+        t.value = 0.0
+    return t
+
 #Expresiones regulares
 def t_ENTERO(t):
     r'\d+'
     try:
+        print("ENTERO")
         t.value = int(t.value)
     except ValueError:
         print("F")
         t.value = 0
     return t
-
-def t_DECIMAL(t):
-    r'\d+\.\d+'
-    try:
-        t.value = float(t.value)
-    except ValueError:
-        print("F")
-        t.value = 0.0
 
 def t_CADENA(t):
     r'\"[^\"\n]*\"'

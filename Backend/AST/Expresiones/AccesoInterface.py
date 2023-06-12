@@ -1,5 +1,8 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class AccesoInterface(Expresion):
@@ -19,6 +22,10 @@ class AccesoInterface(Expresion):
                 return p[self.id_param]
                 
         #error semantico
+        s = SingletonErrores.getInstance()
+        err = Error(self.fila, self.columna, "Error Semántico", "No se encontro ningun valor para " + str(self.id_interface) + "." + str(self.id_param) )
+        s.addError(err)
+        return Retorno(None, None)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("ACCESO INTERFACE")

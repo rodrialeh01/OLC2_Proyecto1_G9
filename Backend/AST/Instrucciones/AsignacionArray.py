@@ -1,6 +1,9 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class AsignacionArray(Instruccion):
@@ -18,7 +21,10 @@ class AsignacionArray(Instruccion):
         existe = entorno.ExisteSimbolo(self.id)
         if not existe:
             #error semantico
-            return None
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "La variable " + self.id + " no existe en el entorno actual" )
+            s.addError(err)
+            return
         
         print("si existe el simbolo")
         simbolo = entorno.ObtenerSimbolo(self.id)
@@ -57,7 +63,10 @@ class AsignacionArray(Instruccion):
                 print(valor.tipo)
             except:
                 #error semantico
-                return None
+                s = SingletonErrores.getInstance()
+                err = Error(self.linea, self.columna, "Error Semántico", "El indice " + str(index) + " no existe en el array" )
+                s.addError(err)
+                return
             if valor.tipo == TIPO_DATO.ARRAY or valor.tipo == TIPO_DATO.ARRAY_NUMBER or valor.tipo == TIPO_DATO.ARRAY_STRING or valor.tipo == TIPO_DATO.ARRAY_BOOLEAN:
                 self.accesar(pila, valor.valor, expresion,tipo, entorno, helper)
             else:
@@ -76,10 +85,16 @@ class AsignacionArray(Instruccion):
                         lista[index] = e
                     else:
                         #error semantico
-                        return None
+                        s = SingletonErrores.getInstance()
+                        err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de la expresion no coincide con el tipo de dato del array" )
+                        s.addError(err)
+                        return
                 else:
                     #error semantico
-                    return None
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.linea, self.columna, "Error Semántico", "El indice " + str(index) + " no existe en el array" )
+                    s.addError(err)
+                    return
     
     def Verificar_Tipos_array(self,arr, tipo, bandera):
         if isinstance(arr,list):

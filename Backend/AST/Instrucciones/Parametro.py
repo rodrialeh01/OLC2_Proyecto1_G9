@@ -1,7 +1,10 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
+from AST.SingletonErrores import SingletonErrores
 
 
 class Parametro(Instruccion):
@@ -33,7 +36,9 @@ class Parametro(Instruccion):
 
 
             if self.tipo != retorno.tipo:
-                print("Error semántico, el tipo de dato no coincide con el tipo del parametro")
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
+                s.addError(err)
                 return
             
             existencia = entorno.BuscarSimboloLocal(self.id)
@@ -69,8 +74,10 @@ class Parametro(Instruccion):
 
                 entorno.AgregarSimbolo(self.id, simbolo)
         else:
-
-            print(self.id, "no tiene valor")
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "El parametro" + self.id +" no tiene un valor asignado")
+            s.addError(err)
+            return
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("Parametro")

@@ -1,3 +1,6 @@
+from AST.Simbolos.Enums import *
+
+
 class Helper:
     def __init__(self):
         self.ciclo = ""
@@ -28,13 +31,14 @@ class Helper:
         Ts = ""
         codigo_html = "\n"
         for i in actual.tablaSimbolos:
-                codigo_html += "<tr>"
-                codigo_html += "<td>" + str(i) + "</td>\n"
-                codigo_html += "<td>" + str(actual.tablaSimbolos[i].tipo) + "</td>\n"
-                codigo_html += "<td>" + str(actual.actual) + "</td>\n"
-                codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
-                codigo_html += "<td>" + str(actual.tablaSimbolos[i].columna) + "</td>\n"
-                codigo_html += "</tr>"
+            codigo_html += "<tr>"
+            codigo_html += "<td>" + str(i) + "</td>\n"
+            print("-------------- TIPO: ", actual.tablaSimbolos[i].tipo)
+            codigo_html += "<td>" + obtTipoDato(actual.tablaSimbolos[i].tipo) + "</td>\n"
+            codigo_html += "<td>" + str(actual.actual) + "</td>\n"
+            codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
+            codigo_html += "<td>" + str(actual.tablaSimbolos[i].columna) + "</td>\n"
+            codigo_html += "</tr>"
 
         for i in actual.tablaFunciones:
             codigo_html += "<tr>"

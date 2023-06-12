@@ -1,6 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class Dec(Expresion):
@@ -14,6 +17,7 @@ class Dec(Expresion):
         obtenido = entorno.ObtenerSimbolo(self.id)
         if obtenido != None:
             valor = obtenido.valor
+            print(obtenido.tipo)
             if self.orden == "preDec":
                 obtenido.valor = obtenido.valor - 1
                 entorno.ActualizarSimbolo(self.id, obtenido)
@@ -23,7 +27,11 @@ class Dec(Expresion):
                 entorno.ActualizarSimbolo(self.id, obtenido)
                 return Retorno(valor, obtenido.tipo)
         else:
-            return Retorno("No se encontro la variable", "error")
+            #error semántico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.id + " no existe en el entorno actual" )
+            s.addError(err)
+            return Retorno(None, None)
     
     def genArbol(self):
         if self.orden == "preDec":

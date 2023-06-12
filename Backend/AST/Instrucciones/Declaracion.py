@@ -1,6 +1,9 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Simbolo import Simbolo
+from AST.SingletonErrores import SingletonErrores
 
 
 class Declaracion(Instruccion):
@@ -17,7 +20,10 @@ class Declaracion(Instruccion):
         existe = entorno.ExisteSimbolo(identificador)
         if existe:
             #error semantico
-            pass
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + identificador + " ya fue declarada anteriormente en el entorno actual")
+            s.addError(err)
+            return
         
         if tipo != None:
             if self.valor != None:

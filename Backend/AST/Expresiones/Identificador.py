@@ -1,6 +1,9 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
+from AST.SingletonErrores import SingletonErrores
 
 
 class Identificador(Expresion):
@@ -19,6 +22,10 @@ class Identificador(Expresion):
             print(ret)
             return Retorno(ret.valor, ret.tipo)
         else:
+            #error semántico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombre + " no existe en el entorno actual" )
+            s.addError(err)
             return Retorno(None, None)
         
     def genArbol(self) -> Nodo:

@@ -1,5 +1,8 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.SingletonErrores import SingletonErrores
 
 
 class AsignarInterface(Instruccion):
@@ -14,7 +17,12 @@ class AsignarInterface(Instruccion):
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteInterfaceDeclarada(self.id_interface)
         if not existe:
+            #error semantico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la Asignación, no existe la interface " + self.id_interface)
+            s.addError(err)
             return
+        
         objeto = entorno.ObtenerInterfaceDeclarada(self.id_interface)
         for p in objeto.paramDeclarados:
             if self.id_param in p:
@@ -26,6 +34,10 @@ class AsignarInterface(Instruccion):
                 return
                 
         #error semantico
+        s = SingletonErrores.getInstance()
+        err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la Asignación, no existe el parametro " + self.id_param + " en la interface " + self.id_interface)
+        s.addError(err)
+        return
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("ASIGNAR INTERFACE")

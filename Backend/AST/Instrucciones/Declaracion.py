@@ -15,9 +15,13 @@ class Declaracion(Instruccion):
         self.columna = columna
     
     def ejecutar(self, entorno, helper):
+        print("Declaracion************************************************")
         identificador = self.id
         tipo = self.tipo
+        print("identificador: " + identificador)
+        print("tipo: " + str(tipo))
         existe = entorno.ExisteSimbolo(identificador)
+        print("existe: " + str(existe))
         if existe:
             #error semantico
             s = SingletonErrores.getInstance()
@@ -26,8 +30,10 @@ class Declaracion(Instruccion):
             return
         
         if tipo != None:
+            print("valor: " + str(self.valor))
             if self.valor != None:
                 valorG = self.valor.ejecutar(entorno, helper)
+                print("valorG: " + str(valorG.valor))
                 if valorG.tipo == tipo:
                     simb = Simbolo()
                     simb.nombre = identificador
@@ -36,7 +42,7 @@ class Declaracion(Instruccion):
                     simb.linea = self.fila
                     simb.columna = self.columna
                     simb.entorno = entorno
-
+                    print("si se guardo en la tabla de simbolos")
                     entorno.AgregarSimbolo(identificador, simb)
         else:
             if self.valor != None:

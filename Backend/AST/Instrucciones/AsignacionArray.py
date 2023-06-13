@@ -15,8 +15,8 @@ class AsignacionArray(Instruccion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print('---------------------------------------------------------')
-        print("Desde AsignacionArray : ")
+        #print('---------------------------------------------------------')
+        #print("Desde AsignacionArray : ")
         #buscar el id en el entorno
         existe = entorno.ExisteSimbolo(self.id)
         if not existe:
@@ -26,17 +26,17 @@ class AsignacionArray(Instruccion):
             s.addError(err)
             return
         
-        print("si existe el simbolo")
+        #print("si existe el simbolo")
         simbolo = entorno.ObtenerSimbolo(self.id)
         listaAccesos = []
-        print(simbolo.valor)
+        #print(simbolo.valor)
         #verificar que sea un array
         
         for a in self.accesos:
             listaAccesos.append(a.ejecutar(entorno, helper).valor)
         sim = simbolo.valor
         print(simbolo.nombre)
-        print(sim)
+        #print(sim)
         print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
         self.accesar(listaAccesos, sim,self.expresion,simbolo.tipo, entorno, helper)
         print('sim actualizado')

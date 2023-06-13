@@ -30,7 +30,7 @@ class Logica(Expresion):
 
         if self.operador == TIPO_OPERACION_LOGICA.AND:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
-                return Retorno(val1.valor and val2.valo, TIPO_DATO.BOOLEANO)
+                return Retorno(val1.valor and val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica AND con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
@@ -39,7 +39,8 @@ class Logica(Expresion):
 
         elif self.operador == TIPO_OPERACION_LOGICA.OR:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
-                return Retorno(val1.valor or val2.valo, TIPO_DATO.BOOLEANO)
+                print("ENTREEEEEEEEEE AL ORRRRRRRRR")
+                return Retorno(val1.valor or val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica OR con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))

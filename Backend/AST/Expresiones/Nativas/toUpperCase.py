@@ -13,15 +13,20 @@ class ToUpperCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        valor = self.expresion.ejecutar(entorno, helper)
-        if valor.tipo != TIPO_DATO.CADENA:
+        print("TO UPPER CASE")
+        found = entorno.ObtenerSimbolo(self.expresion)
+        if found == None:
+            pass
+            #error semantico
+
+        if found.tipo != TIPO_DATO.CADENA:
             #error semantico
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, debe de ser de tipo String, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, debe de ser de tipo String, pero se encontró de tipo " + obtTipoDato(found.tipo) )
             s.addError(err)
             return
         
-        return Retorno(str(valor.valor).upper(), TIPO_DATO.CADENA)
+        return Retorno(str(found.valor).upper(), TIPO_DATO.CADENA)
     
     
     def genArbol(self) -> Nodo:

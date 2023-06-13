@@ -14,12 +14,20 @@ class Asignacion(Instruccion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
+        print("Desde Asignacion:D")
         existe = entorno.ExisteSimbolo(self.id)
+        print(existe)
         if existe:
             valorG = self.valor.ejecutar(entorno, helper)
 
             simb = entorno.ObtenerSimbolo(self.id)
+            print("ID: ", self.id)
+            print("SIMBTIPO: ", obtTipoDato(simb.tipo))
+            print("VALORG: ", obtTipoDato(valorG.tipo))
             if simb.tipo == valorG.tipo:
+                print("==========Asignacion===========")
+                print("Valor anterior: ", simb.valor)
+                print("Valor nuevo: ", valorG.valor)
                 simb.valor = valorG.valor
                 entorno.ActualizarSimbolo(self.id, simb)
             else:

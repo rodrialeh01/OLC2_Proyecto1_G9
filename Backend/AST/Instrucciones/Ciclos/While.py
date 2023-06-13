@@ -20,7 +20,6 @@ class While(Instruccion):
         condTemp = True
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")
-        entorno_local = Entorno(entorno)
         #entorno_local = None
         while condTemp == True:
             condicion = self.condicion.ejecutar(entorno, helper)
@@ -40,6 +39,7 @@ class While(Instruccion):
                         helper.setTs(entorno_local)
                         return
 
+                    entorno_local = Entorno(entorno)
                     #if condicion.valor:
                     #entorno_local = Entorno(entorno)
                     entorno_local.setActual("While")

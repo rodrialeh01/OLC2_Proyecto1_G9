@@ -33,7 +33,7 @@ class Helper:
         for i in actual.tablaSimbolos:
             codigo_html += "<tr>"
             codigo_html += "<td>" + str(i) + "</td>\n"
-            print("-------------- TIPO: ", actual.tablaSimbolos[i].tipo)
+            #print("-------------- TIPO: ", actual.tablaSimbolos[i].tipo)
             codigo_html += "<td>" + obtTipoDato(actual.tablaSimbolos[i].tipo) + "</td>\n"
             codigo_html += "<td>" + str(actual.actual) + "</td>\n"
             codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"

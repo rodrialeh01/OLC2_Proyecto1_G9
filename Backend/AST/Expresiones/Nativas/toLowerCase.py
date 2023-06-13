@@ -13,15 +13,22 @@ class ToLowerCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        valor = self.expresion.ejecutar(entorno, helper)
-        if valor.tipo != TIPO_DATO.CADENA:
+        print("TO LOWER CASE")
+        print("EXPRESION: ", self.expresion)
+        found = entorno.ObtenerSimbolo(self.expresion)
+        print("FOUND: ", found)
+        if found == None:
+            pass
+            #error semantico
+        
+        if found.tipo != TIPO_DATO.CADENA:
             #error semantico
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, debe de ser de tipo cadena, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, debe de ser de tipo cadena, pero se encontró de tipo " + obtTipoDato(found.tipo) )
             s.addError(err)
             return
         
-        return Retorno(str(valor.valor).lower(), TIPO_DATO.CADENA)
+        return Retorno(str(found.valor).lower(), TIPO_DATO.CADENA)
             
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_LOWER_CASE")

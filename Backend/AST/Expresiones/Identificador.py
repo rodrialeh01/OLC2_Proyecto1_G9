@@ -17,9 +17,9 @@ class Identificador(Expresion):
         existe = entorno.ExisteSimbolo(self.nombre)
         print("Existe: ", existe)
         if existe:
-            print("Desde Identificador 2: ")
+            #print("Desde Identificador 2 (): ")
             ret = entorno.ObtenerSimbolo(self.nombre)
-            print(ret)
+            #print(ret)
             return Retorno(ret.valor, ret.tipo)
         else:
             #error semántico

@@ -150,7 +150,7 @@ def t_ENTERO(t):
     try:
         t.value = int(t.value)
     except ValueError:
-        print("F")
+        #print("F")
         t.value = 0
     return t
 
@@ -159,7 +159,7 @@ def t_DECIMAL(t):
     try:
         t.value = float(t.value)
     except ValueError:
-        print("F")
+        #print("F")
         t.value = 0.0
 
 def t_CADENA(t):
@@ -366,14 +366,14 @@ def p_asignacion_incremento(t):
     '''
     instruccion2 : ID INCREMENTO
     '''
-    print("entro")
+    #print("entro")
     t[0] = Inc(t[1],"postInc", t.lineno(1), t.lexpos(1))
 
 def p_asignacion_incremento2(t):
     '''
     instruccion2 : INCREMENTO ID
     '''
-    print("entro2")
+    #print("entro2")
     t[0] = Inc(t[2],"preInc", t.lineno(1), t.lexpos(1))
 
 # asignacion -> ID MENOSMENOS
@@ -420,7 +420,7 @@ def p_expresion_aritmetica(t):
     if len(t) == 3:
         t[0] = Operacion(t[2], None, TIPO_OPERACION_ARITMETICA.NEGATIVO, t.lineno(1), t.lexpos(1),True)
     elif t[2] == '+':
-        print("entro a suma")
+        #print("entro a suma")
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.SUMA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '-':
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.RESTA, t.lineno(1), t.lexpos(1),False)
@@ -755,7 +755,7 @@ def p_ciclo_for_of(t):
     '''
     ciclo_for_of : FOR PARIZQ LET ID OF expresion PARDER bloque
     '''
-    print("hola XD")
+    #print("hola XD")
     t[0] = ForOf(t[4], t[6], t[8], t.lineno(1), t.lexpos(1))
     
 
@@ -764,7 +764,7 @@ def p_funcion(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
     '''
-    print("Funcion con parametros")
+    #print("Funcion con parametros")
     t[0] = Funcion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # funcion -> FUNCTION ID PARIZQ PARDER bloque
@@ -831,7 +831,7 @@ def p_error_inst(t):
     instruccion : error PTOYCOMA
     '''
     t[0] = -1
-    print(str(t[1].value))
+    #print(str(t[1].value))
     s = SingletonErrores.getInstance()
     s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
     

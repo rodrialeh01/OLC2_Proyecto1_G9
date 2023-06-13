@@ -3,8 +3,8 @@ from AST.Simbolos.Enums import obtTipoDato
 
 class Entorno:
     def __init__ (self, anterior):
-        print("creando entorno")
-        print("ANTERIOR; ", anterior)
+        #print("creando entorno")
+        #print("ANTERIOR; ", anterior)
         self.anterior = anterior
         self.tablaSimbolos = {}
         self.tablaFunciones = {}
@@ -34,10 +34,10 @@ class Entorno:
     
     #agregar simbolo:
     def AgregarSimbolo(self, id, simbolo):
-        print("agregando simbolo: " + id)
+        #print("agregando simbolo: " + id)
         self.tablaSimbolos[id] = simbolo
-        print("simbolo agregado: " + id)
-        print("VALORES: ", self.tablaSimbolos[id].valor)
+        #print("simbolo agregado: " + id)
+        ##print("VALORES: ", self.tablaSimbolos[id].valor)
         
 
     #obtener simbolo:
@@ -67,7 +67,7 @@ class Entorno:
 # -------------------------------- funciones --------------------------------
     #verificacion de existencia:
     def ExisteFuncion(self, id):
-        print("Buscando funcion: " + id)
+        #print("Buscando funcion: " + id)
         env = self
         while env != None:
             if id in env.tablaFunciones:

@@ -17,7 +17,7 @@ class Dec(Expresion):
         obtenido = entorno.ObtenerSimbolo(self.id)
         if obtenido != None:
             valor = obtenido.valor
-            print(obtenido.tipo)
+            #print(obtenido.tipo)
             if self.orden == "preDec":
                 obtenido.valor = obtenido.valor - 1
                 entorno.ActualizarSimbolo(self.id, obtenido)

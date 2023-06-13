@@ -20,6 +20,7 @@ class If(Instruccion):
         self.columna = columna
         
     def ejecutar(self, entorno, helper):
+        print("ejecutando if")
         condicion = self.expresion.ejecutar(entorno, helper)
         entornoLocal = Entorno(entorno)
 

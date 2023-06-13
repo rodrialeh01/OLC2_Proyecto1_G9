@@ -26,6 +26,14 @@ def obtTipoDato(i):
         return "Error"
     elif i == TIPO_DATO.ANY:
         return "Any"
+    elif i == TIPO_DATO.ARRAY:
+        return "Array"
+    elif i == TIPO_DATO.ARRAY_NUMBER:
+        return "Array"
+    elif i == TIPO_DATO.ARRAY_STRING:
+        return "Array"
+    elif i == TIPO_DATO.ARRAY_BOOLEAN:
+        return "Array"
 
 class ERROR(Enum):
     LEXICO = 1,

@@ -28,8 +28,8 @@ class Operacion(Expresion):
             valUnario.valor = valUnario.valor * -1
             return valUnario
         
-        print(self.exp1)
-        print(self.exp2)
+        #print(self.exp1)
+        #print(self.exp2)
         
         val1 = self.exp1.ejecutar(entorno, helper)
         val2 = self.exp2.ejecutar(entorno, helper)
@@ -38,6 +38,8 @@ class Operacion(Expresion):
         #MAS
         if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                #print(str(val1.valor) + " + " + str(val2.valor))
+                #print(str(val1.valor + val2.valor))
                 return Retorno(val1.valor + val2.valor, TIPO_DATO.NUMERO)
             elif val1.tipo == val2.tipo == TIPO_DATO.CADENA:
                 return Retorno(val1.valor + val2.valor, TIPO_DATO.CADENA)
@@ -49,6 +51,8 @@ class Operacion(Expresion):
         #MENOS
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                #print(str(val1.valor) + " - " + str(val2.valor))
+                #print(str(val1.valor - val2.valor))
                 return Retorno(val1.valor - val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
@@ -58,6 +62,8 @@ class Operacion(Expresion):
         #POR
         elif self.operador == TIPO_OPERACION_ARITMETICA.MULTIPLICACION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                #print(str(val1.valor) + " * " + str(val2.valor))
+                #print(str(val1.valor * val2.valor))
                 return Retorno(val1.valor * val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
@@ -68,6 +74,8 @@ class Operacion(Expresion):
         elif self.operador == TIPO_OPERACION_ARITMETICA.DIVISION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 if val2.tipo != 0:
+                    #print(str(val1.valor) + " / " + str(val2.valor))
+                    #print(str(val1.valor / val2.valor))
                     return Retorno(val1.valor / val2.valor, TIPO_DATO.NUMERO)
                 else:
                     s = SingletonErrores.getInstance()
@@ -82,6 +90,8 @@ class Operacion(Expresion):
         #POTENCIA
         elif self.operador == TIPO_OPERACION_ARITMETICA.POTENCIA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                #print(str(val1.valor) + " ** " + str(val2.valor))
+                #print(str(val1.valor ** val2.valor))
                 return Retorno(val1.valor ** val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
@@ -91,6 +101,8 @@ class Operacion(Expresion):
         #MODULO
         elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                #print(str(val1.valor) + " % " + str(val2.valor))
+                #print(str(val1.valor % val2.valor))
                 return Retorno(val1.valor % val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()

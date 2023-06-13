@@ -12,23 +12,24 @@ class Consolelog(Instruccion):
     def ejecutar(self, entorno, helper):
         exp = self.expresion.ejecutar(entorno, helper)
         print("Estoy llegando al consolelog")
-        print(exp)
+        print(exp.valor)
+        #print(exp)
         try:
             if exp.tipo == TIPO_DATO.ARRAY or exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY_STRING or exp.tipo == TIPO_DATO.ARRAY_BOOLEAN:
 
                 array = []
                 impresion = self.ImpresionArrays(array, exp.valor)
-                print(impresion)
+                #print(impresion)
                 helper.setConsola(impresion)
             else:
-                print(exp.valor)
+                #print(exp.valor)
                 helper.setConsola(exp.valor)
 
         except Exception:
             val = self.expresion.ejecutar(entorno, helper)
             helper.setConsola(val.valor)
-            #print(val.valor)
-        #print(val.valor)
+            ##print(val.valor)
+        ##print(val.valor)
         
 
     def ImpresionArrays(self, arr, arrexist):

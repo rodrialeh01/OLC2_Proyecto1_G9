@@ -194,8 +194,6 @@ def t_CADENA(t):
 
 @TOKEN(identifier)
 def t_ID(t):
-    
-    print("Estoy en ID: ", t.value)
     t.type = reservadas.get(t.value,'ID')
     return t
     
@@ -476,6 +474,15 @@ def p_impresion(t):
     print("impresion")
     t[0] = Consolelog(t[5], t.lineno(1), t.lexpos(1))
 
+# ? impresion : CONSOLE PUNTO LOG PARIZQ lista_argumentos PARDER
+def p_impresion_1(t):
+    '''
+    impresion : CONSOLE PUNTO LOG PARIZQ lista_argumentos PARDER
+    '''
+    print("impresion 2")
+    t[0] = Consolelog(t[5], t.lineno(1), t.lexpos(1))
+
+
 # ? condicional : IF PARIZQ expresion PARDER bloque
 # ?             | IF PARIZQ expresion PARDER bloque ELSE bloque
 # ?             | IF PARIZQ expresion PARDER bloque lista_elif
@@ -565,13 +572,13 @@ def p_funcion(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
     '''
-    t[0] = Funcion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
+    t[0] = Funcion(t[2], t[4], t[6], t.lineno(1), t.lexpos(1), None)
 
 def p_funcion_1(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo bloque
     '''
-
+    t[0] = Funcion(t[2], t[4], t[8], t.lineno(1), t.lexpos(1), t[7])
 
 def p_funcion_2(t):
     '''
@@ -584,7 +591,20 @@ def p_funcion_3(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER DOSPUNTOS tipo bloque
     '''
+    t[0] = Funcion(t[2], None, t[7], t.lineno(1), t.lexpos(1), t[6])
 
+def p_function_Array(t):
+    '''
+    funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo CORIZQ CORDER bloque
+    '''
+    if t[7] == TIPO_DATO.NUMERO:
+        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_NUMBER)
+    elif t[7] == TIPO_DATO.CADENA:
+        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_STRING)
+    elif t[7] == TIPO_DATO.BOOLEANO:
+        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_BOOLEAN)
+    else:
+        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY)
 
 # ? lista_parametros : lista_parametros COMA ID DOSPUNTOS tipo
 # ?                  | ID DOSPUNTOS tipo
@@ -606,6 +626,28 @@ def p_parametro(t):
     parametro : ID DOSPUNTOS tipo
     '''
     t[0] = Parametro(t[1], t[3], None, t.lineno(1), t.lexpos(1), False)
+
+def p_parametro_1(t):
+    '''
+    parametro : ID DOSPUNTOS tipo CORIZQ CORDER
+    '''
+    print("Parametro Array")
+    if t[3] == TIPO_DATO.NUMERO:
+        t[0] = Parametro(t[1], TIPO_DATO.ARRAY_NUMBER, None, t.lineno(1), t.lexpos(1), False)
+    elif t[3] == TIPO_DATO.CADENA:
+        t[0] = Parametro(t[1], TIPO_DATO.ARRAY_STRING, None, t.lineno(1), t.lexpos(1), False)
+    elif t[3] == TIPO_DATO.BOOLEAN:
+        t[0] = Parametro(t[1], TIPO_DATO.ARRAY_BOOLEAN, None, t.lineno(1), t.lexpos(1), False)
+    else:
+        t[0] = Parametro(t[1], TIPO_DATO.ARRAY_ANY, None, t.lineno(1), t.lexpos(1), False)
+
+# ? expresion : llamada_funcion
+def p_exp_llamada(t):
+    '''
+    expresion : llamada_funcion
+    '''
+    t[0] = t[1]
+
 
 # ? llamada_funcion : ID PARIZQ lista_argumentos PARDER
 # ?                 | ID PARIZQ PARDER
@@ -793,7 +835,6 @@ def p_expresion_identificador(t):
     '''
     expresion : ID
     '''
-    print("ESTOY DESDE IDENTIFICADORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", str(t[1]))
     t[0] = Identificador(t[1], t.lineno(1), t.lexpos(1))
 
 # ? booleano : TRUE
@@ -1043,6 +1084,13 @@ def p_declaracionArray9(t):
     '''
     exp = Array([], t.lineno(1), t.lexpos(1))
     t[0] = DeclaracionArray(t[2], TIPO_DATO.ANY, exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray11(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL expresion
+    '''
+    t[0] = DeclaracionArray(t[2], t[4], t[8], t.lineno(1), t.lexpos(1))
+
 
 def p_declaracionArray10(t):
     '''

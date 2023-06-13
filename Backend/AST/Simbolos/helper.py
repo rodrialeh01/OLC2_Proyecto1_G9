@@ -30,6 +30,7 @@ class Helper:
         actual = entorno
         Ts = ""
         codigo_html = "\n"
+        '''
         for i in actual.tablaSimbolos:
             codigo_html += "<tr>"
             codigo_html += "<td>" + str(i) + "</td>\n"
@@ -58,7 +59,7 @@ class Helper:
             codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].linea) + "</td>\n"
             codigo_html += "<td>" + str(actual.tablaInterfacesDeclaradas[i].columna) + "</td>\n"
             codigo_html += "</tr>"
-
+        '''
 
         self.Ts += Ts + codigo_html + "\n"
 

@@ -36,6 +36,8 @@ class Parametro(Instruccion):
 
 
             if self.tipo != retorno.tipo:
+                print(self.tipo)
+                print(retorno.tipo)
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
                 s.addError(err)

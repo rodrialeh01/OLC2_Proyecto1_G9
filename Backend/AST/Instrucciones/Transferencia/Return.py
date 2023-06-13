@@ -9,7 +9,7 @@ class Return(Instruccion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        if helper.getFuncion() == "funcion":
+        if helper.getFuncion() == "Funcion":
             if self.valor != None:
                 print("RETURN CON VALOR")
                 valor = self.valor.ejecutar(entorno, helper)

@@ -7,15 +7,16 @@ from AST.Simbolos.Simbolo import Simbolo
 
 
 class Funcion(Simbolo, Instruccion):
-    def __init__(self, nombre, params, listaInstrucciones, linea, columna) -> None:
+    def __init__(self, nombre, params, listaInstrucciones, linea, columna, tipo) -> None:
         super().__init__()
         print("VOY A CREAR LA FUNCIÓN: ")
         print('---------------------')
-        super().crearFuncion(nombre, params, listaInstrucciones, linea, columna)
+        super().crearFuncion(nombre, params, listaInstrucciones, linea, columna, tipo)
         print("Creando funcion")
         self.nombre = nombre
         self.params = params
         self.listaInstrucciones = listaInstrucciones
+        self.tipo = tipo
 
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
         print("EXP: ", exp)
@@ -58,17 +59,16 @@ class Funcion(Simbolo, Instruccion):
                 continue
 
             accion = instruccion.ejecutar(entorno, helper)
-            print("-------------------------------ACCION: ", instruccion)
+            print(accion is not None)
             if accion is not None:
-                if isinstance(accion, Return) or isinstance(accion, Retorno):
-                    print("OP1 ", isinstance(accion, Return))
-                    print("OP2 ", isinstance(accion, Retorno))
+                if isinstance(instruccion, Return) or isinstance(instruccion, Retorno):
                     #verificar que el tipo de dato que se retorna sea el mismo que el de la funcion
                     if accion.tipo is not TIPO_DATO.ANY or accion.tipo is not TIPO_DATO.NULL or accion.tipo is not TIPO_DATO.ERROR:
                         helper.setFuncion(tempHelper)
-                        # if self.tipo is not accion.tipo:
-                            #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
-                            #return
+                        print("Tipo de la función: ", self.tipo)
+                        if self.tipo is not accion.tipo:
+                            print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
+                            return
                         
                         #si es el mismo tipo de dato, se retorna el valor
                         return Retorno(accion.valor, accion.tipo)

@@ -16,7 +16,9 @@ class Llamada(Instruccion, Expresion):
         self.params = params
 
     def ejecutar(self, entorno, helper):
+        print("SOY LA LLAMADAAAAAAAAAAAAAAAAAAAAA: ", self.id)
         fn = entorno.ExisteFuncion(self.id)
+        print("SOY FN: ", fn)
         if fn is False:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La función " + self.id + " no existe en el entorno actual")
@@ -28,7 +30,7 @@ class Llamada(Instruccion, Expresion):
         func = entorno.ObtenerFuncion(self.id)
 
         argumentos = func.declaracionesParams(entornoFN, self.params, entorno, helper)
-
+        print("HOLA, SOY ARGUMENTOS: ", argumentos)
         if argumentos is False:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parámetros no coincide con la cantidad de argumentos")
@@ -37,7 +39,9 @@ class Llamada(Instruccion, Expresion):
         
 
         if func is not None:
-            func.ejecutar(entornoFN, helper)
+            ret = func.ejecutar(entornoFN, helper)
+            if ret is not None:
+                return Retorno(ret.valor, ret.tipo)
 
     def genArbol(self):
         nodo = Nodo("LLAMADA FUNCIÓN")

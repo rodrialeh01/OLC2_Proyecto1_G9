@@ -11,12 +11,13 @@ class Simbolo:
         self.entorno = None
         self.valorRef = None
     
-    def crearFuncion(self, nombre, params, listaInstrucciones, linea, columna):
+    def crearFuncion(self, nombre, params, listaInstrucciones, linea, columna, tipo):
         self.nombre = nombre
         self.params = params
         self.listaInstrucciones = listaInstrucciones
         self.linea = linea
         self.columna = columna
+        self.tipo = tipo
 
     def crearInterface(self, nombre, params, linea, columna):
         self.nombre = nombre

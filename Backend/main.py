@@ -82,7 +82,7 @@ def ejecutar():
 
     #print(singletonErr.getErrores())
     entornoTemp = ""
-    entornoTemp = entornoGlobal.getSimbolos()
+    #entornoTemp = entornoGlobal.getSimbolos()
     return jsonify({"message": helpe.getConsola()})
 
 @app.route('/errores', methods=['GET'])

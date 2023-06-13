@@ -17,7 +17,11 @@ class DeclaracionArray(Instruccion):
 
     
     def ejecutar(self, entorno, helper):
+        print("Desde DeclaracionArray : ")
+        print(self.id)
+        print(self.expresion)
         exp = self.expresion.ejecutar(entorno, helper) #obtiene objeto Array
+        print(self.id)
         bandera = True
         bandera = self.Verificar_Tipos_array(exp.valor, self.tipo, bandera)
         if bandera == None:

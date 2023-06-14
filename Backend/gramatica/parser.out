@@ -109,12 +109,12 @@ Rule 103   expresion -> exponencial
 Rule 104   expresion -> separador
 Rule 105   expresion -> concatenacion
 Rule 106   expresion -> to_minusculas
-Rule 107   aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER
-Rule 108   exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+Rule 107   aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER
+Rule 108   exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
 Rule 109   expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER
 Rule 110   to_minusculas -> ID PUNTO TOLOWERCASE PARIZQ PARDER
-Rule 111   separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER
-Rule 112   concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER
+Rule 111   separador -> ID PUNTO SPLIT PARIZQ expresion PARDER
+Rule 112   concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER
 Rule 113   casteo -> expresion PUNTO TOSTRING PARIZQ PARDER
 Rule 114   casteo -> CAST_STRING PARIZQ expresion PARDER
 Rule 115   return -> RETURN expresion
@@ -181,7 +181,7 @@ ENTERO               : 94
 FALSE                : 101
 FOR                  : 52 53 54
 FUNCTION             : 55 56 57 58 59
-ID                   : 30 31 32 33 34 38 39 40 41 54 55 56 57 58 59 62 63 65 66 99 109 110 119 123 124 124 127 128 128 129 129 130 131 132 133 134 135 136 137 138 145 149
+ID                   : 30 31 32 33 34 38 39 40 41 54 55 56 57 58 59 62 63 65 66 99 107 108 109 110 111 112 119 123 124 124 127 128 128 129 129 130 131 132 133 134 135 136 137 138 145 149
 IF                   : 44 45 46 47 50
 IGUAL                : 30 32 34 124 129 130 131 134 135 136 137 138 149
 IGUALACION           : 85
@@ -248,7 +248,7 @@ declaracionArray     : 26
 declaracionInterface : 25
 elseif               : 48 49
 exponencial          : 103
-expresion            : 30 32 34 42 44 45 46 47 50 51 52 53 54 67 68 74 74 75 75 76 76 77 77 78 78 79 79 80 81 81 82 82 83 83 84 84 85 85 86 86 87 87 88 88 89 93 107 107 108 108 111 111 112 112 113 114 115 127 129 137 139 140 148 149
+expresion            : 30 32 34 42 44 45 46 47 50 51 52 53 54 67 68 74 74 75 75 76 76 77 77 78 78 79 79 80 81 81 82 82 83 83 84 84 85 85 86 86 87 87 88 88 89 93 107 108 111 112 113 114 115 127 129 137 139 140 148 149
 funcion              : 4
 impresion            : 14
 inc                  : 36 91
@@ -1313,10 +1313,10 @@ state 35
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -1575,10 +1575,10 @@ state 45
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -1665,10 +1665,10 @@ state 46
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -1903,10 +1903,10 @@ state 52
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2041,10 +2041,10 @@ state 55
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2128,10 +2128,10 @@ state 56
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2214,10 +2214,6 @@ state 58
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 115 (return -> RETURN expresion .)
     error           reduce using rule 115 (return -> RETURN expresion .)
@@ -2347,10 +2343,10 @@ state 60
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2434,10 +2430,10 @@ state 61
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2650,10 +2646,10 @@ state 65
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -2912,6 +2908,10 @@ state 71
     (66) llamada_funcion -> ID . PARIZQ PARDER
     (38) dec -> ID . DECREMENTO
     (40) inc -> ID . INCREMENTO
+    (107) aproximacion -> ID . PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> ID . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> ID . PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> ID . PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> ID . PUNTO TOLOWERCASE PARIZQ PARDER
     (145) acceso_array -> ID . lista_acceso_array
     (146) lista_acceso_array -> . lista_acceso_array acceso_array_exp
@@ -3414,10 +3414,10 @@ state 82
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -3585,10 +3585,6 @@ state 87
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 34 (asignacion -> ID IGUAL expresion .)
     error           reduce using rule 34 (asignacion -> ID IGUAL expresion .)
@@ -3697,10 +3693,6 @@ state 90
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          reduce using rule 68 (lista_argumentos -> expresion .)
     COMA            reduce using rule 68 (lista_argumentos -> expresion .)
@@ -3770,10 +3762,10 @@ state 91
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -3878,10 +3870,6 @@ state 94
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     CORDER          shift and go to state 138
     MAS             shift and go to state 104
@@ -3952,10 +3940,10 @@ state 95
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4047,10 +4035,6 @@ state 98
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          shift and go to state 150
     MAS             shift and go to state 104
@@ -4088,10 +4072,6 @@ state 99
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          shift and go to state 151
     MAS             shift and go to state 104
@@ -4198,10 +4178,10 @@ state 104
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4285,10 +4265,10 @@ state 105
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4372,10 +4352,10 @@ state 106
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4459,10 +4439,10 @@ state 107
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4546,10 +4526,10 @@ state 108
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4633,10 +4613,10 @@ state 109
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4720,10 +4700,10 @@ state 110
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4807,10 +4787,10 @@ state 111
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4894,10 +4874,10 @@ state 112
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -4981,10 +4961,10 @@ state 113
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5068,10 +5048,10 @@ state 114
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5155,10 +5135,10 @@ state 115
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5242,10 +5222,10 @@ state 116
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5329,10 +5309,10 @@ state 117
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5370,16 +5350,8 @@ state 117
 state 118
 
     (113) casteo -> expresion PUNTO . TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion PUNTO . TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion PUNTO . TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion PUNTO . SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion PUNTO . CONCAT PARIZQ expresion PARDER
 
     TOSTRING        shift and go to state 169
-    TOFIXED         shift and go to state 170
-    TOEXPONENTIAL   shift and go to state 171
-    SPLIT           shift and go to state 172
-    CONCAT          shift and go to state 173
 
 
 state 119
@@ -5400,10 +5372,6 @@ state 119
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 80 (expresion -> MENOS expresion .)
     MENOS           reduce using rule 80 (expresion -> MENOS expresion .)
@@ -5478,10 +5446,6 @@ state 120
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     AND             reduce using rule 89 (expresion -> NOT expresion .)
     OR              reduce using rule 89 (expresion -> NOT expresion .)
@@ -5556,12 +5520,8 @@ state 121
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
-    PARDER          shift and go to state 174
+    PARDER          shift and go to state 170
     MAS             shift and go to state 104
     MENOS           shift and go to state 105
     POR             shift and go to state 106
@@ -5583,10 +5543,18 @@ state 122
 
     (109) expresion -> ID PUNTO . TOUPPERCASE PARIZQ PARDER
     (128) expresion -> ID PUNTO . ID
+    (107) aproximacion -> ID PUNTO . TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> ID PUNTO . TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> ID PUNTO . SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> ID PUNTO . CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> ID PUNTO . TOLOWERCASE PARIZQ PARDER
 
-    TOUPPERCASE     shift and go to state 176
-    ID              shift and go to state 175
+    TOUPPERCASE     shift and go to state 172
+    ID              shift and go to state 171
+    TOFIXED         shift and go to state 173
+    TOEXPONENTIAL   shift and go to state 174
+    SPLIT           shift and go to state 175
+    CONCAT          shift and go to state 176
     TOLOWERCASE     shift and go to state 177
 
 
@@ -5686,10 +5654,10 @@ state 124
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -5794,10 +5762,6 @@ state 127
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     CORDER          reduce using rule 140 (lista_exp -> expresion .)
     COMA            reduce using rule 140 (lista_exp -> expresion .)
@@ -5986,10 +5950,10 @@ state 135
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6042,10 +6006,6 @@ state 136
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 149 (asignacion_array -> ID lista_acceso_array IGUAL expresion .)
     error           reduce using rule 149 (asignacion_array -> ID lista_acceso_array IGUAL expresion .)
@@ -6132,10 +6092,10 @@ state 137
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6233,10 +6193,6 @@ state 139
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 30 (declaracion -> LET ID IGUAL expresion .)
     error           reduce using rule 30 (declaracion -> LET ID IGUAL expresion .)
@@ -6328,10 +6284,10 @@ state 140
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6623,10 +6579,10 @@ state 149
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6734,10 +6690,10 @@ state 152
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6821,10 +6777,10 @@ state 153
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -6891,10 +6847,6 @@ state 155
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 74 (expresion -> expresion MAS expresion .)
     MENOS           reduce using rule 74 (expresion -> expresion MAS expresion .)
@@ -6969,10 +6921,6 @@ state 156
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 75 (expresion -> expresion MENOS expresion .)
     MENOS           reduce using rule 75 (expresion -> expresion MENOS expresion .)
@@ -7047,10 +6995,6 @@ state 157
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 76 (expresion -> expresion POR expresion .)
     MENOS           reduce using rule 76 (expresion -> expresion POR expresion .)
@@ -7125,10 +7069,6 @@ state 158
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 77 (expresion -> expresion DIVIDIDO expresion .)
     MENOS           reduce using rule 77 (expresion -> expresion DIVIDIDO expresion .)
@@ -7203,10 +7143,6 @@ state 159
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 78 (expresion -> expresion MODULO expresion .)
     MENOS           reduce using rule 78 (expresion -> expresion MODULO expresion .)
@@ -7281,10 +7217,6 @@ state 160
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAS             reduce using rule 79 (expresion -> expresion POTENCIA expresion .)
     MENOS           reduce using rule 79 (expresion -> expresion POTENCIA expresion .)
@@ -7359,10 +7291,6 @@ state 161
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 81 (expresion -> expresion MAYOR expresion .)
     MENOR           reduce using rule 81 (expresion -> expresion MAYOR expresion .)
@@ -7437,10 +7365,6 @@ state 162
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 82 (expresion -> expresion MENOR expresion .)
     MENOR           reduce using rule 82 (expresion -> expresion MENOR expresion .)
@@ -7515,10 +7439,6 @@ state 163
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 83 (expresion -> expresion MAYORIGUAL expresion .)
     MENOR           reduce using rule 83 (expresion -> expresion MAYORIGUAL expresion .)
@@ -7593,10 +7513,6 @@ state 164
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 84 (expresion -> expresion MENORIGUAL expresion .)
     MENOR           reduce using rule 84 (expresion -> expresion MENORIGUAL expresion .)
@@ -7671,10 +7587,6 @@ state 165
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 85 (expresion -> expresion IGUALACION expresion .)
     MENOR           reduce using rule 85 (expresion -> expresion IGUALACION expresion .)
@@ -7749,10 +7661,6 @@ state 166
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     MAYOR           reduce using rule 86 (expresion -> expresion DISTINTO expresion .)
     MENOR           reduce using rule 86 (expresion -> expresion DISTINTO expresion .)
@@ -7827,10 +7735,6 @@ state 167
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     AND             reduce using rule 87 (expresion -> expresion AND expresion .)
     OR              reduce using rule 87 (expresion -> expresion AND expresion .)
@@ -7905,10 +7809,6 @@ state 168
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     OR              reduce using rule 88 (expresion -> expresion OR expresion .)
     PUNTO           reduce using rule 88 (expresion -> expresion OR expresion .)
@@ -7974,34 +7874,6 @@ state 169
 
 state 170
 
-    (107) aproximacion -> expresion PUNTO TOFIXED . PARIZQ expresion PARDER
-
-    PARIZQ          shift and go to state 208
-
-
-state 171
-
-    (108) exponencial -> expresion PUNTO TOEXPONENTIAL . PARIZQ expresion PARDER
-
-    PARIZQ          shift and go to state 209
-
-
-state 172
-
-    (111) separador -> expresion PUNTO SPLIT . PARIZQ expresion PARDER
-
-    PARIZQ          shift and go to state 210
-
-
-state 173
-
-    (112) concatenacion -> expresion PUNTO CONCAT . PARIZQ expresion PARDER
-
-    PARIZQ          shift and go to state 211
-
-
-state 174
-
     (93) expresion -> PARIZQ expresion PARDER .
 
     MAS             reduce using rule 93 (expresion -> PARIZQ expresion PARDER .)
@@ -8043,7 +7915,7 @@ state 174
     CORDER          reduce using rule 93 (expresion -> PARIZQ expresion PARDER .)
 
 
-state 175
+state 171
 
     (128) expresion -> ID PUNTO ID .
 
@@ -8086,9 +7958,37 @@ state 175
     CORDER          reduce using rule 128 (expresion -> ID PUNTO ID .)
 
 
-state 176
+state 172
 
     (109) expresion -> ID PUNTO TOUPPERCASE . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 208
+
+
+state 173
+
+    (107) aproximacion -> ID PUNTO TOFIXED . PARIZQ expresion PARDER
+
+    PARIZQ          shift and go to state 209
+
+
+state 174
+
+    (108) exponencial -> ID PUNTO TOEXPONENTIAL . PARIZQ expresion PARDER
+
+    PARIZQ          shift and go to state 210
+
+
+state 175
+
+    (111) separador -> ID PUNTO SPLIT . PARIZQ expresion PARDER
+
+    PARIZQ          shift and go to state 211
+
+
+state 176
+
+    (112) concatenacion -> ID PUNTO CONCAT . PARIZQ expresion PARDER
 
     PARIZQ          shift and go to state 212
 
@@ -8118,10 +8018,6 @@ state 178
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          shift and go to state 214
     MAS             shift and go to state 104
@@ -8233,10 +8129,10 @@ state 180
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -8503,10 +8399,6 @@ state 190
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          reduce using rule 67 (lista_argumentos -> lista_argumentos COMA expresion .)
     COMA            reduce using rule 67 (lista_argumentos -> lista_argumentos COMA expresion .)
@@ -8545,10 +8437,6 @@ state 191
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 129 (asignacionInterface -> ID PUNTO ID IGUAL expresion .)
     error           reduce using rule 129 (asignacionInterface -> ID PUNTO ID IGUAL expresion .)
@@ -8733,10 +8621,10 @@ state 195
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -8819,10 +8707,6 @@ state 198
     (88) expresion -> expresion . OR expresion
     (68) lista_argumentos -> expresion .
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
   ! shift/reduce conflict for PARDER resolved as shift
     PARDER          shift and go to state 233
@@ -8932,10 +8816,6 @@ state 202
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        shift and go to state 238
     MAS             shift and go to state 104
@@ -8973,10 +8853,6 @@ state 203
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        shift and go to state 239
     MAS             shift and go to state 104
@@ -9045,10 +8921,10 @@ state 204
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -9132,10 +9008,10 @@ state 205
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -9197,94 +9073,14 @@ state 207
 
 state 208
 
-    (107) aproximacion -> expresion PUNTO TOFIXED PARIZQ . expresion PARDER
-    (64) expresion -> . llamada_funcion
-    (74) expresion -> . expresion MAS expresion
-    (75) expresion -> . expresion MENOS expresion
-    (76) expresion -> . expresion POR expresion
-    (77) expresion -> . expresion DIVIDIDO expresion
-    (78) expresion -> . expresion MODULO expresion
-    (79) expresion -> . expresion POTENCIA expresion
-    (80) expresion -> . MENOS expresion
-    (81) expresion -> . expresion MAYOR expresion
-    (82) expresion -> . expresion MENOR expresion
-    (83) expresion -> . expresion MAYORIGUAL expresion
-    (84) expresion -> . expresion MENORIGUAL expresion
-    (85) expresion -> . expresion IGUALACION expresion
-    (86) expresion -> . expresion DISTINTO expresion
-    (87) expresion -> . expresion AND expresion
-    (88) expresion -> . expresion OR expresion
-    (89) expresion -> . NOT expresion
-    (90) expresion -> . dec
-    (91) expresion -> . inc
-    (92) expresion -> . casteo
-    (93) expresion -> . PARIZQ expresion PARDER
-    (94) expresion -> . ENTERO
-    (95) expresion -> . DECIMAL
-    (96) expresion -> . CADENA
-    (97) expresion -> . NULL
-    (98) expresion -> . booleano
-    (99) expresion -> . ID
-    (102) expresion -> . aproximacion
-    (103) expresion -> . exponencial
-    (104) expresion -> . separador
-    (105) expresion -> . concatenacion
-    (106) expresion -> . to_minusculas
-    (109) expresion -> . ID PUNTO TOUPPERCASE PARIZQ PARDER
-    (128) expresion -> . ID PUNTO ID
-    (141) expresion -> . arreglo
-    (144) expresion -> . acceso_array
-    (65) llamada_funcion -> . ID PARIZQ lista_argumentos PARDER
-    (66) llamada_funcion -> . ID PARIZQ PARDER
-    (38) dec -> . ID DECREMENTO
-    (39) dec -> . DECREMENTO ID
-    (40) inc -> . ID INCREMENTO
-    (41) inc -> . INCREMENTO ID
-    (113) casteo -> . expresion PUNTO TOSTRING PARIZQ PARDER
-    (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
-    (100) booleano -> . TRUE
-    (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
-    (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
-    (142) arreglo -> . CORIZQ lista_exp CORDER
-    (143) arreglo -> . CORIZQ CORDER
-    (145) acceso_array -> . ID lista_acceso_array
+    (109) expresion -> ID PUNTO TOUPPERCASE PARIZQ . PARDER
 
-    MENOS           shift and go to state 60
-    NOT             shift and go to state 61
-    PARIZQ          shift and go to state 65
-    ENTERO          shift and go to state 66
-    DECIMAL         shift and go to state 67
-    CADENA          shift and go to state 68
-    NULL            shift and go to state 69
-    ID              shift and go to state 71
-    DECREMENTO      shift and go to state 39
-    INCREMENTO      shift and go to state 40
-    CAST_STRING     shift and go to state 79
-    TRUE            shift and go to state 80
-    FALSE           shift and go to state 81
-    CORIZQ          shift and go to state 82
+    PARDER          shift and go to state 243
 
-    expresion                      shift and go to state 243
-    llamada_funcion                shift and go to state 59
-    dec                            shift and go to state 62
-    inc                            shift and go to state 63
-    casteo                         shift and go to state 64
-    booleano                       shift and go to state 70
-    aproximacion                   shift and go to state 72
-    exponencial                    shift and go to state 73
-    separador                      shift and go to state 74
-    concatenacion                  shift and go to state 75
-    to_minusculas                  shift and go to state 76
-    arreglo                        shift and go to state 77
-    acceso_array                   shift and go to state 78
 
 state 209
 
-    (108) exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ . expresion PARDER
+    (107) aproximacion -> ID PUNTO TOFIXED PARIZQ . expresion PARDER
     (64) expresion -> . llamada_funcion
     (74) expresion -> . expresion MAS expresion
     (75) expresion -> . expresion MENOS expresion
@@ -9331,10 +9127,10 @@ state 209
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -9371,7 +9167,7 @@ state 209
 
 state 210
 
-    (111) separador -> expresion PUNTO SPLIT PARIZQ . expresion PARDER
+    (108) exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ . expresion PARDER
     (64) expresion -> . llamada_funcion
     (74) expresion -> . expresion MAS expresion
     (75) expresion -> . expresion MENOS expresion
@@ -9418,10 +9214,10 @@ state 210
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -9458,7 +9254,7 @@ state 210
 
 state 211
 
-    (112) concatenacion -> expresion PUNTO CONCAT PARIZQ . expresion PARDER
+    (111) separador -> ID PUNTO SPLIT PARIZQ . expresion PARDER
     (64) expresion -> . llamada_funcion
     (74) expresion -> . expresion MAS expresion
     (75) expresion -> . expresion MENOS expresion
@@ -9505,10 +9301,10 @@ state 211
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -9545,10 +9341,90 @@ state 211
 
 state 212
 
-    (109) expresion -> ID PUNTO TOUPPERCASE PARIZQ . PARDER
+    (112) concatenacion -> ID PUNTO CONCAT PARIZQ . expresion PARDER
+    (64) expresion -> . llamada_funcion
+    (74) expresion -> . expresion MAS expresion
+    (75) expresion -> . expresion MENOS expresion
+    (76) expresion -> . expresion POR expresion
+    (77) expresion -> . expresion DIVIDIDO expresion
+    (78) expresion -> . expresion MODULO expresion
+    (79) expresion -> . expresion POTENCIA expresion
+    (80) expresion -> . MENOS expresion
+    (81) expresion -> . expresion MAYOR expresion
+    (82) expresion -> . expresion MENOR expresion
+    (83) expresion -> . expresion MAYORIGUAL expresion
+    (84) expresion -> . expresion MENORIGUAL expresion
+    (85) expresion -> . expresion IGUALACION expresion
+    (86) expresion -> . expresion DISTINTO expresion
+    (87) expresion -> . expresion AND expresion
+    (88) expresion -> . expresion OR expresion
+    (89) expresion -> . NOT expresion
+    (90) expresion -> . dec
+    (91) expresion -> . inc
+    (92) expresion -> . casteo
+    (93) expresion -> . PARIZQ expresion PARDER
+    (94) expresion -> . ENTERO
+    (95) expresion -> . DECIMAL
+    (96) expresion -> . CADENA
+    (97) expresion -> . NULL
+    (98) expresion -> . booleano
+    (99) expresion -> . ID
+    (102) expresion -> . aproximacion
+    (103) expresion -> . exponencial
+    (104) expresion -> . separador
+    (105) expresion -> . concatenacion
+    (106) expresion -> . to_minusculas
+    (109) expresion -> . ID PUNTO TOUPPERCASE PARIZQ PARDER
+    (128) expresion -> . ID PUNTO ID
+    (141) expresion -> . arreglo
+    (144) expresion -> . acceso_array
+    (65) llamada_funcion -> . ID PARIZQ lista_argumentos PARDER
+    (66) llamada_funcion -> . ID PARIZQ PARDER
+    (38) dec -> . ID DECREMENTO
+    (39) dec -> . DECREMENTO ID
+    (40) inc -> . ID INCREMENTO
+    (41) inc -> . INCREMENTO ID
+    (113) casteo -> . expresion PUNTO TOSTRING PARIZQ PARDER
+    (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
+    (100) booleano -> . TRUE
+    (101) booleano -> . FALSE
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
+    (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
+    (142) arreglo -> . CORIZQ lista_exp CORDER
+    (143) arreglo -> . CORIZQ CORDER
+    (145) acceso_array -> . ID lista_acceso_array
 
-    PARDER          shift and go to state 247
+    MENOS           shift and go to state 60
+    NOT             shift and go to state 61
+    PARIZQ          shift and go to state 65
+    ENTERO          shift and go to state 66
+    DECIMAL         shift and go to state 67
+    CADENA          shift and go to state 68
+    NULL            shift and go to state 69
+    ID              shift and go to state 71
+    DECREMENTO      shift and go to state 39
+    INCREMENTO      shift and go to state 40
+    CAST_STRING     shift and go to state 79
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    CORIZQ          shift and go to state 82
 
+    expresion                      shift and go to state 247
+    llamada_funcion                shift and go to state 59
+    dec                            shift and go to state 62
+    inc                            shift and go to state 63
+    casteo                         shift and go to state 64
+    booleano                       shift and go to state 70
+    aproximacion                   shift and go to state 72
+    exponencial                    shift and go to state 73
+    separador                      shift and go to state 74
+    concatenacion                  shift and go to state 75
+    to_minusculas                  shift and go to state 76
+    arreglo                        shift and go to state 77
+    acceso_array                   shift and go to state 78
 
 state 213
 
@@ -9618,10 +9494,6 @@ state 215
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     CORDER          reduce using rule 139 (lista_exp -> lista_exp COMA expresion .)
     COMA            reduce using rule 139 (lista_exp -> lista_exp COMA expresion .)
@@ -10044,10 +9916,6 @@ state 230
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 32 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
     error           reduce using rule 32 (declaracion -> LET ID DOSPUNTOS tipo IGUAL expresion .)
@@ -10303,10 +10171,6 @@ state 240
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          shift and go to state 266
     MAS             shift and go to state 104
@@ -10380,170 +10244,6 @@ state 242
 
 state 243
 
-    (107) aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion . PARDER
-    (74) expresion -> expresion . MAS expresion
-    (75) expresion -> expresion . MENOS expresion
-    (76) expresion -> expresion . POR expresion
-    (77) expresion -> expresion . DIVIDIDO expresion
-    (78) expresion -> expresion . MODULO expresion
-    (79) expresion -> expresion . POTENCIA expresion
-    (81) expresion -> expresion . MAYOR expresion
-    (82) expresion -> expresion . MENOR expresion
-    (83) expresion -> expresion . MAYORIGUAL expresion
-    (84) expresion -> expresion . MENORIGUAL expresion
-    (85) expresion -> expresion . IGUALACION expresion
-    (86) expresion -> expresion . DISTINTO expresion
-    (87) expresion -> expresion . AND expresion
-    (88) expresion -> expresion . OR expresion
-    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
-
-    PARDER          shift and go to state 267
-    MAS             shift and go to state 104
-    MENOS           shift and go to state 105
-    POR             shift and go to state 106
-    DIVIDIDO        shift and go to state 107
-    MODULO          shift and go to state 108
-    POTENCIA        shift and go to state 109
-    MAYOR           shift and go to state 110
-    MENOR           shift and go to state 111
-    MAYORIGUAL      shift and go to state 112
-    MENORIGUAL      shift and go to state 113
-    IGUALACION      shift and go to state 114
-    DISTINTO        shift and go to state 115
-    AND             shift and go to state 116
-    OR              shift and go to state 117
-    PUNTO           shift and go to state 118
-
-
-state 244
-
-    (108) exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion . PARDER
-    (74) expresion -> expresion . MAS expresion
-    (75) expresion -> expresion . MENOS expresion
-    (76) expresion -> expresion . POR expresion
-    (77) expresion -> expresion . DIVIDIDO expresion
-    (78) expresion -> expresion . MODULO expresion
-    (79) expresion -> expresion . POTENCIA expresion
-    (81) expresion -> expresion . MAYOR expresion
-    (82) expresion -> expresion . MENOR expresion
-    (83) expresion -> expresion . MAYORIGUAL expresion
-    (84) expresion -> expresion . MENORIGUAL expresion
-    (85) expresion -> expresion . IGUALACION expresion
-    (86) expresion -> expresion . DISTINTO expresion
-    (87) expresion -> expresion . AND expresion
-    (88) expresion -> expresion . OR expresion
-    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
-
-    PARDER          shift and go to state 268
-    MAS             shift and go to state 104
-    MENOS           shift and go to state 105
-    POR             shift and go to state 106
-    DIVIDIDO        shift and go to state 107
-    MODULO          shift and go to state 108
-    POTENCIA        shift and go to state 109
-    MAYOR           shift and go to state 110
-    MENOR           shift and go to state 111
-    MAYORIGUAL      shift and go to state 112
-    MENORIGUAL      shift and go to state 113
-    IGUALACION      shift and go to state 114
-    DISTINTO        shift and go to state 115
-    AND             shift and go to state 116
-    OR              shift and go to state 117
-    PUNTO           shift and go to state 118
-
-
-state 245
-
-    (111) separador -> expresion PUNTO SPLIT PARIZQ expresion . PARDER
-    (74) expresion -> expresion . MAS expresion
-    (75) expresion -> expresion . MENOS expresion
-    (76) expresion -> expresion . POR expresion
-    (77) expresion -> expresion . DIVIDIDO expresion
-    (78) expresion -> expresion . MODULO expresion
-    (79) expresion -> expresion . POTENCIA expresion
-    (81) expresion -> expresion . MAYOR expresion
-    (82) expresion -> expresion . MENOR expresion
-    (83) expresion -> expresion . MAYORIGUAL expresion
-    (84) expresion -> expresion . MENORIGUAL expresion
-    (85) expresion -> expresion . IGUALACION expresion
-    (86) expresion -> expresion . DISTINTO expresion
-    (87) expresion -> expresion . AND expresion
-    (88) expresion -> expresion . OR expresion
-    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
-
-    PARDER          shift and go to state 269
-    MAS             shift and go to state 104
-    MENOS           shift and go to state 105
-    POR             shift and go to state 106
-    DIVIDIDO        shift and go to state 107
-    MODULO          shift and go to state 108
-    POTENCIA        shift and go to state 109
-    MAYOR           shift and go to state 110
-    MENOR           shift and go to state 111
-    MAYORIGUAL      shift and go to state 112
-    MENORIGUAL      shift and go to state 113
-    IGUALACION      shift and go to state 114
-    DISTINTO        shift and go to state 115
-    AND             shift and go to state 116
-    OR              shift and go to state 117
-    PUNTO           shift and go to state 118
-
-
-state 246
-
-    (112) concatenacion -> expresion PUNTO CONCAT PARIZQ expresion . PARDER
-    (74) expresion -> expresion . MAS expresion
-    (75) expresion -> expresion . MENOS expresion
-    (76) expresion -> expresion . POR expresion
-    (77) expresion -> expresion . DIVIDIDO expresion
-    (78) expresion -> expresion . MODULO expresion
-    (79) expresion -> expresion . POTENCIA expresion
-    (81) expresion -> expresion . MAYOR expresion
-    (82) expresion -> expresion . MENOR expresion
-    (83) expresion -> expresion . MAYORIGUAL expresion
-    (84) expresion -> expresion . MENORIGUAL expresion
-    (85) expresion -> expresion . IGUALACION expresion
-    (86) expresion -> expresion . DISTINTO expresion
-    (87) expresion -> expresion . AND expresion
-    (88) expresion -> expresion . OR expresion
-    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
-
-    PARDER          shift and go to state 270
-    MAS             shift and go to state 104
-    MENOS           shift and go to state 105
-    POR             shift and go to state 106
-    DIVIDIDO        shift and go to state 107
-    MODULO          shift and go to state 108
-    POTENCIA        shift and go to state 109
-    MAYOR           shift and go to state 110
-    MENOR           shift and go to state 111
-    MAYORIGUAL      shift and go to state 112
-    MENORIGUAL      shift and go to state 113
-    IGUALACION      shift and go to state 114
-    DISTINTO        shift and go to state 115
-    AND             shift and go to state 116
-    OR              shift and go to state 117
-    PUNTO           shift and go to state 118
-
-
-state 247
-
     (109) expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER .
 
     MAS             reduce using rule 109 (expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER .)
@@ -10583,6 +10283,154 @@ state 247
     PARDER          reduce using rule 109 (expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER .)
     COMA            reduce using rule 109 (expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER .)
     CORDER          reduce using rule 109 (expresion -> ID PUNTO TOUPPERCASE PARIZQ PARDER .)
+
+
+state 244
+
+    (107) aproximacion -> ID PUNTO TOFIXED PARIZQ expresion . PARDER
+    (74) expresion -> expresion . MAS expresion
+    (75) expresion -> expresion . MENOS expresion
+    (76) expresion -> expresion . POR expresion
+    (77) expresion -> expresion . DIVIDIDO expresion
+    (78) expresion -> expresion . MODULO expresion
+    (79) expresion -> expresion . POTENCIA expresion
+    (81) expresion -> expresion . MAYOR expresion
+    (82) expresion -> expresion . MENOR expresion
+    (83) expresion -> expresion . MAYORIGUAL expresion
+    (84) expresion -> expresion . MENORIGUAL expresion
+    (85) expresion -> expresion . IGUALACION expresion
+    (86) expresion -> expresion . DISTINTO expresion
+    (87) expresion -> expresion . AND expresion
+    (88) expresion -> expresion . OR expresion
+    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
+
+    PARDER          shift and go to state 267
+    MAS             shift and go to state 104
+    MENOS           shift and go to state 105
+    POR             shift and go to state 106
+    DIVIDIDO        shift and go to state 107
+    MODULO          shift and go to state 108
+    POTENCIA        shift and go to state 109
+    MAYOR           shift and go to state 110
+    MENOR           shift and go to state 111
+    MAYORIGUAL      shift and go to state 112
+    MENORIGUAL      shift and go to state 113
+    IGUALACION      shift and go to state 114
+    DISTINTO        shift and go to state 115
+    AND             shift and go to state 116
+    OR              shift and go to state 117
+    PUNTO           shift and go to state 118
+
+
+state 245
+
+    (108) exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion . PARDER
+    (74) expresion -> expresion . MAS expresion
+    (75) expresion -> expresion . MENOS expresion
+    (76) expresion -> expresion . POR expresion
+    (77) expresion -> expresion . DIVIDIDO expresion
+    (78) expresion -> expresion . MODULO expresion
+    (79) expresion -> expresion . POTENCIA expresion
+    (81) expresion -> expresion . MAYOR expresion
+    (82) expresion -> expresion . MENOR expresion
+    (83) expresion -> expresion . MAYORIGUAL expresion
+    (84) expresion -> expresion . MENORIGUAL expresion
+    (85) expresion -> expresion . IGUALACION expresion
+    (86) expresion -> expresion . DISTINTO expresion
+    (87) expresion -> expresion . AND expresion
+    (88) expresion -> expresion . OR expresion
+    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
+
+    PARDER          shift and go to state 268
+    MAS             shift and go to state 104
+    MENOS           shift and go to state 105
+    POR             shift and go to state 106
+    DIVIDIDO        shift and go to state 107
+    MODULO          shift and go to state 108
+    POTENCIA        shift and go to state 109
+    MAYOR           shift and go to state 110
+    MENOR           shift and go to state 111
+    MAYORIGUAL      shift and go to state 112
+    MENORIGUAL      shift and go to state 113
+    IGUALACION      shift and go to state 114
+    DISTINTO        shift and go to state 115
+    AND             shift and go to state 116
+    OR              shift and go to state 117
+    PUNTO           shift and go to state 118
+
+
+state 246
+
+    (111) separador -> ID PUNTO SPLIT PARIZQ expresion . PARDER
+    (74) expresion -> expresion . MAS expresion
+    (75) expresion -> expresion . MENOS expresion
+    (76) expresion -> expresion . POR expresion
+    (77) expresion -> expresion . DIVIDIDO expresion
+    (78) expresion -> expresion . MODULO expresion
+    (79) expresion -> expresion . POTENCIA expresion
+    (81) expresion -> expresion . MAYOR expresion
+    (82) expresion -> expresion . MENOR expresion
+    (83) expresion -> expresion . MAYORIGUAL expresion
+    (84) expresion -> expresion . MENORIGUAL expresion
+    (85) expresion -> expresion . IGUALACION expresion
+    (86) expresion -> expresion . DISTINTO expresion
+    (87) expresion -> expresion . AND expresion
+    (88) expresion -> expresion . OR expresion
+    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
+
+    PARDER          shift and go to state 269
+    MAS             shift and go to state 104
+    MENOS           shift and go to state 105
+    POR             shift and go to state 106
+    DIVIDIDO        shift and go to state 107
+    MODULO          shift and go to state 108
+    POTENCIA        shift and go to state 109
+    MAYOR           shift and go to state 110
+    MENOR           shift and go to state 111
+    MAYORIGUAL      shift and go to state 112
+    MENORIGUAL      shift and go to state 113
+    IGUALACION      shift and go to state 114
+    DISTINTO        shift and go to state 115
+    AND             shift and go to state 116
+    OR              shift and go to state 117
+    PUNTO           shift and go to state 118
+
+
+state 247
+
+    (112) concatenacion -> ID PUNTO CONCAT PARIZQ expresion . PARDER
+    (74) expresion -> expresion . MAS expresion
+    (75) expresion -> expresion . MENOS expresion
+    (76) expresion -> expresion . POR expresion
+    (77) expresion -> expresion . DIVIDIDO expresion
+    (78) expresion -> expresion . MODULO expresion
+    (79) expresion -> expresion . POTENCIA expresion
+    (81) expresion -> expresion . MAYOR expresion
+    (82) expresion -> expresion . MENOR expresion
+    (83) expresion -> expresion . MAYORIGUAL expresion
+    (84) expresion -> expresion . MENORIGUAL expresion
+    (85) expresion -> expresion . IGUALACION expresion
+    (86) expresion -> expresion . DISTINTO expresion
+    (87) expresion -> expresion . AND expresion
+    (88) expresion -> expresion . OR expresion
+    (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
+
+    PARDER          shift and go to state 270
+    MAS             shift and go to state 104
+    MENOS           shift and go to state 105
+    POR             shift and go to state 106
+    DIVIDIDO        shift and go to state 107
+    MODULO          shift and go to state 108
+    POTENCIA        shift and go to state 109
+    MAYOR           shift and go to state 110
+    MENOR           shift and go to state 111
+    MAYORIGUAL      shift and go to state 112
+    MENORIGUAL      shift and go to state 113
+    IGUALACION      shift and go to state 114
+    DISTINTO        shift and go to state 115
+    AND             shift and go to state 116
+    OR              shift and go to state 117
+    PUNTO           shift and go to state 118
 
 
 state 248
@@ -10799,10 +10647,10 @@ state 258
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -10961,174 +10809,174 @@ state 266
 
 state 267
 
-    (107) aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .
+    (107) aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .
 
-    MAS             reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MENOS           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    POR             reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    DIVIDIDO        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MODULO          reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    POTENCIA        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MAYOR           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MENOR           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MAYORIGUAL      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    MENORIGUAL      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    IGUALACION      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    DISTINTO        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    AND             reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    OR              reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    PUNTO           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    PTOYCOMA        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    error           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    FUNCTION        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    COMENTARIO      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    COMENTARIO_MULTILINEA reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    LET             reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    ID              reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    CONSOLE         reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    IF              reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    WHILE           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    FOR             reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    RETURN          reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    BREAK           reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    CONTINUE        reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    INTERFACE       reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    DECREMENTO      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    INCREMENTO      reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    $end            reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    LLADER          reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    PARDER          reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    COMA            reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
-    CORDER          reduce using rule 107 (aproximacion -> expresion PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MAS             reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    POR             reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    DIVIDIDO        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MODULO          reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    POTENCIA        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MAYOR           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MENOR           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MAYORIGUAL      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    MENORIGUAL      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    IGUALACION      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    DISTINTO        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    AND             reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    OR              reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    PUNTO           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    PTOYCOMA        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    error           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    FUNCTION        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    COMENTARIO      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    COMENTARIO_MULTILINEA reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    LET             reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    ID              reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    CONSOLE         reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    IF              reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    WHILE           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    FOR             reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    RETURN          reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    BREAK           reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    CONTINUE        reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    INTERFACE       reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    DECREMENTO      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    INCREMENTO      reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    $end            reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    LLADER          reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    COMA            reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
+    CORDER          reduce using rule 107 (aproximacion -> ID PUNTO TOFIXED PARIZQ expresion PARDER .)
 
 
 state 268
 
-    (108) exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .
+    (108) exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .
 
-    MAS             reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MENOS           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    POR             reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    DIVIDIDO        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MODULO          reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    POTENCIA        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MAYOR           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MENOR           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MAYORIGUAL      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    MENORIGUAL      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    IGUALACION      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    DISTINTO        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    AND             reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    OR              reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    PUNTO           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    PTOYCOMA        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    error           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    FUNCTION        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    COMENTARIO      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    COMENTARIO_MULTILINEA reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    LET             reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    ID              reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    CONSOLE         reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    IF              reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    WHILE           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    FOR             reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    RETURN          reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    BREAK           reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    CONTINUE        reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    INTERFACE       reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    DECREMENTO      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    INCREMENTO      reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    $end            reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    LLADER          reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    PARDER          reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    COMA            reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
-    CORDER          reduce using rule 108 (exponencial -> expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MAS             reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    POR             reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    DIVIDIDO        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MODULO          reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    POTENCIA        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MAYOR           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MENOR           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MAYORIGUAL      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    MENORIGUAL      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    IGUALACION      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    DISTINTO        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    AND             reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    OR              reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    PUNTO           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    PTOYCOMA        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    error           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    FUNCTION        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    COMENTARIO      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    COMENTARIO_MULTILINEA reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    LET             reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    ID              reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    CONSOLE         reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    IF              reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    WHILE           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    FOR             reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    RETURN          reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    BREAK           reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    CONTINUE        reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    INTERFACE       reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    DECREMENTO      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    INCREMENTO      reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    $end            reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    LLADER          reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    COMA            reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
+    CORDER          reduce using rule 108 (exponencial -> ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER .)
 
 
 state 269
 
-    (111) separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .
+    (111) separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .
 
-    MAS             reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MENOS           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    POR             reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    DIVIDIDO        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MODULO          reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    POTENCIA        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MAYOR           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MENOR           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MAYORIGUAL      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    MENORIGUAL      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    IGUALACION      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    DISTINTO        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    AND             reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    OR              reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    PUNTO           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    PTOYCOMA        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    error           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    FUNCTION        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    COMENTARIO      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    COMENTARIO_MULTILINEA reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    LET             reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    ID              reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    CONSOLE         reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    IF              reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    WHILE           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    FOR             reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    RETURN          reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    BREAK           reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    CONTINUE        reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    INTERFACE       reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    DECREMENTO      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    INCREMENTO      reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    $end            reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    LLADER          reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    PARDER          reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    COMA            reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
-    CORDER          reduce using rule 111 (separador -> expresion PUNTO SPLIT PARIZQ expresion PARDER .)
+    MAS             reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    POR             reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    DIVIDIDO        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MODULO          reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    POTENCIA        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MAYOR           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MENOR           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MAYORIGUAL      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    MENORIGUAL      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    IGUALACION      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    DISTINTO        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    AND             reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    OR              reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    PUNTO           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    PTOYCOMA        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    error           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    FUNCTION        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    COMENTARIO      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    COMENTARIO_MULTILINEA reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    LET             reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    ID              reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    CONSOLE         reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    IF              reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    WHILE           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    FOR             reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    RETURN          reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    BREAK           reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    CONTINUE        reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    INTERFACE       reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    DECREMENTO      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    INCREMENTO      reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    $end            reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    LLADER          reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    COMA            reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
+    CORDER          reduce using rule 111 (separador -> ID PUNTO SPLIT PARIZQ expresion PARDER .)
 
 
 state 270
 
-    (112) concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .
+    (112) concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .
 
-    MAS             reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MENOS           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    POR             reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    DIVIDIDO        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MODULO          reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    POTENCIA        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MAYOR           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MENOR           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MAYORIGUAL      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    MENORIGUAL      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    IGUALACION      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    DISTINTO        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    AND             reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    OR              reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    PUNTO           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    PTOYCOMA        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    error           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    FUNCTION        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    COMENTARIO      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    COMENTARIO_MULTILINEA reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    LET             reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    ID              reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    CONSOLE         reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    IF              reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    WHILE           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    FOR             reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    RETURN          reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    BREAK           reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    CONTINUE        reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    INTERFACE       reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    DECREMENTO      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    INCREMENTO      reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    $end            reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    LLADER          reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    PARDER          reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    COMA            reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
-    CORDER          reduce using rule 112 (concatenacion -> expresion PUNTO CONCAT PARIZQ expresion PARDER .)
+    MAS             reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    POR             reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    DIVIDIDO        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MODULO          reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    POTENCIA        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MAYOR           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MENOR           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MAYORIGUAL      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    MENORIGUAL      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    IGUALACION      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    DISTINTO        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    AND             reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    OR              reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    PUNTO           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    PTOYCOMA        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    error           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    FUNCTION        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    COMENTARIO      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    COMENTARIO_MULTILINEA reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    LET             reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    ID              reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    CONSOLE         reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    IF              reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    WHILE           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    FOR             reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    RETURN          reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    BREAK           reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    CONTINUE        reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    INTERFACE       reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    DECREMENTO      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    INCREMENTO      reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    $end            reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    LLADER          reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    COMA            reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
+    CORDER          reduce using rule 112 (concatenacion -> ID PUNTO CONCAT PARIZQ expresion PARDER .)
 
 
 state 271
@@ -11226,10 +11074,10 @@ state 275
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -11352,10 +11200,10 @@ state 278
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -11410,10 +11258,6 @@ state 279
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PTOYCOMA        reduce using rule 137 (declaracionArray -> LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL expresion .)
     error           reduce using rule 137 (declaracionArray -> LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL expresion .)
@@ -11508,10 +11352,10 @@ state 281
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -11644,10 +11488,6 @@ state 287
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     LLADER          reduce using rule 127 (parDecl -> ID DOSPUNTOS expresion .)
     COMA            reduce using rule 127 (parDecl -> ID DOSPUNTOS expresion .)
@@ -11818,10 +11658,10 @@ state 291
     (114) casteo -> . CAST_STRING PARIZQ expresion PARDER
     (100) booleano -> . TRUE
     (101) booleano -> . FALSE
-    (107) aproximacion -> . expresion PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> . expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> . expresion PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> . expresion PUNTO CONCAT PARIZQ expresion PARDER
+    (107) aproximacion -> . ID PUNTO TOFIXED PARIZQ expresion PARDER
+    (108) exponencial -> . ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    (111) separador -> . ID PUNTO SPLIT PARIZQ expresion PARDER
+    (112) concatenacion -> . ID PUNTO CONCAT PARIZQ expresion PARDER
     (110) to_minusculas -> . ID PUNTO TOLOWERCASE PARIZQ PARDER
     (142) arreglo -> . CORIZQ lista_exp CORDER
     (143) arreglo -> . CORIZQ CORDER
@@ -11876,10 +11716,6 @@ state 292
     (87) expresion -> expresion . AND expresion
     (88) expresion -> expresion . OR expresion
     (113) casteo -> expresion . PUNTO TOSTRING PARIZQ PARDER
-    (107) aproximacion -> expresion . PUNTO TOFIXED PARIZQ expresion PARDER
-    (108) exponencial -> expresion . PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
-    (111) separador -> expresion . PUNTO SPLIT PARIZQ expresion PARDER
-    (112) concatenacion -> expresion . PUNTO CONCAT PARIZQ expresion PARDER
 
     PARDER          shift and go to state 299
     MAS             shift and go to state 104

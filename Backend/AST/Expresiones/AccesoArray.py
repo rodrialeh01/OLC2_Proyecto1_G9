@@ -34,7 +34,7 @@ class AccesoArray(Expresion):
         
         for a in self.accesos:
             listaAccesos.append(a.ejecutar(entorno, helper).valor)
-
+        print('listaAccesos: ', listaAccesos)
         xd = self.accesar(listaAccesos, simbolo, entorno, helper)
         print('Te voy a enviar desde el acceso: ', xd)
         return xd
@@ -48,13 +48,22 @@ class AccesoArray(Expresion):
             index = pila.pop(0)
             try:
                 valor = lista.valor[index]
+                print("VALOR: ", valor)
+                print("LENPILA", len(pila))
+                print(isinstance(valor, Retorno))
             except:
                 #error semantico
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "El indice al que se intenta acceder no existe en el array")
                 s.addError(err)
                 return Retorno(None, None)
-            if valor.tipo == TIPO_DATO.ARRAY :
+            if len(pila) == 0 and isinstance(valor, Retorno)==False:
+                print("-------------------------------si?")
+                return Retorno(valor, TIPO_DATO.CADENA)
+            elif valor.tipo == TIPO_DATO.ARRAY :
+                return self.accesar(pila, valor, entorno, helper)
+            elif valor.tipo == TIPO_DATO.CADENA and len(pila) > 0 and len(valor.valor)> 1:
+                print("+++++++++++++++++++++++++++++++si?")
                 return self.accesar(pila, valor, entorno, helper)
             else:
                 if len(pila) == 0:

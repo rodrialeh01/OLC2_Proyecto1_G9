@@ -159,7 +159,6 @@ t_OR = r'\|\|'
 t_NOT = r'\!'
 
 identifier = r'[a-zA-Z_ñÑ]([a-zA-Z0-9_ñÑ])*'
-
 def t_DECIMAL(t):
     r'\d+\.\d+'
     try:
@@ -887,14 +886,14 @@ def p_funciones_nativas(t):
 # ? aproximacion : expresion PUNTO TOFIXED PARIZQ expresion PARDER
 def p_aproximacion(t):
     '''
-    aproximacion : expresion PUNTO TOFIXED PARIZQ expresion PARDER
+    aproximacion : ID PUNTO TOFIXED PARIZQ expresion PARDER
     '''
     t[0] = ToFixed(t[1], t[5], t.lineno(1), t.lexpos(1))
 
 # ? exponencial : expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
 def p_exponencial(t):
     '''
-    exponencial : expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    exponencial : ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
     '''
     t[0] = ToExponential(t[1], t[5], t.lineno(1), t.lexpos(1))
 
@@ -916,14 +915,14 @@ def p_to_minusculas(t):
 # ? separador : expresion PUNTO SPLIT PARIZQ expresion PARDER
 def p_separador(t):
     '''
-    separador : expresion PUNTO SPLIT PARIZQ expresion PARDER
+    separador : ID PUNTO SPLIT PARIZQ expresion PARDER
     '''
     t[0] = Split(t[1], t[5], t.lineno(1), t.lexpos(1))
 
 # ? concatenacion : expresion PUNTO CONCAT PARIZQ expresion PARDER
 def p_concatenacion(t):
     '''
-    concatenacion : expresion PUNTO CONCAT PARIZQ expresion PARDER
+    concatenacion : ID PUNTO CONCAT PARIZQ expresion PARDER
     '''
     t[0] = Concat(t[1], t[5], t.lineno(1), t.lexpos(1))
 
@@ -1100,7 +1099,7 @@ def p_declaracionArray9(t):
     declaracionArray : LET ID IGUAL CORIZQ CORDER
     '''
     exp = Array([], t.lineno(1), t.lexpos(1))
-    t[0] = DeclaracionArray(t[2], TIPO_DATO.ANY, exp, t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], TIPO_DATO.ARRAY, exp, t.lineno(1), t.lexpos(1))
 
 def p_declaracionArray11(t):
     '''
@@ -1114,7 +1113,7 @@ def p_declaracionArray10(t):
     declaracionArray : LET ID IGUAL CORIZQ lista_exp CORDER
     '''
     exp = Array(t[5], t.lineno(1), t.lexpos(1))
-    t[0] = DeclaracionArray(t[2], TIPO_DATO.ANY, exp, t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], TIPO_DATO.ARRAY, exp, t.lineno(1), t.lexpos(1))
 
 
 # ? lista_exp : lista_exp COMA expresion

@@ -17,37 +17,49 @@ class DeclaracionArray(Instruccion):
 
     
     def ejecutar(self, entorno, helper):
+        print("==============================================")
         print("Desde DeclaracionArray : ")
         print(self.id)
         print(self.expresion)
+        print(self.tipo)
+        print("***********************************************")
         exp = self.expresion.ejecutar(entorno, helper) #obtiene objeto Array
         print(self.id)
         bandera = True
-        bandera = self.Verificar_Tipos_array(exp.valor, self.tipo, bandera)
-        if bandera == None:
-            bandera = True
-        
-        if not bandera:
-            #error semantico
-            s = SingletonErrores.getInstance()
-            err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato del array no coincide con el tipo de dato declarado")
-            s.addError(err)
-        
+        if self.tipo != TIPO_DATO.ANY or self.tipo != TIPO_DATO.ARRAY:
+            bandera = self.Verificar_Tipos_array(exp.valor, self.tipo, bandera)
+            if bandera == None:
+                bandera = True
+            print("bandera: " + str(bandera))
+            if not bandera:
+                #error semantico
+                s = SingletonErrores.getInstance()
+                err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato del array no coincide con el tipo de dato declarado")
+                s.addError(err)
+        print("VOY A CREAAAAAAAAAAAAAR EL SIMBOLO")
         #crear el simbolo
         simbolo = Simbolo()
         simbolo.nombre = self.id
         if self.tipo == TIPO_DATO.NUMERO:
+            print("OP1")
             simbolo.tipo = TIPO_DATO.ARRAY_NUMBER
-        elif self.tipo == TIPO_DATO.STRING:
+        elif self.tipo == TIPO_DATO.CADENA:
+            print("OP2")
             simbolo.tipo = TIPO_DATO.ARRAY_STRING
-        elif self.tipo == TIPO_DATO.BOOLEAN:
+
+        elif self.tipo == TIPO_DATO.BOOLEANO:
+            print("OP2")
             simbolo.tipo = TIPO_DATO.ARRAY_BOOLEAN
-        elif self.tipo == TIPO_DATO.ANY:
-            simbolo.tipo = TIPO_DATO.ANY
+        elif self.tipo == TIPO_DATO.ANY or self.tipo == TIPO_DATO.ARRAY:
+            print("entro al any")
+            simbolo.tipo = TIPO_DATO.ARRAY
+        else:
+            print("entro al else")
         simbolo.valor = exp.valor
         simbolo.linea = self.linea
         simbolo.columna = self.columna
-
+        print("se creo el simbolo: ")
+        print(simbolo)
         #agregar el simbolo al entorno
         verifExistencia = entorno.ExisteSimbolo(simbolo.nombre)
         if verifExistencia:

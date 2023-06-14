@@ -21,7 +21,7 @@ class Consolelog(Instruccion):
                     impresion = self.ImpresionArrays(array, val.valor)
                     listTemp.append(impresion)
                 elif val.tipo == TIPO_DATO.BOOLEANO:
-                    if val.tipo == True:
+                    if val.valor == True:
                         listTemp.append("true")
                     else:
                         listTemp.append("false")

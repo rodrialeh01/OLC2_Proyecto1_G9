@@ -12,18 +12,23 @@ class Split(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        '''
-        #PENDIENTE POR EL DATATYPE QUE RETORNA
-
-        cadena = self.expresion.ejecutar(entorno, helper)
-        separador = self.separador.ejecutar(entorno, helper)
-        if cadena.tipo != TIPO_DATO.CADENA or separador.tipo != TIPO_DATO.CADENA:
-            #error semantico
+        print("HOLA SOY EL SPLIT ")
+        existe = entorno.ExisteSimbolo(self.expresion)        
+        if existe == False:
             pass
+        else:
+            cadena = entorno.ObtenerSimbolo(self.expresion)
+            print(cadena)
+            separador = self.separador.ejecutar(entorno, helper)
+            if cadena.tipo != TIPO_DATO.CADENA or separador.tipo != TIPO_DATO.CADENA:
+                #error semantico
+                pass
+            new_array = []
+            for i in str(cadena.valor).split(separador.valor):
+                new_array.append(Retorno(i, TIPO_DATO.CADENA))
 
-        return Retorno(str(cadena.valor).split(separador), TIPO_DATO.ARREGLO)
-        '''
-        pass
+            print("EL ARRAY: ", new_array)
+            return Retorno(new_array, TIPO_DATO.ARRAY_STRING)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("SPLIT")

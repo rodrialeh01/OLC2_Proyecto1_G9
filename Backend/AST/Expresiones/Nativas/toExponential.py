@@ -14,21 +14,25 @@ class ToExponential(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        valor = self.expresion.ejecutar(entorno, helper)
-        cantidad = self.cantidad.ejecutar(entorno, helper)
-        if valor.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.NUMERO:
-            if valor.tipo != TIPO_DATO.NUMERO:
-                s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
-                s.addError(err)
-                return
-            if cantidad.tipo != TIPO_DATO.NUMERO:
-                s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
-                s.addError(err)
+        existe = entorno.ExisteSimbolo(self.expresion)
+        if existe == False:
+            pass
+        else:
+            valor = entorno.ObtenerSimbolo(self.expresion)
+            cantidad = self.cantidad.ejecutar(entorno, helper)
+            if valor.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.ANY or valor.tipo != TIPO_DATO.ANY:
+                if valor.tipo != TIPO_DATO.NUMERO:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+                    s.addError(err)
+                    return
+                if cantidad.tipo != TIPO_DATO.NUMERO:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
+                    s.addError(err)
 
-        formato = "{:." + str(int(cantidad.valor)) + "e}"
-        return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
+            formato = "{:." + str(int(cantidad.valor)) + "e}"
+            return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_EXPONENTIAL")

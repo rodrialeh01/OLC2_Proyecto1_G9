@@ -12,11 +12,27 @@ class Concat(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
+        print("ENTRE EN EL CONCAT")
+        print(self.expresion1)
+        print(self.expresion2)
+        
+        existe = entorno.ExisteSimbolo(self.expresion1)
+        print(existe)
         #suponiendo que si se puedan tambien cadenas que es un array de caracteres
-        valor1 = self.expresion1.ejecutar(entorno, helper)
-        valor2 = self.expresion2.ejecutar(entorno, helper)
-        if valor1.tipo == TIPO_DATO.CADENA and valor2.tipo == TIPO_DATO.CADENA:
-            return Retorno(str(valor1.valor) + str(valor2.valor), TIPO_DATO.CADENA)
+        if existe == False:
+            pass
+        else:
+            valor1 = entorno.ObtenerSimbolo(self.expresion1)
+            valor2 = self.expresion2.ejecutar(entorno, helper)
+            print(valor2)
+            if valor1.tipo == TIPO_DATO.CADENA and valor2.tipo == TIPO_DATO.CADENA:
+                return Retorno(str(valor1.valor) + str(valor2.valor), TIPO_DATO.CADENA)
+            elif valor1.tipo == TIPO_DATO.ARRAY_STRING or valor1.tipo == TIPO_DATO.ARRAY and valor2.tipo == TIPO_DATO.ARRAY_STRING or valor2.tipo == TIPO_DATO.ARRAY:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_STRING)
+            elif valor1.tipo == TIPO_DATO.ARRAY_NUMBER or valor1.tipo == TIPO_DATO.ARRAY and valor2.tipo == TIPO_DATO.ARRAY_NUMBER or valor2.tipo == TIPO_DATO.ARRAY:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_NUMBER)
+            elif valor1.tipo == TIPO_DATO.ARRAY_BOOLEAN or valor1.tipo == TIPO_DATO.ARRAY and valor2.tipo == TIPO_DATO.ARRAY_BOOLEAN or valor2.tipo == TIPO_DATO.ARRAY:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_BOOLEAN)
         
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONCATENACION")

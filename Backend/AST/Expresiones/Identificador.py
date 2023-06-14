@@ -13,7 +13,9 @@ class Identificador(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
+        print("Desde Identificador (): ")
         existe = entorno.ExisteSimbolo(self.nombre)
+        print(existe)
         if existe:
             ret = entorno.ObtenerSimbolo(self.nombre)
             #print("Desde Identificador 2 (): ")

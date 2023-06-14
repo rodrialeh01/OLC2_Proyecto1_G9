@@ -14,16 +14,15 @@ class Consolelog(Instruccion):
         exp = None
         textoLog = ""
         if isinstance(self.expresion, list):
-            print("ENTRÉ AL LIST")
             for exp in self.expresion:
                 val = exp.ejecutar(entorno, helper)
                 if val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_NUMBER or val.tipo == TIPO_DATO.ARRAY_STRING or val.tipo == TIPO_DATO.ARRAY_BOOLEAN:
                     array = []
                     impresion = self.ImpresionArrays(array, val.valor)
-                    print(impresion)
                     listTemp.append(impresion)
                 else:
-                    print("QUIERO REVISARRRRR 1: ", val.valor)
+                    if val.valor == None and val.tipo == TIPO_DATO.ANY:
+                        val.valor = "undefined"
                     listTemp.append(val.valor)
             for i in listTemp:
                 #print(i)
@@ -34,13 +33,13 @@ class Consolelog(Instruccion):
         else:
             print("ENTRÉ AL ELSE")
             exp = self.expresion.ejecutar(entorno, helper)
-            print("Estoy llegando al consolelog")
-            print(exp.valor)
+            if exp.valor == None and exp.tipo == TIPO_DATO.ANY:
+                exp.valor = "undefined"
+            
 
         
         #print(exp)
         try:
-           
             if exp.tipo == TIPO_DATO.ARRAY or exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY_STRING or exp.tipo == TIPO_DATO.ARRAY_BOOLEAN:
 
                 array = []

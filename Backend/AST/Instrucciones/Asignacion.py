@@ -23,8 +23,9 @@ class Asignacion(Instruccion):
             simb = entorno.ObtenerSimbolo(self.id)
             print("ID: ", self.id)
             print("SIMBTIPO: ", obtTipoDato(simb.tipo))
+
             print("VALORG: ", obtTipoDato(valorG.tipo))
-            if simb.tipo == valorG.tipo:
+            if simb.tipo == valorG.tipo or  simb.tipo == TIPO_DATO.ANY:
                 print("==========Asignacion===========")
                 print("Valor anterior: ", simb.valor)
                 print("Valor nuevo: ", valorG.valor)

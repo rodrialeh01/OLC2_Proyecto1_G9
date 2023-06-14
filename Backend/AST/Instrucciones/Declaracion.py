@@ -44,6 +44,16 @@ class Declaracion(Instruccion):
                     simb.entorno = entorno
                     print("si se guardo en la tabla de simbolos")
                     entorno.AgregarSimbolo(identificador, simb)
+            else:
+                simb = Simbolo()
+                simb.nombre = identificador
+                simb.tipo = tipo
+                simb.valor = None
+                simb.linea = self.fila
+                simb.columna = self.columna
+                simb.entorno = entorno
+
+                entorno.AgregarSimbolo(identificador, simb)
         else:
             if self.valor != None:
                 valorG = self.valor.ejecutar(entorno, helper)
@@ -56,6 +66,17 @@ class Declaracion(Instruccion):
                 simb.entorno = entorno
 
                 entorno.AgregarSimbolo(identificador, simb)
+            else:
+                simb = Simbolo()
+                simb.nombre = identificador
+                simb.tipo = TIPO_DATO.ANY
+                simb.valor = None
+                simb.linea = self.fila
+                simb.columna = self.columna
+                simb.entorno = entorno
+
+                entorno.AgregarSimbolo(identificador, simb)
+
         
 
     def genArbol(self) -> Nodo:

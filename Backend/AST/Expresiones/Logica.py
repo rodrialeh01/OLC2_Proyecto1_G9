@@ -30,6 +30,8 @@ class Logica(Expresion):
 
         if self.operador == TIPO_OPERACION_LOGICA.AND:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
+                #print("ENTREEEEEEEEEEEE AL AND")
+                #print(val1.valor and val2.valor)
                 return Retorno(val1.valor and val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
@@ -39,7 +41,7 @@ class Logica(Expresion):
 
         elif self.operador == TIPO_OPERACION_LOGICA.OR:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
-                print("ENTREEEEEEEEEE AL ORRRRRRRRR")
+                #print("ENTREEEEEEEEEE AL ORRRRRRRRR")
                 return Retorno(val1.valor or val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()

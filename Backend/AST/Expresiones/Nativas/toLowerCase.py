@@ -13,10 +13,10 @@ class ToLowerCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print("TO LOWER CASE")
-        print("EXPRESION: ", self.expresion)
+        #print("TO LOWER CASE")
+        #print("EXPRESION: ", self.expresion)
         found = entorno.ObtenerSimbolo(self.expresion)
-        print("FOUND: ", found)
+        #print("FOUND: ", found)
         if found == None:
             pass
             #error semantico

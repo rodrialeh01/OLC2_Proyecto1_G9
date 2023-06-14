@@ -1,5 +1,6 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
+from AST.Expresiones.Llamada import Llamada
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
@@ -20,11 +21,10 @@ class If(Instruccion):
         self.columna = columna
         
     def ejecutar(self, entorno, helper):
-        print("ejecutando if")
+        #print("ejecutando if")
         condicion = self.expresion.ejecutar(entorno, helper)
         entornoLocal = Entorno(entorno)
-
-        entornoLocal.setActual("If")
+        helperTemp = helper.getFuncion()
         if condicion.tipo != TIPO_DATO.BOOLEANO:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
@@ -32,12 +32,16 @@ class If(Instruccion):
             return
         
         if condicion.valor:
+            entornoLocal.setActual("If")
+            print("----------------if-----------------")
             if self.lista_instrucciones is not None:
                 for instruccion in self.lista_instrucciones:
                     accion = instruccion.ejecutar(entornoLocal, helper)
-                    helper.setTs(entornoLocal)
+                    #helper.setTs(entornoLocal)
                     if isinstance(accion, Return):
-                        if helper.getFuncion() == "funcion":
+                        #print("lo que obtengo: ", helper.getFuncion())
+                        if helper.getFuncion() == "Funcion":
+                            helper.setFuncion(helperTemp)
                             return accion
                         else:
                             #error semántico
@@ -67,10 +71,19 @@ class If(Instruccion):
                             return
 
                     if isinstance(accion, Retorno):
-                        return accion
+                        #print("VOY A RETORNAR UN RETORNO DESDE EL IF")
+                        #print("lo que obtengo: ", helper.getFuncion())
+                        print("VOY A RETORNAAAAAAAAAAAAAAAAR")
+                        print(accion.valor)
+                        if helper.getFuncion() == "Funcion":
+                            helper.setFuncion(helperTemp)
+                            #print(accion.valor)
+                            #print(accion.tipo)
+                            return accion
                 return
         #if-else/ else-if
         else:
+            #print("la condición del if no es true")
             if self.lista_elseifs is not None:
                 for accion in self.lista_elseifs:
                     condicion2 = accion.expresion.ejecutar(entornoLocal, helper)
@@ -80,11 +93,16 @@ class If(Instruccion):
                         err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
                         s.addError(err)
                         return
+                    #print("ELIF: ", condicion2.valor)
                     if condicion2.valor:
+                        entornoLocal.setActual("elif")
+                        print("----------------elif-----------------")
+                        #print("vas a entrar?")
                         for ifTemp in accion.lista_instrucciones:
                             instruc = ifTemp.ejecutar(entornoLocal, helper)
                             if isinstance(instruc, Return):
-                                if helper.getFuncion() == "funcion":
+                                print("RETURN")
+                                if helper.getFuncion() == "Funcion":
                                     return instruc
                                 else:
                                     #error semántico
@@ -113,15 +131,35 @@ class If(Instruccion):
                                     err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar CONTINUE en un ambito que no sea un ciclo" )
                                     s.addError(err)
                                     return
+                                
+                            if isinstance(instruc, Retorno):
+                                print("VOY A RETORNAR UN RETORNO DESDE EL ELIF")
+                                #print("lo que obtengo: ", helper.getFuncion())
+                                if helper.getFuncion() == "Funcion":
+                                    helper.setFuncion(helperTemp)
+                                    #print(instruc.valor)
+                                    #print(instruc.tipo)
+                                    print("RETORNA ELIF: ", instruc)
+                                    return instruc
                         return
             if self.lista_instrucciones2 is not None:
-                
+                print("----------------else----------------->:(")
+                #print("*************************************************** entro al else")
+                #print(self.lista_instrucciones2)
+                print(self.lista_instrucciones2)
+                entornoLocal.setActual("Else")
                 for InstElse in self.lista_instrucciones2:
+                    print('--------------INSTRUCCIONES DEL ELSE-----------------')
+                    print(InstElse)
+                    #print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++INSTELSE")
+                    #print(InstElse)
                     accionElse = InstElse.ejecutar(entornoLocal, helper)
+                    #print("5555555555555555555555555555555555555555555555")
+                    #print(accionElse)
                     helper.setTs(entornoLocal)
                     if accionElse is not None:
                         if isinstance(accionElse, Return):
-                            if helper.getFuncion() == "funcion":
+                            if helper.getFuncion() == "Funcion":
                                 return accionElse
                             else:
                                 #error semántico
@@ -150,8 +188,16 @@ class If(Instruccion):
                                 err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de IF, no se puede usar CONTINUE en un ambito que no sea un ciclo" )
                                 s.addError(err)
                                 return
-                    return
-                
+                        
+                        if isinstance(accionElse, Retorno):
+                            #print("VOY A RETORNAR UN RETORNO DESDE EL ELSE")
+                            ##print("lo que obtengo: ", helper.getFuncion())
+                            if helper.getFuncion() == "Funcion":
+                                helper.setFuncion(helperTemp)
+                                #print(accionElse.valor)
+                                #print(accionElse.tipo)
+                                return accionElse
+
     def genArbol(self) -> Nodo:
         nodo = Nodo("IF")
         nodo.agregarHijo(self.expresion.genArbol())

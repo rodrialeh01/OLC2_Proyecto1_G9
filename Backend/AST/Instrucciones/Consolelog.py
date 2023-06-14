@@ -20,9 +20,16 @@ class Consolelog(Instruccion):
                     array = []
                     impresion = self.ImpresionArrays(array, val.valor)
                     listTemp.append(impresion)
+                elif val.tipo == TIPO_DATO.BOOLEANO:
+                    if val.tipo == True:
+                        listTemp.append("true")
+                    else:
+                        listTemp.append("false")
                 else:
                     if val.valor == None and val.tipo == TIPO_DATO.ANY:
-                        val.valor = "undefined"
+                        val.valor = "null"
+                    elif val.valor == None and val.tipo == TIPO_DATO.NULL:
+                        val.valor = "null"
                     listTemp.append(val.valor)
             for i in listTemp:
                 #print(i)
@@ -31,11 +38,16 @@ class Consolelog(Instruccion):
             return
 
         else:
-            print("ENTRÉ AL ELSE")
             exp = self.expresion.ejecutar(entorno, helper)
             if exp.valor == None and exp.tipo == TIPO_DATO.ANY:
-                exp.valor = "undefined"
-            
+                exp.valor = "null"
+            elif exp.valor == None and exp.tipo == TIPO_DATO.NULL:
+                exp.valor = "null"
+            elif exp.tipo == TIPO_DATO.BOOLEANO:
+                if exp.valor == True:
+                    exp.valor = "true"
+                else:
+                    exp.valor = "false"
 
         
         #print(exp)
@@ -49,13 +61,13 @@ class Consolelog(Instruccion):
             else:
                 #print(exp.valor)
                 helper.setConsola(exp.valor)
-
+            return
         except Exception:
             val = self.expresion.ejecutar(entorno, helper)
             helper.setConsola(val.valor)
             ##print(val.valor)
         ##print(val.valor)
-        
+        return
 
     def ImpresionArrays(self, arr, arrexist):
         for a in arrexist:

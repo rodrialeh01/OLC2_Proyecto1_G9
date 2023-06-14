@@ -646,6 +646,7 @@ def p_exp_llamada(t):
     '''
     expresion : llamada_funcion
     '''
+    print("Llamada a funcion")
     t[0] = t[1]
 
 
@@ -655,12 +656,18 @@ def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARIZQ lista_argumentos PARDER
     '''
+    print("--------------------------------------------LLAMAR")
+    print(t[3])
+    for p in t[3]:
+        if isinstance(p, Llamada):
+            print("TIENE UNA LLAMADA")
     t[0] = Llamada(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 def p_llamada_funcion_1(t):
     '''
     llamada_funcion : ID PARIZQ PARDER
     '''
+
     t[0] = Llamada(t[1], None, t.lineno(1), t.lexpos(1))
 
 # ? lista_argumentos : lista_argumentos COMA expresion
@@ -680,6 +687,7 @@ def p_lista_argumentos_1(t):
 # ?     | STRING
 # ?     | BOOLEAN
 # ?     | ANY
+# ?     | NULL
 def p_tipo(t):
     '''
     tipo : NUMBER
@@ -703,6 +711,12 @@ def p_tipo_3(t):
     tipo : ANY
     '''
     t[0] = TIPO_DATO.ANY
+
+def p_tipo_4(t):
+    '''
+    tipo : NULL
+    '''
+    t[0] = TIPO_DATO.NULL
 
 # ? expresion : expresion MAS expresion
 # ?             | expresion MENOS expresion
@@ -816,6 +830,7 @@ def p_expresion_primitiva(t):
     expresion : ENTERO
             | DECIMAL
             | CADENA
+            | NULL
     '''
 
     if t.slice[1].type == 'ENTERO':
@@ -824,6 +839,8 @@ def p_expresion_primitiva(t):
         t[0] = Primitivo(TIPO_DATO.NUMERO, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'CADENA':
         t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
+    elif t.slice[1].type == 'NULL':
+        t[0] = Primitivo(TIPO_DATO.NULL, t[1], t.lineno(1), t.lexpos(1))
 
 def p_expresion_booleana(t):
     '''

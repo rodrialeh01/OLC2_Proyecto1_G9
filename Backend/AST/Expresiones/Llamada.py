@@ -18,6 +18,7 @@ class Llamada(Instruccion, Expresion):
     def ejecutar(self, entorno, helper):
         print("SOY LA LLAMADAAAAAAAAAAAAAAAAAAAAA: ", self.id)
         fn = entorno.ExisteFuncion(self.id)
+        helperTemp = helper.getFuncion()
         print("SOY FN: ", fn)
         if fn is False:
             s = SingletonErrores.getInstance()
@@ -37,11 +38,16 @@ class Llamada(Instruccion, Expresion):
             s.addError(err)
             return Retorno(None, None)
         
-
+        print("verificación de func: ", func)
         if func is not None:
             ret = func.ejecutar(entornoFN, helper)
+            print("soy el ret: ", ret)
             if ret is not None:
+               # print("PARAMS: ", self.params[0].ejecutar(entorno, helper).valor)
+                print("RETORNA: ", ret.valor, ret.tipo)
+                helper.setFuncion(helperTemp)
                 return Retorno(ret.valor, ret.tipo)
+            
 
     def genArbol(self):
         nodo = Nodo("LLAMADA FUNCIÓN")

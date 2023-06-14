@@ -13,7 +13,7 @@ class ToUpperCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print("TO UPPER CASE")
+        #print("TO UPPER CASE")
         found = entorno.ObtenerSimbolo(self.expresion)
         if found == None:
             pass

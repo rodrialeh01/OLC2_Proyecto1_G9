@@ -27,6 +27,7 @@ class Identificador(Expresion):
                 #error semántico
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombre + " no existe en el entorno actual" )
+                helper.setConsola("[ERROR] La variable " + self.nombre + " no existe en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
                 s.addError(err)
                 return Retorno(None, None)
             else:

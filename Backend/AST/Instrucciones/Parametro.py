@@ -21,8 +21,10 @@ class Parametro(Instruccion):
         self.valorRef = None 
 
     def ejecutar(self, entorno, helper):
+        print("**********************PARAMETRO")
+        print(self.tipo)
+        print(self.utilizado.tipo)
         if self.valor != None or self.utilizado != None:
-            
             retorno = Retorno()
             if self.valor != None: 
                 retorno = self.valor.ejecutar(entorno, helper)
@@ -30,17 +32,75 @@ class Parametro(Instruccion):
                 retorno.valor = self.utilizado.valor
                 retorno.tipo = self.utilizado.tipo
 
+
             if self.tipo != retorno.tipo:
-                s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
-                s.addError(err)
-                helper.setConsola("[ERROR] El tipo de dato no coincide con el tipo de dato del parametro en la línea "+ str(self.fila) +" y columna " + str(self.columna))
-                return
+                if retorno.tipo != TIPO_DATO.INTERFACE:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
+                    s.addError(err)
+                    helper.setConsola("[ERROR] El tipo de dato no coincide con el tipo de dato del parametro en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+                    return
+                
+                existe_tipo = entorno.ExisteInterface(self.tipo)
+                if not existe_tipo:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
+                    s.addError(err)
+                    helper.setConsola("[ERROR] El tipo de dato no coincide con el tipo de dato del parametro en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+                    return
+                
+                existencia_id = entorno.BuscarSimboloLocal(self.id)
+                tipo_obj = entorno.ObtenerInterface(self.tipo)
+                print("EXISTENCIA ID", existencia_id)
+                if existencia_id is False:
+                    '''
+                    Anda en proceso de terminarse lo de agregar el simbolo de un interface declarado
+                    '''
+                    print("INTERFAXXXX")
+                    print(self.utilizado.valor)
+                    simbolo = self.utilizado.valor
+                    print(simbolo.listaParams)
+                    verificacion = True
+                    lista_parametros_objeto = simbolo.listaParams
+                    #recorremos la lista de parametros del objeto
+                    for i in range(0, len(lista_parametros_objeto)):
+                        #placa : "P-1234" <- exp = Retorno("P-1234", TIPO_DATO.CADENA)
+                        if verificacion:
+                            verificacion = False
+                            for j in range(0, len(self.listaParams)):
+                                if lista_parametros_objeto[i].id == self.listaParams[j].id:
+                                    verificacion = True
+                                    exp = self.listaParams[j].expresion.ejecutar(entorno, helper)
+                                    if lista_parametros_objeto[i].tipo != exp.tipo:
+                                        #error semantico
+                                        s = SingletonErrores.getInstance()
+                                        err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
+                                        s.addError(err)
+                                        helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+                                        return
+                                    
+                                    lista_ya_Declarada.append({
+                                        lista_parametros_objeto[i].id : exp
+                                    })
+
+                                    j = len(self.listaParams)
+                        else:
+                            break
+                        
+                    return
+                else:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "El parametro " + self.id + " ya fue declarado anteriormente en el entorno actual")
+                    s.addError(err)
+                    helper.setConsola("[ERROR] El parametro " + self.id + " ya fue declarado anteriormente en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+
+                    #ERROR
+                    return
+
             #print("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIUUUUUUUUUUUUU")
             existencia = entorno.BuscarSimboloLocal(self.id)
-            #print(existencia)
+            print(existencia)
             if existencia is False:
-
                 simbolo = Simbolo()
                 simbolo.nombre = self.id
                 simbolo.tipo = self.tipo

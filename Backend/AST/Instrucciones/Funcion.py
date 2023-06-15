@@ -1,11 +1,12 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
-from AST.Error import Error
+
 
 class Funcion(Simbolo, Instruccion):
     def __init__(self, nombre, params, listaInstrucciones, linea, columna, tipo) -> None:
@@ -54,12 +55,23 @@ class Funcion(Simbolo, Instruccion):
     def ejecutar(self, entorno, helper):
         tempHelper = helper.getFuncion()
         helper.setFuncion("Funcion")
+
+        print("VOY A EJECUTAR UNA FUNCION")
+        print("INSTRUCCIONES")
+        print(self.listaInstrucciones)
         for instruccion in self.listaInstrucciones:
+            print("EJECUTANDO INSTRUCCION DE FUNCION")
             #instruccion.ejecutar(entorno, helper)
             if instruccion is None:
                 continue
-            
+            '''
+            print(instruccion)
+            print((isinstance(instruccion, Return) or isinstance(instruccion, Retorno)) and not isinstance(self.tipo, TIPO_DATO))
+            if (isinstance(instruccion, Return) or isinstance(instruccion, Retorno)) and not isinstance(self.tipo, TIPO_DATO):
+                print("XDXDXD")
+            '''
             accion = instruccion.ejecutar(entorno, helper)
+            print(accion)
             if accion is not None:
                 #print(accion,  " QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                 if isinstance(accion, Return) or isinstance(accion, Retorno):
@@ -73,15 +85,67 @@ class Funcion(Simbolo, Instruccion):
                     if accion.tipo is not TIPO_DATO.NULL or accion.tipo is not TIPO_DATO.ERROR:
                         helper.setFuncion(tempHelper)
                         if self.tipo is not None:
-                            if self.tipo is not accion.tipo:
-                                s = SingletonErrores.getInstance()
-                                err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")
-                                s.addError(err)
-                                helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
-                                #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
-                                return
+                            if isinstance(self.tipo, TIPO_DATO):
+                                if self.tipo is not accion.tipo:
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")
+                                    s.addError(err)
+                                    helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                                    #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
+                                    return
+                            else:
+                                #busca si existe el objeto al cual se esta referenciando
+                                existe_interface = entorno.ExisteInterface(self.tipo)
+                                print(existe_interface)
+                                if existe_interface is None:
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato ",self.tipo," de la funcion ",self.nombre," no existe")
+                                    s.addError(err)
+                                    helper.setConsola("[ERROR] El tipo de dato ", self.tipo," de la funcion ", self.nombre," no existe en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                                    #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
+                                    return
+                                
+                                print("Existe interface: ", existe_interface)
+                                #busca si coincide el objeto a retornar con el tipo de objeto de la funcion
+                                list_params = accion.valor.paramDeclarados
+                                referencia = entorno.ObtenerInterface(self.tipo)
+                                print("Referencia: ", referencia)
+                                lista_parametros_objeto = referencia.params
+                                print("List params: ", list_params)
+                                print("Lista parametros objeto: ", lista_parametros_objeto)
+                                lista_ya_Declarada = []
+                                verificacion = True
+                                #recorremos la lista de parametros del objeto
+                                for i in range(0, len(lista_parametros_objeto)):
+                                    #placa : "P-1234" <- exp = Retorno("P-1234", TIPO_DATO.CADENA)
+                                    if verificacion:
+                                        verificacion = False
+                                        for j in range(0, len(list_params)):
+                                            if lista_parametros_objeto[i].id in list_params[j]:
+                                                verificacion = True
+                                                exp = list_params[j][lista_parametros_objeto[i].id]
+                                                if lista_parametros_objeto[i].tipo != exp.tipo:
+                                                    #error semantico
+                                                    s = SingletonErrores.getInstance()
+                                                    err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
+                                                    s.addError(err)
+                                                    helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                                                    return
+                                                j = len(list_params)
+                                    else:
+                                        break
+                                print(verificacion)
+                                if verificacion == False:
+                                    print("SI HAY ERROR")
+                                    #error semantico
+                                    s = SingletonErrores.getInstance()
+                                    err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato que va a retornar no coincide con el tipo de objeto " + self.tipo + " que es de la funcion" )
+                                    s.addError(err)
+                                    helper.setConsola("[ERROR] El tipo de dato que va a retornar no coincide con el tipo de objeto " + self.tipo + " que es de la funcion no coincide en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                                    return
+                                    
+                        print(accion.tipo)
                         return Retorno(accion.valor, accion.tipo)
-                        
                     else:
 
                         helper.setFuncion(tempHelper)

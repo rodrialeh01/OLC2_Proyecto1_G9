@@ -37,7 +37,7 @@ def obtTipoDato(i):
     elif i == TIPO_DATO.ARRAY_BOOLEAN:
         return "Array"
     elif i == TIPO_DATO.INTERFACE:
-        return "object"
+        return "interface"
     elif i == TIPO_DATO.ARRAY_INTERFACE:
         return "Array"
 

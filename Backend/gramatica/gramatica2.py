@@ -572,8 +572,10 @@ def p_ciclo_for_of(t):
 
 # ? funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
 # ?     | FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo bloque
+# ?     | FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS ID bloque
 # ?     | FUNCTION ID PARIZQ PARDER bloque
 # ?     | FUNCTION ID PARIZQ PARDER DOSPUNTOS tipo bloque
+# ?     | FUNCTION ID PARIZQ PARDER DOSPUNTOS ID bloque
 def p_funcion(t):
     '''
     funcion : FUNCTION ID PARIZQ lista_parametros PARDER bloque
@@ -598,6 +600,18 @@ def p_funcion_3(t):
     funcion : FUNCTION ID PARIZQ PARDER DOSPUNTOS tipo bloque
     '''
     t[0] = Funcion(t[2], None, t[7], t.lineno(1), t.lexpos(1), t[6])
+
+def p_funcion_4(t):
+    '''
+    funcion : FUNCTION ID PARIZQ PARDER DOSPUNTOS ID bloque
+    '''
+    t[0] = Funcion(t[2], None, t[7], t.lineno(1), t.lexpos(1), t[6])
+
+def p_funcion_5(t):
+    '''
+    funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS ID bloque
+    '''
+    t[0] = Funcion(t[2], t[4], t[8], t.lineno(1), t.lexpos(1), t[7])
 
 def p_function_Array(t):
     '''
@@ -632,6 +646,12 @@ def p_parametro(t):
     parametro : ID DOSPUNTOS tipo
     '''
     t[0] = Parametro(t[1], t[3], None, t.lineno(1), t.lexpos(1), False)
+
+def p_parametro0(t):
+    '''
+    parametro : ID DOSPUNTOS ID
+    '''
+    t[0] = Parametro(t[1],t[3],None,t.lineno(1),t.lexpos(1),False)
 
 def p_parametro_1(t):
     '''

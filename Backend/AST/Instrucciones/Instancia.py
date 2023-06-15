@@ -89,8 +89,10 @@ class Instancia(Instruccion, Simbolo):
             
 
         #creamos el simbolo
-        self.crearStructDeclarado(self.nombreDeclarado, lista_ya_Declarada, self.linea, self.columna)
+        print("SI LO CREAMOS PTM")
+        self.crearStructDeclarado(self.nombreDeclarado, lista_ya_Declarada, self.fila, self.columna)
         entorno.AgregarInterfaceDeclarada(self.nombreDeclarado, self)
+        print("QUE SIIIII")
     
     def genArbol(self) -> Nodo:
         nodo = Nodo("INSTANCIA")

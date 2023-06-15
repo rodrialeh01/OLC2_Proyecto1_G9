@@ -1,7 +1,8 @@
 from AST.Abstract.Instruccion import Instruccion
-from AST.Nodo import Nodo
 from AST.Error import Error
+from AST.Nodo import Nodo
 from AST.SingletonErrores import SingletonErrores
+
 
 class Return(Instruccion):
     def __init__(self, valor, fila, columna):
@@ -13,6 +14,8 @@ class Return(Instruccion):
         if helper.getFuncion() == "Funcion":
             if self.valor != None:
                 valor = self.valor.ejecutar(entorno, helper)
+                print("Desde Return: ")
+                print(valor)
                 return valor
             else:
                 return self

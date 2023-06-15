@@ -16,6 +16,7 @@ class AsignarInterface(Instruccion):
 
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteInterfaceDeclarada(self.id_interface)
+        print("EXISTE INTERFACEEEEEEEEEEEEEEEEEE", existe)
         if not existe:
             #error semantico
             s = SingletonErrores.getInstance()

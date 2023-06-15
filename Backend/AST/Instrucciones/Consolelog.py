@@ -124,6 +124,15 @@ class Consolelog(Instruccion):
                 arr2 = []
                 arr2 = self.ImpresionArrays(arr2, a.valor)
                 arr.append(arr2)
+            elif a.tipo == TIPO_DATO.INTERFACE:
+                mostrarxd = "{\n"
+                print(a.valor.paramDeclarados)
+                for vals in a.valor.paramDeclarados:
+                    for dic in vals:
+                        valuexd = vals[dic]
+                        mostrarxd += "\t" + dic + " : " + str(valuexd.valor) + "\n"
+                mostrarxd += "}"
+                arr.append(mostrarxd)
             else:
                 arr.append(a.valor)
         return arr

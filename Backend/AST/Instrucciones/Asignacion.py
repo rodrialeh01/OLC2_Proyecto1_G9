@@ -14,33 +14,24 @@ class Asignacion(Instruccion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        #print("Desde Asignacion:D")
         existe = entorno.ExisteSimbolo(self.id)
-        #print(existe)
         if existe:
             valorG = self.valor.ejecutar(entorno, helper)
-
             simb = entorno.ObtenerSimbolo(self.id)
-            #print("ID: ", self.id)
-            #print("SIMBTIPO: ", obtTipoDato(simb.tipo))
-
-            #print("VALORG: ", obtTipoDato(valorG.tipo))
             if simb.tipo == valorG.tipo or  simb.tipo == TIPO_DATO.ANY:
-                #print("==========Asignacion===========")
-                #print("Valor anterior: ", simb.valor)
-                #print("Valor nuevo: ", valorG.valor)
                 simb.valor = valorG.valor
                 entorno.ActualizarSimbolo(self.id, simb)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se le puede asignar un valor de tipo " + str(obtTipoDato(valorG.tipo)) + " a la variable " + self.id + " de tipo " + str(obtTipoDato(simb.tipo)))
                 s.addError(err)
+                helper.setConsola("[ERROR] No se le puede asignar un valor de tipo " + str(obtTipoDato(valorG.tipo)) + " a la variable " + self.id + " de tipo " + str(obtTipoDato(simb.tipo)) + " en la línea "+ str(self.fila) +" y columna " + str(self.columna))
                 return 
         else:
-            #error semántico
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.id + " no existe en el entorno actual" )
             s.addError(err)
+            helper.setConsola("[ERROR] La variable " + self.id + " no existe en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return 
 
     def genArbol(self) -> Nodo:

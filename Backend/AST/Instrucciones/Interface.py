@@ -25,6 +25,7 @@ class Interface(Simbolo, Instruccion):
             s = SingletonErrores.getInstance()
             err = Error(self.linea, self.columna, "Error Semántico", "La interface " + self.id + " ya fue declarada anteriormente en el entorno actual")
             s.addError(err)
+            helper.setConsola("[ERROR] La interface " + self.id + " ya fue declarada anteriormente en el entorno actual en la línea "+ str(self.linea) +" y columna " + str(self.columna))
             return
 
     def genArbol(self) -> Nodo:

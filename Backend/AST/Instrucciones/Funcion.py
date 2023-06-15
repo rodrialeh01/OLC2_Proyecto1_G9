@@ -4,33 +4,40 @@ from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
-
+from AST.SingletonErrores import SingletonErrores
+from AST.Error import Error
 
 class Funcion(Simbolo, Instruccion):
     def __init__(self, nombre, params, listaInstrucciones, linea, columna, tipo) -> None:
         super().__init__()
-        #print("VOY A CREAR LA FUNCIÓN: ")
-        #print('---------------------')
         super().crearFuncion(nombre, params, listaInstrucciones, linea, columna, tipo)
         #print("Creando funcion")
         self.nombre = nombre
         self.params = params
         self.listaInstrucciones = listaInstrucciones
         self.tipo = tipo
+        self.linea = linea
+        self.columna = columna
 
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
         #print("EXP: ", exp)
         if self.params is None and exp is None:
-            print("No hay parametros")
             return True
         
         if self.params is None and exp is not None:
-            
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "La cantidad de argumentos no coincide con la cantidad de parametros")
+            s.addError(err)
+            helper.setConsola("[ERROR] La cantidad de argumentos no coincide con la cantidad de parametros en la línea "+ str(self.linea) +" y columna " + str(self.columna))
             return False
 
 
         paramsDecl = self.params
         if len(paramsDecl) != len(exp):
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "La cantidad de argumentos no coincide con la cantidad de parametros")
+            s.addError(err)
+            helper.setConsola("[ERROR] La cantidad de argumentos no coincide con la cantidad de parametros en la línea "+ str(self.linea) +" y columna " + str(self.columna))
             #print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")
             return False
         
@@ -38,20 +45,8 @@ class Funcion(Simbolo, Instruccion):
         contador = 0
         #print(paramsDecl)
         for param in paramsDecl:
-            #print("parametro: " + param.id)
-            #print(param.esRef)
-            '''
-            if param.esRef is True:
-                print("ENTRÉ ALGUNA VEZ AQUÍ?")
-                param.valorRef = exp[contador]
-                param.entorno = entornoPadre
-            '''
-
             param.utilizado = exp[contador].ejecutar(entornoPadre, helper)
             param.ejecutar(entorno, helper)
-
-            #funcion("hola", a);
-
             contador += 1
 
         return True
@@ -59,21 +54,16 @@ class Funcion(Simbolo, Instruccion):
     def ejecutar(self, entorno, helper):
         tempHelper = helper.getFuncion()
         helper.setFuncion("Funcion")
-
         for instruccion in self.listaInstrucciones:
             #instruccion.ejecutar(entorno, helper)
             if instruccion is None:
                 continue
             
             accion = instruccion.ejecutar(entorno, helper)
-            print("ACCCIOOOOOOOON" , accion)
             if accion is not None:
                 #print(accion,  " QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                 if isinstance(accion, Return) or isinstance(accion, Retorno):
-                    print(accion.tipo)
-                    print(accion.valor)
                     if isinstance(accion.valor, int) or isinstance(accion.valor, float):
-                        print("ES NUMERO")
                         accion.tipo = TIPO_DATO.NUMERO
                     elif isinstance(accion.valor, str):
                         accion.tipo = TIPO_DATO.CADENA
@@ -84,22 +74,23 @@ class Funcion(Simbolo, Instruccion):
                         helper.setFuncion(tempHelper)
                         if self.tipo is not None:
                             if self.tipo is not accion.tipo:
+                                s = SingletonErrores.getInstance()
+                                err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")
+                                s.addError(err)
+                                helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
                                 #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
                                 return
-                        
-                    
-                        
-                        #print("accion: ", accion.valor)
-                        #print("tipo: ", accion.tipo)
-                        #si es el mismo tipo de dato, se retorna el valor
-                        print("2DA VERIFICACIÓN - RETURN DE FUNCIÓN - ENTORNO: ", entorno.getActual())
                         return Retorno(accion.valor, accion.tipo)
                         
                     else:
+
                         helper.setFuncion(tempHelper)
-                        #si es de tipo any, null o error, es un proceso diferente
-                        print("mori?")
-                        return Return("AQUI ESTÁ EL ERROR XDXDXDXDXDXD", TIPO_DATO.NULL)
+                        s = SingletonErrores.getInstance()
+                        err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")
+                        s.addError(err)
+                        #helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                        helper.setConsola("[ERROR] REVISAR POR QUÉ SE GENERA ESTE ERROR EN LA FUNCIÓN")
+                        return Return(None, TIPO_DATO.ERROR)
                     
         
     def genArbol(self) -> Nodo:

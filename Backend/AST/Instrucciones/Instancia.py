@@ -9,11 +9,11 @@ from AST.SingletonErrores import SingletonErrores
 
 class Instancia(Instruccion, Simbolo):
     #nombreDeclarado, ID_Struct, listaParams, linea, columna
-    def __init__(self, nombreDeclarado, id_interface, listaParams, linea, columna):
+    def __init__(self, nombreDeclarado, id_interface, listaParams, fila, columna):
         self.nombreDeclarado = nombreDeclarado
         self.id_interface = id_interface
         self.listaParams = listaParams
-        self.linea = linea
+        self.fila = fila
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
@@ -25,6 +25,7 @@ class Instancia(Instruccion, Simbolo):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La interface " + self.id_interface + " no existe" )
             s.addError(err)
+            helper.setConsola("[ERROR] La interface " + self.id_interface + " no existe en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
     
         existe_nombre = entorno.ExisteSimbolo(self.nombreDeclarado)
@@ -33,12 +34,9 @@ class Instancia(Instruccion, Simbolo):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombreDeclarado + " ya fue declarada anteriormente en el entorno actual" )
             s.addError(err)
+            helper.setConsola("[ERROR] La variable " + self.nombreDeclarado + " ya fue declarada anteriormente en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
 
-        '''
-            entorno nos retorne el struct
-            agarramos la lista de parametros del struct y la comparamos con la lista de parametros que nos mandaron
-        '''
         #obtenemos el objeto al cual se esta referenciando
         objeto = entorno.ObtenerInterface(self.id_interface)
         #obtenemos la lista de parametros del objeto
@@ -50,12 +48,14 @@ class Instancia(Instruccion, Simbolo):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parametros para la interface no coincide" )
             s.addError(err)
+            helper.setConsola("[ERROR] La cantidad de parametros para la interface no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
 
         if len(lista_parametros_objeto) != len(self.listaParams):
             #error semantico
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parametros para la interface no coincide" )
+            helper.setConsola("[ERROR] La cantidad de parametros para la interface no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             s.addError(err)
             return
         
@@ -76,9 +76,9 @@ class Instancia(Instruccion, Simbolo):
                             s = SingletonErrores.getInstance()
                             err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
                             s.addError(err)
+                            helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
                             return
                         
-
                         lista_ya_Declarada.append({
                             lista_parametros_objeto[i].id : exp
                         })
@@ -99,7 +99,6 @@ class Instancia(Instruccion, Simbolo):
         params = Nodo("PARAMETROS INTERFACE")
         if self.listaParams != None:
             for param in self.listaParams:
-                print("+99999999999999999999999999999", param)
                 params.agregarHijo(param.genArbol())
         nodo.agregarHijo(params)
         return nodo

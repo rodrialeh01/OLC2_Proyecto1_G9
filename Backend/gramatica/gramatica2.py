@@ -224,11 +224,11 @@ def f_columna(input,token):
 
 #Errores lexicos
 def t_error(t):
-    #singleton:
     s = SingletonErrores.getInstance()
     columna = f_columna(entrada, t)
     s.addError(Error(str(t.lexer.lineno), str(columna) ,"Error Lexico", "No se reconoce "+t.value[0]+" como parte del lenguaje") )
-    #print(f"AAAAAAAAAAAAAAAAAAAAAAAA Se encontro un error lexico '%s'" % t.value[0])
+    errores.append(Error(str(t.lexer.lineno), str(columna) ,"Error Lexico", "No se reconoce "+t.value[0]+" como parte del lenguaje"))
+    print(f"AAAAAAAAAAAAAAAAAAAAAAAA Se encontro un error lexico '%s'" % t.value[0])
     t.lexer.skip(1)
 
 t_ignore = " \t\r"
@@ -1289,20 +1289,16 @@ def p_length(t):
     t[0] = Length(t[1], t.lineno(1), t.lexpos(1))
 
 #errores sintacticos
-def p_error_inst(t):
-    '''
-    instruccion : error PTOYCOMA
-    '''
-    t[0] = -1
     #print(str(t[1].value))
     #s = SingletonErrores.getInstance()
-   # s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
+    # s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
     
 def p_error(t):
-    s = SingletonErrores.getInstance()
-    #s.addError(Error(str(t.lineno(1)), str(t.lexpos(1)) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )
-    print("Error sintáctico:"+ str(t.value))
-    print(t.value =="toLowerCase")
+    if t != None:
+        s = SingletonErrores.getInstance()
+        print("Error sintáctico en '%s'" % t.value)
+        s.addError(Error(1, 1 , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )
+        errores.append(Error(str(1), str(1) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición"))
 
 import ply.yacc as yacc
 
@@ -1310,6 +1306,9 @@ parser = yacc.yacc()
 
 def parse(input) :
     global entrada
+    global errores
+    errores = []
+
     entrada = input
     return parser.parse(input)
 

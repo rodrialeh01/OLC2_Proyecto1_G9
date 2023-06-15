@@ -11,6 +11,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from gramatica import gramatica2
 
+# importando los errores que se agregaron a la gramatica2:
+
+
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -30,11 +33,16 @@ def ejecutar():
     singletonErr = Sing.getInstance()
     singletonErr.reinicioErrores()
     parseado = gramatica2.parse(texto)
-
     entornoGlobal = Entorno(None)
     entornoGlobal.setActual("Global")
     helpe = Helper()
     helpe.Ts = ""
+
+    for err in gramatica2.errores:
+        if isinstance(err, Error):
+            helpe.setConsola("[ERROR] "+err.desc )
+
+
     if parseado is not None:
         for i in parseado:
             if i is not None:

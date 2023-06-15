@@ -6,7 +6,9 @@ from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Simbolo import Simbolo
-
+from AST.SingletonErrores import SingletonErrores
+from AST.Error import Error
+from AST.Simbolos.Enums import obtTipoDato
 
 class ForOf(Instruccion):
     def __init__(self, variable, exp1, instrucciones, fila, columna):
@@ -18,7 +20,7 @@ class ForOf(Instruccion):
 
     def ejecutar(self, entorno, helper):
         entornoLocal = Entorno(entorno)
-        entornoLocal.setActual("ForOf")
+
         val = self.exp1.ejecutar(entornoLocal, helper)
         entornoLocal2 = Entorno(entornoLocal)
         helperTemp = helper.getCiclo()
@@ -53,7 +55,6 @@ class ForOf(Instruccion):
                     continue
         elif val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_BOOLEAN or val.tipo == TIPO_DATO.ARRAY_NUMBER or val.tipo == TIPO_DATO.ARRAY_STRING or val.tipo == TIPO_DATO.ARRAY_INTERFACE:
             for v in val.valor:
-                print("YO SOY VVVVVVVVVVVVVVVVVVVVVVVVVVVVVV: ", v);
                 entornoLocal2.setActual("ForOf")
                 simboloInterno = Simbolo()
                 simboloInterno.linea = self.fila
@@ -65,7 +66,6 @@ class ForOf(Instruccion):
                 try:
                     for instruccion in self.instrucciones:
                         print(instruccion)
-                        print("877987897897987987879787987987897987897987987987987987987987")
                         result = instruccion.ejecutar(entornoLocal2, helper)
                         
                         if isinstance(result, Break):
@@ -81,6 +81,13 @@ class ForOf(Instruccion):
                             return result
                 except Exception:
                     continue
+        else:
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado una variable de tipo" + obtTipoDato(val.tipo) + " no compatible dentro del ForOf" )
+            s.addError(err)
+            helper.setConsola("[ERROR]: Se ha encontrado una variable de tipo " + obtTipoDato(val.tipo) + "no compatible dentro del ForOf en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
+            return
+        
         helper.setTs(entornoLocal)
         helper.setTs(entornoLocal2)
         helper.setCiclo(helperTemp)

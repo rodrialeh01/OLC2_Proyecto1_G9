@@ -21,6 +21,7 @@ class AsignarInterface(Instruccion):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la Asignación, no existe la interface " + self.id_interface)
             s.addError(err)
+            helper.setConsola("[ERROR] Se ha encontrado un error en la Asignación, no existe la interface " + self.id_interface + " en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
         
         objeto = entorno.ObtenerInterfaceDeclarada(self.id_interface)
@@ -37,6 +38,7 @@ class AsignarInterface(Instruccion):
         s = SingletonErrores.getInstance()
         err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la Asignación, no existe el parametro " + self.id_param + " en la interface " + self.id_interface)
         s.addError(err)
+        helper.setConsola("[ERROR] Se ha encontrado un error en la Asignación, no existe el parametro " + self.id_param + " en la interface " + self.id_interface + " en la línea "+ str(self.fila) +" y columna " + str(self.columna))
         return
 
     def genArbol(self) -> Nodo:

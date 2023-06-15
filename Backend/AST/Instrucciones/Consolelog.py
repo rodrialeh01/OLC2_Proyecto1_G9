@@ -14,11 +14,8 @@ class Consolelog(Instruccion):
         listTemp = []
         exp = None
         textoLog = ""
-        print(type(self.expresion))
-        print("VER QUE OBTIENE?")
         # VALIDAR QUE SI ES INSTANCE DE UN IDENTIFICADOR, VER SI ESE VALOR ES UNA INTERFACE
         if isinstance(self.expresion, list):
-            print("ENTRO A LISTA")
             for exp in self.expresion:
                 val = exp.ejecutar(entorno, helper)
 
@@ -34,10 +31,7 @@ class Consolelog(Instruccion):
                     impresion = self.ImpresionArraysInterfaces(array, val.valor)
                     listTemp.append(impresion)
                 elif val.tipo == TIPO_DATO.INTERFACE:
-                    print("SISOY JEJEJEJEJEJEJEJEJEJEJEJEJEJEJE")
                     mostrarxd = "{"
-                    print("F???????????????????????????????????????????????")
-                    print(val.valor.paramDeclarados)
                     #arrKeys = list(exp.valor.paramDeclarados.keys())
                     cont = 0
                     for vals in val.valor.paramDeclarados:
@@ -74,13 +68,11 @@ class Consolelog(Instruccion):
                 return
             elif exp.tipo == TIPO_DATO.INTERFACE:
                 mostrarxd = "{\n"
-                print(exp.valor.paramDeclarados)
                 for vals in exp.valor.paramDeclarados:
                     for dic in vals:
                         valuexd = vals[dic]
                         mostrarxd += "\t" + dic + " : " + str(valuexd.valor) + "\n"
                 mostrarxd += "}"
-                print(mostrarxd)
                 helper.setConsola(mostrarxd)
                 return
             elif exp.tipo == TIPO_DATO.ARRAY_INTERFACE:

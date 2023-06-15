@@ -21,35 +21,20 @@ class Parametro(Instruccion):
         self.valorRef = None 
 
     def ejecutar(self, entorno, helper):
-        #print("============================================================================")
-        #print("ejecutar parametro")
-        #print("hola hola", self.valor)
-        #print("adios adios", self.utilizado)
-        #print("============================================================================")
         if self.valor != None or self.utilizado != None:
             
             retorno = Retorno()
             if self.valor != None: 
-                
                 retorno = self.valor.ejecutar(entorno, helper)
-                #print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-", retorno)
             else:
-                #ya tiene un valor
-                #print("oh no: ")
-                #print(self.utilizado.valor)
-                #print(self.utilizado.tipo)
                 retorno.valor = self.utilizado.valor
                 retorno.tipo = self.utilizado.tipo
 
-            #print("-*- ESTA LA VERIFICACIÓN DE AHORAAAAAAAAAAAAAAAAAAA: *-*-**-*-")
-            #print(self.tipo)
-            #print(retorno.tipo)
             if self.tipo != retorno.tipo:
-                #print(self.tipo)
-                #print(retorno.tipo)
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato no coincide con el tipo de dato del parametro")
                 s.addError(err)
+                helper.setConsola("[ERROR] El tipo de dato no coincide con el tipo de dato del parametro en la línea "+ str(self.fila) +" y columna " + str(self.columna))
                 return
             #print("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIUUUUUUUUUUUUU")
             existencia = entorno.BuscarSimboloLocal(self.id)
@@ -66,12 +51,18 @@ class Parametro(Instruccion):
 
                 entorno.AgregarSimbolo(self.id, simbolo)
             else:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "El parametro " + self.id + " ya fue declarado anteriormente en el entorno actual")
+                s.addError(err)
+                helper.setConsola("[ERROR] El parametro " + self.id + " ya fue declarado anteriormente en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+
                 #ERROR
                 return
         else:
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "El parametro" + self.id +" no tiene un valor asignado")
             s.addError(err)
+            helper.setConsola("[ERROR] El parametro" + self.id +" no tiene un valor asignado en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
 
     def genArbol(self) -> Nodo:

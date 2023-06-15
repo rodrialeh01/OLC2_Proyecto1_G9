@@ -1,6 +1,7 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Nodo import Nodo
-
+from AST.Error import Error
+from AST.SingletonErrores import SingletonErrores
 
 class Return(Instruccion):
     def __init__(self, valor, fila, columna):
@@ -11,18 +12,16 @@ class Return(Instruccion):
     def ejecutar(self, entorno, helper):
         if helper.getFuncion() == "Funcion":
             if self.valor != None:
-                print("DESDE EL ENTORNO: ", entorno.getActual())
-                print("RETURN CON VALOR")
-                print("VALOR DEL RETURN: ", self.valor)
                 valor = self.valor.ejecutar(entorno, helper)
-                print("VALOR DEL RETORNO: ", valor)
                 return valor
             else:
-                #print("RETURN VACIO")
                 return self
         else:
-            #print("Aquí hay un error xdddddd")
-            pass
+            s = SingletonErrores.getInstance()
+            error = Error(self.fila, self.columna, "Error Semantico", "Return fuera de función")
+            helper.setConsola("[ERROR]: Return fuera de función en la línea " + str(self.fila) +" y columna " + str(self.columna))
+            s.addError(error)
+            return
 
     def genArbol(self) -> Nodo:
         if self.valor != None:

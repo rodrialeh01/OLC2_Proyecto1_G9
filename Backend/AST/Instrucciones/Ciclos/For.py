@@ -21,22 +21,20 @@ class For(Instruccion):
 
     def ejecutar(self, entorno, helper):
         entornoLocal = Entorno(entorno)
-        print("FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR")
-        val1 = self.exp1.ejecutar(entornoLocal, helper)
-        print("TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST", val1)
+        self.exp1.ejecutar(entornoLocal, helper)
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")
 
-        print("FOR")
         while True:
-            print("SOY EL FOR")
+
             condicion = self.condicion.ejecutar(entornoLocal, helper)
             if condicion.tipo != TIPO_DATO.BOOLEANO:
                 #error semantico
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la condicional de FOR, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) )
                 s.addError(err)
-                return
+                helper.setConsola("[ERROR]: Se ha encontrado un error en la condicional de FOR, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion.tipo) + " en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
+                return 
             
             if condicion.valor == False:
                 helper.setTs(entornoLocal2)

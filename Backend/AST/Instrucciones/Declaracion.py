@@ -23,6 +23,7 @@ class Declaracion(Instruccion):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La variable " + identificador + " ya fue declarada anteriormente en el entorno actual")
             s.addError(err)
+            helper.setConsola("[ERROR] La variable " + identificador + " ya fue declarada anteriormente en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
         
         if tipo != None:
@@ -34,6 +35,7 @@ class Declaracion(Instruccion):
                         s = SingletonErrores.getInstance()
                         err = Error(self.fila, self.columna, "Error Semántico", "La variable " + identificador + " es de tipo NULL, no puede asignarle un valor")
                         s.addError(err)
+                        helper.setConsola("[ERROR] La variable " + identificador + " es de tipo NULL, no puede asignarle un valor en la línea "+ str(self.fila) +" y columna " + str(self.columna))
                         return
                     simb = Simbolo()
                     simb.nombre = identificador

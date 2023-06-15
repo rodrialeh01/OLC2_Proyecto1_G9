@@ -28,14 +28,16 @@ class ToFixed(Expresion):
                 #error semantico
                 if valor_a_aproximar.tipo != TIPO_DATO.NUMERO:
                     s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor_a_aproximar.tipo) )
+                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, la expresión debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor_a_aproximar.tipo))
                     s.addError(err)
-                    return
+                    helper.setConsola("[ERROR]: Se ha encontrado un error en la función toFixed, la expresión debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor_a_aproximar.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                    return Retorno(None, TIPO_DATO.ERROR)
                 if cantidad_de_decimales.tipo != TIPO_DATO.NUMERO:
                     s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad_de_decimales.tipo) )
+                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toFixed, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad_de_decimales.tipo))
                     s.addError(err)
-                    return
+                    helper.setConsola("[ERROR]: Se ha encontrado un error en la función toFixed, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad_de_decimales.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                    return Retorno(None, TIPO_DATO.ERROR)
                 
             return Retorno(round(float(valor_a_aproximar.valor),int(cantidad_de_decimales.valor)), TIPO_DATO.NUMERO)
 

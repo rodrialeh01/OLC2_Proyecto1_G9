@@ -1,22 +1,19 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
-from AST.Nodo import Nodo
-from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
 
 
-class AccesoArray(Expresion):
-    def __init__(self, id, accesos, linea, columna):
+class AccesoArrayInterface(Expresion):
+    def __init__(self, id, accesos,id_param, linea, columna):
         self.id = id
         self.accesos = accesos
+        self.id_param = id_param
         self.linea = linea
         self.columna = columna
 
-
     def ejecutar(self, entorno, helper):
-
-        #buscar el id en el entorno
         existe = entorno.ExisteSimbolo(self.id)
         if not existe:
             #error semantico
@@ -32,8 +29,18 @@ class AccesoArray(Expresion):
         #verificar que sea un array
         for a in self.accesos:
             listaAccesos.append(a.ejecutar(entorno, helper).valor)
-        xd = self.accesar(listaAccesos, simbolo, entorno, helper)
-        return xd
+        objeto_retorno = self.accesar(listaAccesos, simbolo, entorno, helper)
+        objeto = objeto_retorno.valor
+        for p in objeto.paramDeclarados:
+            if self.id_param in p:
+                return p[self.id_param]
+        
+        #error semantico
+        s = SingletonErrores.getInstance()
+        err = Error(self.linea, self.columna, "Error Semántico", "La variable " + str(self.id_interface) + " no posee el atributo" + str(self.id_param) )
+        helper.setConsola("[ERROR]: La variable " + str(self.id_interface) + " no posee el atributo " + str(self.id_param) + " en la linea: " + str(self.linea) + " y columna: " + str(self.columna))
+        s.addError(err)
+        return Retorno(None, TIPO_DATO.ERROR)
 
     def accesar(self, pila, lista, entorno, helper):
         if len(pila) == 0:
@@ -53,9 +60,7 @@ class AccesoArray(Expresion):
                 return Retorno(None, TIPO_DATO.ERROR)
             if len(pila) == 0 and isinstance(valor, Retorno)==False:
                 return Retorno(valor, TIPO_DATO.CADENA)
-            elif valor.tipo == TIPO_DATO.ARRAY :
-                return self.accesar(pila, valor, entorno, helper)
-            elif valor.tipo == TIPO_DATO.CADENA and len(pila) > 0 and len(valor.valor)> 1:
+            elif valor.tipo == TIPO_DATO.ARRAY or valor.tipo == TIPO_DATO.ARRAY_INTERFACE:
                 return self.accesar(pila, valor, entorno, helper)
             else:
                 if len(pila) == 0:
@@ -70,14 +75,5 @@ class AccesoArray(Expresion):
                     helper.setConsola("[ERROR]: No se puede acceder al valor que se intenta acceder al array en la linea: " + str(self.linea) + " y columna: " + str(self.columna))
                     return Retorno(None, TIPO_DATO.ERROR)
 
-    def genArbol(self) -> Nodo:
-        nodo = Nodo("ACCESO ARRAY")
-        nodo.agregarHijo(Nodo(str(self.id)))
-        listaAcc = []
-        for a in self.accesos:
-            listaAcc.append(a.genArbol())
-        for a in listaAcc:
-            nodo.agregarHijo(Nodo("["))
-            nodo.agregarHijo(a)
-            nodo.agregarHijo(Nodo("]"))
-        return nodo
+    def genArbol(self):
+        pass

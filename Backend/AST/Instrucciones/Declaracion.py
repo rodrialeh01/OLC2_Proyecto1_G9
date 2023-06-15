@@ -15,13 +15,9 @@ class Declaracion(Instruccion):
         self.columna = columna
     
     def ejecutar(self, entorno, helper):
-        #print("Declaracion************************************************")
         identificador = self.id
         tipo = self.tipo
-        #print("identificador: " + identificador)
-        #print("tipo: " + str(tipo))
         existe = entorno.ExisteSimbolo(identificador)
-        #print("existe: " + str(existe))
         if existe:
             #error semantico
             s = SingletonErrores.getInstance()
@@ -32,16 +28,35 @@ class Declaracion(Instruccion):
         if tipo != None:
             if self.tipo == TIPO_DATO.NULL:
                 if self.valor != None:
-                    #error semantico
-                    s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "La variable " + identificador + " es de tipo NULL, no puede asignarle un valor")
-                    s.addError(err)
+                    val = self.valor.ejecutar(entorno, helper)
+                    if val.tipo != TIPO_DATO.NULL:
+                        #error semantico
+                        s = SingletonErrores.getInstance()
+                        err = Error(self.fila, self.columna, "Error Semántico", "La variable " + identificador + " es de tipo NULL, no puede asignarle un valor")
+                        s.addError(err)
+                        return
+                    simb = Simbolo()
+                    simb.nombre = identificador
+                    simb.tipo = TIPO_DATO.NULL
+                    simb.valor = None
+                    simb.linea = self.fila
+                    simb.columna = self.columna
+                    simb.entorno = entorno
+                    entorno.AgregarSimbolo(identificador, simb)
+                    return
+                else:
+                    simb = Simbolo()
+                    simb.nombre = identificador
+                    simb.tipo = TIPO_DATO.NULL
+                    simb.valor = None
+                    simb.linea = self.fila
+                    simb.columna = self.columna
+                    simb.entorno = entorno
+                    entorno.AgregarSimbolo(identificador, simb)
                     return
 
-            #print("valor: " + str(self.valor))
             if self.valor != None:
                 valorG = self.valor.ejecutar(entorno, helper)
-                #print("valorG: " + str(valorG.valor))
                 if valorG.tipo == tipo:
                     simb = Simbolo()
                     simb.nombre = identificador
@@ -50,7 +65,6 @@ class Declaracion(Instruccion):
                     simb.linea = self.fila
                     simb.columna = self.columna
                     simb.entorno = entorno
-                    #print("si se guardo en la tabla de simbolos")
                     entorno.AgregarSimbolo(identificador, simb)
             else:
                 simb = Simbolo()

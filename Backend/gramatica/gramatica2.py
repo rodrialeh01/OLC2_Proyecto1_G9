@@ -2,6 +2,7 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
 from AST.Expresiones.AccesoArray import AccesoArray
+from AST.Expresiones.AccesoArrayInterface import AccesoArrayInterface
 from AST.Expresiones.AccesoInterface import AccesoInterface
 from AST.Expresiones.Array import Array
 from AST.Expresiones.Dec import Dec
@@ -11,12 +12,15 @@ from AST.Expresiones.Llamada import Llamada
 from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
+from AST.Expresiones.Nativas.Length import Length
 from AST.Expresiones.Nativas.Split import Split
 from AST.Expresiones.Nativas.toExponential import ToExponential
 from AST.Expresiones.Nativas.toFixed import ToFixed
 from AST.Expresiones.Nativas.toLowerCase import ToLowerCase
+from AST.Expresiones.Nativas.ToNumber import ToNumber
 from AST.Expresiones.Nativas.toString import ToString
 from AST.Expresiones.Nativas.toUpperCase import ToUpperCase
+from AST.Expresiones.Nativas.TypeOf import TypeOf
 from AST.Expresiones.Operacion import Operacion
 from AST.Expresiones.Primitivo import Primitivo
 from AST.Expresiones.Relacional import Relacional
@@ -63,6 +67,7 @@ reservadas = {
     'toExponential' : 'TOEXPONENTIAL',
     'toString'  : 'TOSTRING',
     'String' : 'CAST_STRING',
+    'Number': 'CAST_NUMBER',
     'split' : 'SPLIT',
     'concat' : 'CONCAT',
     'console' : 'CONSOLE',
@@ -81,6 +86,8 @@ reservadas = {
     'true' : 'TRUE',
     'false' : 'FALSE',
     'Array' : 'ARRAY',
+    'typeof' : 'TYPEOF',
+    'length' : 'LENGTH',
 }
 
 tokens = [
@@ -583,7 +590,7 @@ def p_funcion_2(t):
     '''
     funcion : FUNCTION ID PARIZQ PARDER bloque
     '''
-    t[0] = Funcion(t[2], None, t[5], t.lineno(1), t.lexpos(1))
+    t[0] = Funcion(t[2], None, t[5], t.lineno(1), t.lexpos(1), None)
 
 
 def p_funcion_3(t):
@@ -928,9 +935,10 @@ def p_concatenacion(t):
 
 # ? casteo : expresion PUNTO TOSTRING PARIZQ PARDER
 # ?        | CAST_STRING PARIZQ expresion PARDER
+# ?        | CAST_NUMBER PARIZQ expresion PARDER
 def p_casteo(t):
     '''
-    casteo : expresion PUNTO TOSTRING PARIZQ PARDER
+    casteo : ID PUNTO TOSTRING PARIZQ PARDER
     '''
     t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
 
@@ -938,7 +946,13 @@ def p_casteo_1(t):
     '''
     casteo : CAST_STRING PARIZQ expresion PARDER
     '''
-    t[0] = ToString(t[3], t.lineno(1), t.lexpos(1))
+    t[0] = Cast_String(t[3], t.lineno(1), t.lexpos(1))
+
+def p_casteo_2(t):
+    '''
+    casteo : CAST_NUMBER PARIZQ expresion PARDER
+    '''
+    t[0] = ToNumber(t[3], t.lineno(1), t.lexpos(1))
 
 # ? return : RETURN expresion
 # ?        | RETURN
@@ -999,9 +1013,24 @@ def p_paramStruct(t):
     #objeto de paramStruct
 def p_decInterface(t):
     '''
-    declaracionInterface : LET ID DOSPUNTOS ID IGUAL LLAIZQ lista_d LLADER
+    declaracionInterface : LET ID DOSPUNTOS ID IGUAL expresion_interface
     '''
-    t[0] = Instancia(t[2],t[4], t[7], t.lineno(1), t.lexpos(1))
+    t[0] = Instancia(t[2],t[4], t[6], t.lineno(1), t.lexpos(1))
+
+# ? expresion_interface : LLAIZQ lista_d LLADER
+def p_expresionInterface(t):
+    '''
+    expresion_interface : LLAIZQ lista_d LLADER
+    '''
+    t[0] = t[2]
+
+# ? expresion : expresion_interface
+def p_expresion(t):
+    '''
+    expresion : expresion_interface
+    '''
+    t[0] = t[1]
+
 
 def p_declInt(t):
     '''
@@ -1048,6 +1077,10 @@ def p_asignacionInterface2(t):
 # ?                  | LET ID DOSPUNTOS ARRAY MENOR tipo MAYOR
 # ?                  | LET ID IGUAL CORIZQ CORDER
 # ?                  | LET ID IGUAL CORIZQ lista_exp CORDER
+# ?                  | LET ID DOSPUNTOS ID IGUAL CORIZQ CORDER
+# ?                  | LET ID DOSPUNTOS ID IGUAL CORIZQ lista_exp CORDER
+# ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER
+# ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
 
 def p_declaracionArray3(t):
     '''
@@ -1115,6 +1148,33 @@ def p_declaracionArray10(t):
     exp = Array(t[5], t.lineno(1), t.lexpos(1))
     t[0] = DeclaracionArray(t[2], TIPO_DATO.ARRAY, exp, t.lineno(1), t.lexpos(1))
 
+def p_declaracionArray12(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ID IGUAL CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray13(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ID IGUAL CORIZQ lista_exp CORDER
+    '''
+    exp = Array(t[7], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray14(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ID CORIZQ CORDER
+    '''
+    exp = Array([], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
+
+def p_declaracionArray15(t):
+    '''
+    declaracionArray : LET ID DOSPUNTOS ID CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
+    '''
+    exp = Array(t[9], t.lineno(1), t.lexpos(1))
+    t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
 
 # ? lista_exp : lista_exp COMA expresion
 # ?           | expresion
@@ -1171,6 +1231,20 @@ def p_acceso_array(t):
     '''
     t[0] = AccesoArray(t[1], t[2], t.lineno(1), t.lexpos(1))
     
+
+def p_exp_acceso_array_interface(t):
+    '''
+    expresion : acceso_array_interface
+    '''
+    t[0] = t[1]
+
+def p_acceso_array_interface(t):
+    '''
+    acceso_array_interface : ID lista_acceso_array PUNTO ID
+    '''
+    print("acceso array interface")
+    t[0] = AccesoArrayInterface(t[1], t[2], t[4], t.lineno(1), t.lexpos(1))
+
 # ? lista_acceso_array : lista_acceso_array acceso_array
 # ?                    | acceso_array
 
@@ -1201,7 +1275,18 @@ def p_asignacion_array(t):
     '''
     t[0] = AsignacionArray(t[1], t[2], t[4], t.lineno(1), t.lexpos(1))
     
-    
+
+def p_typeOf(t):
+    '''
+    expresion : TYPEOF PARIZQ expresion PARDER
+    '''
+    t[0] = TypeOf(t[3], t.lineno(1), t.lexpos(1))
+
+def p_length(t):
+    '''
+    expresion : ID PUNTO LENGTH
+    '''
+    t[0] = Length(t[1], t.lineno(1), t.lexpos(1))
 
 #errores sintacticos
 def p_error_inst(t):

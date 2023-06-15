@@ -16,35 +16,34 @@ class Llamada(Instruccion, Expresion):
         self.params = params
 
     def ejecutar(self, entorno, helper):
-        print("SOY LA LLAMADAAAAAAAAAAAAAAAAAAAAA: ", self.id)
+        print("Ejecutando llamada a función")
         fn = entorno.ExisteFuncion(self.id)
         helperTemp = helper.getFuncion()
-        print("SOY FN: ", fn)
+
         if fn is False:
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "La función " + self.id + " no existe en el entorno actual")
+            err = Error(self.linea, self.columna, "Error Semántico", "La función " + self.id + " no existe en el entorno actual")
             s.addError(err)
-            return Retorno(None, None)
+            helper.setConsola("[ERROR]: La función " + self.id + " no existe en el entorno actual " + " en la linea: " + str(self.linea) + " y columna: " + str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
 
         entornoFN = Entorno(entorno)
         entornoFN.actual = "Función " + str(self.id)
         func = entorno.ObtenerFuncion(self.id)
 
         argumentos = func.declaracionesParams(entornoFN, self.params, entorno, helper)
-        print("HOLA, SOY ARGUMENTOS: ", argumentos)
+        
         if argumentos is False:
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "La cantidad de parámetros no coincide con la cantidad de argumentos")
+            err = Error(self.linea, self.columna, "Error Semántico", "La cantidad de parámetros de la función "+ self.id+" no coincide con la cantidad de argumentos")
             s.addError(err)
-            return Retorno(None, None)
+            helper.setConsola("[ERROR]: La cantidad de parámetros de la función "+ self.id+" no coincide con la cantidad de argumentos " + " en la linea: " + str(self.linea) + " y columna: " + str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
         
-        print("verificación de func: ", func)
+
         if func is not None:
             ret = func.ejecutar(entornoFN, helper)
-            print("soy el ret: ", ret)
             if ret is not None:
-               # print("PARAMS: ", self.params[0].ejecutar(entorno, helper).valor)
-                print("RETORNA: ", ret.valor, ret.tipo)
                 helper.setFuncion(helperTemp)
                 return Retorno(ret.valor, ret.tipo)
             

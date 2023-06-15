@@ -22,11 +22,17 @@ class Identificador(Expresion):
             #print(ret)
             return Retorno(ret.valor, ret.tipo)
         else:
-            #error semántico
-            s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombre + " no existe en el entorno actual" )
-            s.addError(err)
-            return Retorno(None, None)
+            existe2 = entorno.ObtenerInterfaceDeclarada(self.nombre)
+            if existe2 == None:
+                #error semántico
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.nombre + " no existe en el entorno actual" )
+                s.addError(err)
+                return Retorno(None, None)
+            else:
+                return Retorno(existe2, TIPO_DATO.INTERFACE)
+
+
         
     def genArbol(self) -> Nodo:
         return Nodo(self.nombre)

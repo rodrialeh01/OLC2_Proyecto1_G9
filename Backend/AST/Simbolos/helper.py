@@ -67,3 +67,4 @@ class Helper:
     def setConsola(self, consola):
         self.consola += str(consola) + "\n"
         
+        

@@ -21,9 +21,14 @@ class Funcion(Simbolo, Instruccion):
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
         #print("EXP: ", exp)
         if self.params is None and exp is None:
-            #print("No hay parametros")
+            print("No hay parametros")
             return True
         
+        if self.params is None and exp is not None:
+            
+            return False
+
+
         paramsDecl = self.params
         if len(paramsDecl) != len(exp):
             #print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")

@@ -11,23 +11,23 @@ class ToString(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        '''
-        NOTA: Esta funcion cuando quiero hacer un x.toString() + y.toString() no funciona el y.toString() pero si hago esto:
-        x.toString() + (y.toString()) si funciona
-        '''
-        #print("EJECUTANDO TOSTRING")
-        #print(self.expresion)
+
         found = entorno.ObtenerSimbolo(self.expresion)
-        #print(found)
         if entorno.ExisteSimbolo(self.expresion):
-            #print("EXISTE SIMBOLO")
             valor = found.valor
+            if found.tipo == TIPO_DATO.ARRAY or found.tipo == TIPO_DATO.ARRAY_STRING or found.tipo == TIPO_DATO.ARRAY_NUMBER or found.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+                arr = []
+                arr = self.StringArrays(arr, valor)
+                salida = ""
+                for a in range(len(arr)):
+                    if a == len(arr) - 1:
+                        salida += str(arr[a])
+                    else:
+                        salida += str(arr[a]) + ","
+                return Retorno(str(salida), TIPO_DATO.CADENA)
             return Retorno(str(valor), TIPO_DATO.CADENA)
         else:
-            #print("NO EXISTE SIMBOLO")
             valor = self.expresion.ejecutar(entorno, helper)
-            #print(valor.tipo)
-            #print(valor.valor)
             return Retorno(str(valor.valor), TIPO_DATO.CADENA)
         
     def genArbol(self) -> Nodo:
@@ -37,3 +37,13 @@ class ToString(Expresion):
         nodo.agregarHijo(Nodo(")"))
 
         return nodo
+
+    def StringArrays(self, arr, arrexist):
+        for a in arrexist:
+            if a.tipo == TIPO_DATO.ARRAY or a.tipo == TIPO_DATO.ARRAY_NUMBER or a.tipo == TIPO_DATO.ARRAY_STRING or a.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+                arr2 = []
+                arr2 = self.ImpresionArrays(arr2, a.valor)
+                arr.append(arr2)
+            else:
+                arr.append(a.valor)
+        return arr

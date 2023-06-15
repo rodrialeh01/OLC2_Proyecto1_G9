@@ -24,14 +24,13 @@ class Relacional(Expresion):
 
         if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
-                #print("SI ENTRÉ A MAYOR QUE ----------------------")
-                #print("Mi resultado es: ", val1.valor > val2.valor)
                 return Retorno(val1.valor > val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional MAYOR QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional MAYOR QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None, TIPO_DATO.ERROR)
 
         elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
@@ -40,7 +39,8 @@ class Relacional(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional MENOR QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional MENOR QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
             
         elif self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
@@ -49,7 +49,8 @@ class Relacional(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional MAYOR IGUAL QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional MAYOR IGUAL QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
         elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_IGUAL_QUE:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
@@ -58,16 +59,18 @@ class Relacional(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional MENOR IGUAL QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional MENOR IGUAL QUE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
         elif self.operador == TIPO_OPERACION_RELACIONAL.IGUAL_IGUAL:
             if val1.tipo == val2.tipo:
                 return Retorno(val1.valor == val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional IGUAL IGUAL con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional IGUALACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional IGUALACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
         elif self.operador == TIPO_OPERACION_RELACIONAL.DIFERENTE:
             if val1.tipo == val2.tipo:
@@ -76,7 +79,8 @@ class Relacional(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación relacional DIFERENTE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación relacional DIFERENTE con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
     def genArbol(self):
         if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:

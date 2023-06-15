@@ -1,8 +1,8 @@
 from AST.Abstract.Expresion import Expresion
+from AST.Expresiones.Llamada import Llamada
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
-from AST.Expresiones.Llamada import Llamada
 
 arr = []
 class Array(Expresion):
@@ -18,17 +18,12 @@ class Array(Expresion):
         global arr
         arr = []
         if not isinstance(self.expresiones, Llamada):
-            print("RETOR: ")
-            print(self.expresiones)
             for exp in self.expresiones:
                 arr.append(exp.ejecutar(entorno, helper))
             retor = Retorno(arr, TIPO_DATO.ARRAY)
             return retor
         else:
-            print("HOLAAAAAAAAAAAAAAAAAAAAAAAAA")
             a = self.expresiones.ejecutar(entorno, helper)
-            print(a)
-            print("------------------------------")
             return self.expresiones.ejecutar(entorno, helper)
     
     def ImpresionArrays(self, arr, arrexist):

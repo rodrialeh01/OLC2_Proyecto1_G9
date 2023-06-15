@@ -11,17 +11,19 @@ class TIPO_DATO(Enum):
     ARRAY = 6,
     ARRAY_NUMBER = 7,
     ARRAY_STRING = 8,
-    ARRAY_BOOLEAN = 9
+    ARRAY_BOOLEAN = 9,
+    INTERFACE = 10,
+    ARRAY_INTERFACE = 11
 
 def obtTipoDato(i):
     if i == TIPO_DATO.NUMERO:
         return "Number"
     elif i == TIPO_DATO.CADENA:
-        return "Cadena"
+        return "String"
     elif i == TIPO_DATO.BOOLEANO:
         return "Boolean"
     elif i == TIPO_DATO.NULL:
-        return "Null"
+        return "null"
     elif i == TIPO_DATO.ERROR:
         return "Error"
     elif i == TIPO_DATO.ANY:
@@ -33,6 +35,10 @@ def obtTipoDato(i):
     elif i == TIPO_DATO.ARRAY_STRING:
         return "Array"
     elif i == TIPO_DATO.ARRAY_BOOLEAN:
+        return "Array"
+    elif i == TIPO_DATO.INTERFACE:
+        return "object"
+    elif i == TIPO_DATO.ARRAY_INTERFACE:
         return "Array"
 
 class ERROR(Enum):

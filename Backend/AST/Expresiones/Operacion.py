@@ -47,7 +47,8 @@ class Operacion(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica SUMA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmetica SUMA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
         #MENOS
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
@@ -58,57 +59,55 @@ class Operacion(Expresion):
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica RESTA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmetica RESTA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
         #POR
         elif self.operador == TIPO_OPERACION_ARITMETICA.MULTIPLICACION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
-                #print(str(val1.valor) + " * " + str(val2.valor))
-                #print(str(val1.valor * val2.valor))
                 return Retorno(val1.valor * val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
         #DIVIDIDO
         elif self.operador == TIPO_OPERACION_ARITMETICA.DIVISION:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
                 if val2.tipo != 0:
-                    #print(str(val1.valor) + " / " + str(val2.valor))
-                    #print(str(val1.valor / val2.valor))
                     return Retorno(val1.valor / val2.valor, TIPO_DATO.NUMERO)
                 else:
                     s = SingletonErrores.getInstance()
                     err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmética DIVISIÓN con el valor 0")
                     s.addError(err)
-                    return Retorno(None,None)
+                    helper.setConsola("[ERROR]: No se puede realizar la operación Aritmética DIVISIÓN con el valor 0 en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                    return Retorno(None,TIPO_DATO.ERROR)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmpetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmpetica MULTIPLICACIÓN con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
         #POTENCIA
         elif self.operador == TIPO_OPERACION_ARITMETICA.POTENCIA:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
-                #print(str(val1.valor) + " ** " + str(val2.valor))
-                #print(str(val1.valor ** val2.valor))
                 return Retorno(val1.valor ** val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica POTENCIA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmetica POTENCIA con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
         #MODULO
         elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
             if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
-                #print(str(val1.valor) + " % " + str(val2.valor))
-                #print(str(val1.valor % val2.valor))
                 return Retorno(val1.valor % val2.valor, TIPO_DATO.NUMERO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación Aritmetica MODULO con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación Aritmetica MODULO con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
     def genArbol(self):
         if self.unario:

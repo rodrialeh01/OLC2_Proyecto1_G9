@@ -32,7 +32,8 @@ class Inc(Expresion):
             s = SingletonErrores.getInstance()
             err = Error(self.fila, self.columna, "Error Semántico", "La variable " + self.id + " no existe en el entorno actual" )
             s.addError(err)
-            return Retorno(None, None)
+            helper.setConsola("[ERROR]: La variable " + self.id + " no existe en el entorno actual " + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
     
     def genArbol(self):
         if self.orden == "preInc":

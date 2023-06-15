@@ -25,12 +25,14 @@ class ToExponential(Expresion):
                     s = SingletonErrores.getInstance()
                     err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
                     s.addError(err)
-                    return
+                    helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+                    return Retorno(None, TIPO_DATO.ERROR)
                 if cantidad.tipo != TIPO_DATO.NUMERO:
                     s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
+                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
+                    helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
                     s.addError(err)
-
+                    return Retorno(None, TIPO_DATO.ERROR)
             formato = "{:." + str(int(cantidad.valor)) + "e}"
             return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
 

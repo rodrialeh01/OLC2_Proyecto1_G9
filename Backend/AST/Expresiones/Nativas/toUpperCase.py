@@ -16,15 +16,20 @@ class ToUpperCase(Expresion):
         #print("TO UPPER CASE")
         found = entorno.ObtenerSimbolo(self.expresion)
         if found == None:
-            pass
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, no se ha encontrado la expresión." )
+            s.addError(err)
+            helper.setConsola("[ERROR]: Se ha encontrado un error en la función toUpperCase, no se ha encontrado la expresión.")
+            return Retorno(None, TIPO_DATO.ERROR)
             #error semantico
 
         if found.tipo != TIPO_DATO.CADENA:
             #error semantico
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, debe de ser de tipo String, pero se encontró de tipo " + obtTipoDato(found.tipo) )
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, la expresión debe de ser de tipo String, pero se encontró de tipo " + obtTipoDato(found.tipo) )
             s.addError(err)
-            return
+            helper.setConsola("[ERROR]: Se ha encontrado un error en la función toUpperCase, la expresión debe de ser de tipo String, pero se encontró de tipo " + obtTipoDato(found.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
         
         return Retorno(str(found.valor).upper(), TIPO_DATO.CADENA)
     

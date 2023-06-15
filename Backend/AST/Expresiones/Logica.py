@@ -22,6 +22,12 @@ class Logica(Expresion):
 
         if self.negacion:
             valNegacion = self.exp1.ejecutar(entorno, helper)
+            if valNegacion.tipo != TIPO_DATO.BOOLEANO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica NOT con el tipo de dato: " + obtTipoDato(valNegacion.tipo))
+                s.addError(err)
+                helper.setConsola("[ERROR]: No se puede realizar la operación lógica NOT con el tipo de dato: " + obtTipoDato(valNegacion.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
             valNegacion.valor = not valNegacion.valor
             return valNegacion
         
@@ -30,24 +36,23 @@ class Logica(Expresion):
 
         if self.operador == TIPO_OPERACION_LOGICA.AND:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
-                #print("ENTREEEEEEEEEEEE AL AND")
-                #print(val1.valor and val2.valor)
                 return Retorno(val1.valor and val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica AND con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación lógica AND con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
         elif self.operador == TIPO_OPERACION_LOGICA.OR:
             if val1.tipo == val2.tipo == TIPO_DATO.BOOLEANO:
-                #print("ENTREEEEEEEEEE AL ORRRRRRRRR")
                 return Retorno(val1.valor or val2.valor, TIPO_DATO.BOOLEANO)
             else:
                 s = SingletonErrores.getInstance()
                 err = Error(self.fila, self.columna, "Error Semántico", "No se puede realizar la operación lógica OR con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo))
                 s.addError(err)
-                return Retorno(None,None)
+                helper.setConsola("[ERROR]: No se puede realizar la operación lógica OR con los tipos de datos: " + obtTipoDato(val1.tipo) + " y " + obtTipoDato(val2.tipo) + " en la linea: " + str(self.fila) + " y columna: " + str(self.columna))
+                return Retorno(None,TIPO_DATO.ERROR)
 
     def genArbol(self):
         if self.negacion:

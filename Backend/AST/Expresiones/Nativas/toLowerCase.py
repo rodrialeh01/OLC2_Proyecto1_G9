@@ -24,9 +24,10 @@ class ToLowerCase(Expresion):
         if found.tipo != TIPO_DATO.CADENA:
             #error semantico
             s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, debe de ser de tipo cadena, pero se encontró de tipo " + obtTipoDato(found.tipo) )
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, la expresión debe de ser de tipo string, pero se encontró de tipo " + obtTipoDato(found.tipo) )
             s.addError(err)
-            return
+            helper.setConsola("[ERROR]: Se ha encontrado un error en la función toLowerCase, la expresión debe de ser de tipo string, pero se encontró de tipo " + obtTipoDato(found.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
         
         return Retorno(str(found.valor).lower(), TIPO_DATO.CADENA)
             

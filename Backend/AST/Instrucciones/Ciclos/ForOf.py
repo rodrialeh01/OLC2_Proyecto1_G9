@@ -51,7 +51,7 @@ class ForOf(Instruccion):
                             return result
                 except Exception:
                     continue
-        elif val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_BOOLEAN or val.tipo == TIPO_DATO.ARRAY_NUMBER or val.tipo == TIPO_DATO.ARRAY_STRING:
+        elif val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_BOOLEAN or val.tipo == TIPO_DATO.ARRAY_NUMBER or val.tipo == TIPO_DATO.ARRAY_STRING or val.tipo == TIPO_DATO.ARRAY_INTERFACE:
             for v in val.valor:
                 print("YO SOY VVVVVVVVVVVVVVVVVVVVVVVVVVVVVV: ", v);
                 entornoLocal2.setActual("ForOf")

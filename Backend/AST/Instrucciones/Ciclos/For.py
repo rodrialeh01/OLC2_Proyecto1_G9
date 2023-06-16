@@ -66,6 +66,7 @@ class For(Instruccion):
                     continue
 
                 self.incremento.ejecutar(entornoLocal, helper)
+        helper.setTs(entornoLocal2)
         helper.setCiclo(helperTemp)
 
     def genArbol(self) -> Nodo:

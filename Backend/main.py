@@ -90,7 +90,7 @@ def ejecutar():
 
     #print(singletonErr.getErrores())
     entornoTemp = ""
-    #entornoTemp = entornoGlobal.getSimbolos()
+    entornoTemp = entornoGlobal.getSimbolos()
     return jsonify({"message": helpe.getConsola()})
 
 @app.route('/errores', methods=['GET'])
@@ -102,11 +102,16 @@ def errores():
 def ts():
     global entornoTemp
     global helpe
-    
-    entornoTemp += helpe.getTs() + "\n</table>"
-
-    print(entornoTemp)
-    return jsonify({"texto": entornoTemp})
+    codigo_html = '''
+        <table align="center" class="table table-striped "> \n
+        <thead><tr> <th colspan="5">TABLA DE SÍMBOLOS</th> </tr></thead>\n
+        <h6> NOTA: FALTA CAMBIAR LOS TIPOS DE ALGUNAS COSAS (EJ: TIPO_DATO.NUMBER -> NUMBER) </h6>\n
+        <h6> NOTA: FALTA AGREGAR SÍMBOLOS DE LAS FUNCIONES </h6>\n
+        <tr class="table-dark"><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Fila</th><th>Columna</th></tr>\n
+        '''
+    codigo_html += entornoTemp + helpe.getTs() + "\n</table>"
+    print(codigo_html)
+    return jsonify({"texto": codigo_html})
 
 @app.route('/Arbol', methods=['GET'])
 def arbol():

@@ -63,7 +63,6 @@ class While(Instruccion):
                     continue
 
         #if entorno_local != None:
-        #helper.setTs(entorno_local)
         helper.setCiclo(helperTemp)
 
     def genArbol(self):

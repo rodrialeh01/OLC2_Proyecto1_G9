@@ -62,7 +62,9 @@ class Entorno:
         while env != None:
             if id in env.tablaSimbolos:
                 env.tablaSimbolos[id] = simbolo
+                return
             env = env.anterior
+
 
 # -------------------------------- funciones --------------------------------
     #verificacion de existencia:
@@ -149,14 +151,6 @@ class Entorno:
 
         actual = self
         codigo_html = ""
-        codigo_html += '''
-        <table align="center" class="table table-striped "> \n
-        <thead><tr> <th colspan="5">TABLA DE SÍMBOLOS</th> </tr></thead>\n
-        <h6> NOTA: FALTA CAMBIAR LOS TIPOS DE ALGUNAS COSAS (EJ: TIPO_DATO.NUMBER -> NUMBER) </h6>\n
-        <h6> NOTA: FALTA AGREGAR SÍMBOLOS DE LAS FUNCIONES </h6>\n
-        <tr class="table-dark"><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Fila</th><th>Columna</th></tr>\n
-        '''
-
         
         while actual != None:
             for i in actual.tablaSimbolos:

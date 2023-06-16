@@ -37,7 +37,6 @@ class If(Instruccion):
             if self.lista_instrucciones is not None:
                 for instruccion in self.lista_instrucciones:
                     accion = instruccion.ejecutar(entornoLocal, helper)
-                    #helper.setTs(entornoLocal)
                     if isinstance(accion, Return):
                         if helper.getFuncion() == "Funcion":
                             helper.setFuncion(helperTemp)
@@ -82,6 +81,7 @@ class If(Instruccion):
                             s.addError(err)
                             helper.setConsola("[ERROR]: Se ha encontrado un error en IF, no se puede retornar en un ambito que no sea una función en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
                             return
+                helper.setTs(entornoLocal)
                 return
         #if-else/ else-if
         else:
@@ -89,7 +89,6 @@ class If(Instruccion):
             if self.lista_elseifs is not None:
                 for accion in self.lista_elseifs:
                     condicion2 = accion.expresion.ejecutar(entornoLocal, helper)
-                    helper.setTs(entornoLocal)
                     if condicion2.tipo != TIPO_DATO.BOOLEANO:
                         s = SingletonErrores.getInstance()
                         err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en ELSE IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion2.tipo) )
@@ -146,12 +145,13 @@ class If(Instruccion):
                                     s.addError(err)
                                     helper.setConsola("[ERROR]: Se ha encontrado un error en ELSE IF, no se puede retornar en un ambito que no sea una función en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
                                     return
+                        
+                        helper.setTs(entornoLocal)
                         return
             if self.lista_instrucciones2 is not None:
                 entornoLocal.setActual("Else")
                 for InstElse in self.lista_instrucciones2:
                     accionElse = InstElse.ejecutar(entornoLocal, helper)
-                    helper.setTs(entornoLocal)
                     if accionElse is not None:
                         if isinstance(accionElse, Return):
                             if helper.getFuncion() == "Funcion":
@@ -197,6 +197,8 @@ class If(Instruccion):
                                 s.addError(err)
                                 helper.setConsola("[ERROR]: Se ha encontrado un error en ELSE, no se puede retornar en un ambito que no sea una función en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
                                 return
+                helper.setTs(entornoLocal)
+            
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("IF")

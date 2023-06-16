@@ -24,6 +24,7 @@ class Parametro(Instruccion):
         print("**********************PARAMETRO")
         print(self.tipo)
         print(self.utilizado.tipo)
+        print(self.id)
         if self.valor != None or self.utilizado != None:
             retorno = Retorno()
             if self.valor != None: 
@@ -53,24 +54,22 @@ class Parametro(Instruccion):
                 tipo_obj = entorno.ObtenerInterface(self.tipo)
                 print("EXISTENCIA ID", existencia_id)
                 if existencia_id is False:
-                    '''
-                    Anda en proceso de terminarse lo de agregar el simbolo de un interface declarado
-                    '''
                     print("INTERFAXXXX")
-                    print(self.utilizado.valor)
                     simbolo = self.utilizado.valor
                     print(simbolo.listaParams)
                     verificacion = True
-                    lista_parametros_objeto = simbolo.listaParams
+                    lista_parametros_objeto = tipo_obj.listaParametros
+                    listaParams = simbolo.listaParams
+                    lista_ya_Declarada = []
                     #recorremos la lista de parametros del objeto
                     for i in range(0, len(lista_parametros_objeto)):
                         #placa : "P-1234" <- exp = Retorno("P-1234", TIPO_DATO.CADENA)
                         if verificacion:
                             verificacion = False
-                            for j in range(0, len(self.listaParams)):
-                                if lista_parametros_objeto[i].id == self.listaParams[j].id:
+                            for j in range(0, len(listaParams)):
+                                if lista_parametros_objeto[i].id == listaParams[j].id:
                                     verificacion = True
-                                    exp = self.listaParams[j].expresion.ejecutar(entorno, helper)
+                                    exp = listaParams[j].expresion.ejecutar(entorno, helper)
                                     if lista_parametros_objeto[i].tipo != exp.tipo:
                                         #error semantico
                                         s = SingletonErrores.getInstance()
@@ -83,10 +82,12 @@ class Parametro(Instruccion):
                                         lista_parametros_objeto[i].id : exp
                                     })
 
-                                    j = len(self.listaParams)
+                                    j = len(listaParams)
                         else:
                             break
-                        
+                    simbolo.crearStructDeclarado(self.id, lista_ya_Declarada, self.fila, self.columna)
+                    entorno.AgregarInterfaceDeclarada(self.id, simbolo)
+                    print("Me creee :D con el id: ", self.id)
                     return
                 else:
                     s = SingletonErrores.getInstance()

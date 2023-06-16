@@ -14,8 +14,8 @@ class Return(Instruccion):
         if helper.getFuncion() == "Funcion":
             if self.valor != None:
                 valor = self.valor.ejecutar(entorno, helper)
-                print("Desde Return: ")
-                print(valor)
+                #print("Desde Return: ")
+                #print(valor)
                 return valor
             else:
                 return self
@@ -29,7 +29,7 @@ class Return(Instruccion):
     def genArbol(self) -> Nodo:
         if self.valor != None:
             nodo = Nodo("RETURN")
-            nodo.addHijoValor(self.valor.genArbol())
+            nodo.agregarHijo(self.valor.genArbol())
             return nodo
         else:
             nodo = Nodo("RETURN")

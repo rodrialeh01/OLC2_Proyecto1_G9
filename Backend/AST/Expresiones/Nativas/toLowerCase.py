@@ -13,13 +13,16 @@ class ToLowerCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        #print("TO LOWER CASE")
-        #print("EXPRESION: ", self.expresion)
-        found = entorno.ObtenerSimbolo(self.expresion)
-        #print("FOUND: ", found)
+        found = self.expresion.ejecutar(entorno, helper)
+
         if found == None:
             pass
             #error semantico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toLowerCase, la expresión debe de ser de tipo string, pero se encontró de tipo " + obtTipoDato(found.tipo) )
+            s.addError(err)
+            helper.setConsola("[ERROR]: Se ha encontrado un error en la función toLowerCase, la expresión debe de ser de tipo string, pero se encontró de tipo " + obtTipoDato(found.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+            return Retorno(None, TIPO_DATO.ERROR)
         
         if found.tipo != TIPO_DATO.CADENA:
             #error semantico

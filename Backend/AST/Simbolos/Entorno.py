@@ -1,10 +1,10 @@
-from AST.Simbolos.Enums import obtTipoDato
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 
 
 class Entorno:
     def __init__ (self, anterior):
-        #print("creando entorno")
-        #print("ANTERIOR; ", anterior)
+        ##print("creando entorno")
+        ##print("ANTERIOR; ", anterior)
         self.anterior = anterior
         self.tablaSimbolos = {}
         self.tablaFunciones = {}
@@ -34,10 +34,10 @@ class Entorno:
     
     #agregar simbolo:
     def AgregarSimbolo(self, id, simbolo):
-        #print("agregando simbolo: " + id)
+        ##print("agregando simbolo: " + id)
         self.tablaSimbolos[id] = simbolo
-        #print("simbolo agregado: " + id)
-        ##print("VALORES: ", self.tablaSimbolos[id].valor)
+        ##print("simbolo agregado: " + id)
+        ###print("VALORES: ", self.tablaSimbolos[id].valor)
         
 
     #obtener simbolo:
@@ -69,7 +69,7 @@ class Entorno:
 # -------------------------------- funciones --------------------------------
     #verificacion de existencia:
     def ExisteFuncion(self, id):
-        #print("Buscando funcion: " + id)
+        ##print("Buscando funcion: " + id)
         env = self
         while env != None:
             if id in env.tablaFunciones:
@@ -96,6 +96,11 @@ class Entorno:
 #guardar interface:
     def AgregarInterface(self, id, interface):
         self.tablaInterfaces[id] = interface
+
+    def BuscarInterfaceLocal(self, id):
+        if id in self.tablaInterfaces:
+            return True
+        return False
 
 #verificar existencia:
     def ExisteInterface(self, id):
@@ -125,6 +130,11 @@ class Entorno:
             if id in env.tablaInterfacesDeclaradas:
                 return True
             env = env.anterior
+        return False
+    
+    def BuscarInterfaceDeclaradaLocal(self, id):
+        if id in self.tablaInterfacesDeclaradas:
+            return True
         return False
 
     def ObtenerInterfaceDeclarada(self, id):
@@ -165,7 +175,13 @@ class Entorno:
             for i in actual.tablaFunciones:
                 codigo_html += "<tr>"
                 codigo_html += "<td>" + str(actual.tablaFunciones[i].nombre) + "</td>\n"
-                codigo_html += "<td> FALTA EL TIPO DE FUNCIÓN AAAAAAAAAAAAAAAAAAAAAAAAA </td>\n"
+                if actual.tablaFunciones[i].tipo != None:
+                    if (isinstance(actual.tablaFunciones[i].tipo,TIPO_DATO)):
+                        codigo_html += "<td> " +  obtTipoDato(actual.tablaFunciones[i].tipo) + " </td>\n"
+                    else:
+                        codigo_html += "<td> Interface: " +  actual.tablaFunciones[i].tipo + " </td>\n"
+                else:
+                    codigo_html += "<td> Void </td>\n"
                 # codigo_html += "<td>" + str(actual.tablaFunciones[i].tipo) + "</td>\n"
                 codigo_html += "<td>" + str(actual.actual) + "</td>\n"
                 codigo_html += "<td>" + str(actual.tablaFunciones[i].linea) + "</td>\n"

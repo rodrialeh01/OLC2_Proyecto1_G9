@@ -16,7 +16,7 @@ class Llamada(Instruccion, Expresion):
         self.params = params
 
     def ejecutar(self, entorno, helper):
-        print("Ejecutando llamada a función")
+        #print("Ejecutando llamada a función")
         fn = entorno.ExisteFuncion(self.id)
         helperTemp = helper.getFuncion()
 

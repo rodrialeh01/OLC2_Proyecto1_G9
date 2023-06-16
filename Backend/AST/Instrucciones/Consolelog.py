@@ -57,7 +57,7 @@ class Consolelog(Instruccion):
                         val.valor = "null"
                     listTemp.append(val.valor)
             for i in listTemp:
-                #print(i)
+                ##print(i)
                 textoLog += str(i) + " "
             helper.setConsola(textoLog)
             return
@@ -78,7 +78,7 @@ class Consolelog(Instruccion):
             elif exp.tipo == TIPO_DATO.ARRAY_INTERFACE:
                 array = []
                 impresion = self.ImpresionArraysInterfaces(array, exp.valor)
-                #print(impresion)
+                ##print(impresion)
                 txt = "[\n"
                 for i in range(len(impresion)):
                     if i != len(impresion) - 1:
@@ -99,23 +99,23 @@ class Consolelog(Instruccion):
                     exp.valor = "false"
 
         
-        #print(exp)
+        ##print(exp)
         try:
             if exp.tipo == TIPO_DATO.ARRAY or exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY_STRING or exp.tipo == TIPO_DATO.ARRAY_BOOLEAN:
 
                 array = []
                 impresion = self.ImpresionArrays(array, exp.valor)
-                #print(impresion)
+                ##print(impresion)
                 helper.setConsola(impresion)
             else:
-                #print(exp.valor)
+                ##print(exp.valor)
                 helper.setConsola(exp.valor)
             return
         except Exception:
             val = self.expresion.ejecutar(entorno, helper)
             helper.setConsola(val.valor)
-            ##print(val.valor)
-        ##print(val.valor)
+            ###print(val.valor)
+        ###print(val.valor)
         return
 
     def ImpresionArrays(self, arr, arrexist):
@@ -126,11 +126,11 @@ class Consolelog(Instruccion):
                 arr.append(arr2)
             elif a.tipo == TIPO_DATO.INTERFACE:
                 mostrarxd = "{\n"
-                print(a.valor.paramDeclarados)
+                #print(a.valor.paramDeclarados)
                 for vals in a.valor.paramDeclarados:
                     for dic in vals:
                         valuexd = vals[dic]
-                        mostrarxd += "\t" + dic + " : " + str(valuexd.valor) + "\n"
+                        mostrarxd += dic + " : " + str(valuexd.valor) + " "
                 mostrarxd += "}"
                 arr.append(mostrarxd)
             else:

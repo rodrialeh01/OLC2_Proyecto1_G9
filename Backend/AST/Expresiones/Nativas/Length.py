@@ -12,20 +12,16 @@ class Length(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        existe = entorno.ExisteSimbolo(self.exp1)
-        if existe == False:
-            return
-        else:
-            valor = entorno.ObtenerSimbolo(self.exp1)
+        valor = self.exp1.ejecutar(entorno, helper)
 
-            if valor.tipo == TIPO_DATO.NUMERO or valor.tipo == TIPO_DATO.BOOLEANO:
-                s = SingletonErrores.getInstance()
-                err = Error(self.linea, self.columna, "Error Semántico", "No es posible obtener 'length' para una variable de tipo " + str(obtTipoDato(valor.tipo)) +"." )
-                s.addError(err)
-                helper.setConsola("[ERROR]: No es posible obtener 'length' para una variable de tipo " + obtTipoDato(valor.tipo) + " en la línea " + str(self.linea) +  " y columna "+ str(self.columna) )
-                return Retorno(None, TIPO_DATO.ERROR)
-                
-            return Retorno(len(valor.valor), TIPO_DATO.NUMERO)
+        if valor.tipo == TIPO_DATO.NUMERO or valor.tipo == TIPO_DATO.BOOLEANO:
+            s = SingletonErrores.getInstance()
+            err = Error(self.linea, self.columna, "Error Semántico", "No es posible obtener 'length' para una variable de tipo " + str(obtTipoDato(valor.tipo)) +"." )
+            s.addError(err)
+            helper.setConsola("[ERROR]: No es posible obtener 'length' para una variable de tipo " + obtTipoDato(valor.tipo) + " en la línea " + str(self.linea) +  " y columna "+ str(self.columna) )
+            return Retorno(None, TIPO_DATO.ERROR)
+            
+        return Retorno(len(valor.valor), TIPO_DATO.NUMERO)
 
     def genArbol(self):
         pass

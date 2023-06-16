@@ -28,7 +28,11 @@ class Instancia(Instruccion, Simbolo):
             helper.setConsola("[ERROR] La interface " + self.id_interface + " no existe en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
     
-        existe_nombre = entorno.ExisteSimbolo(self.nombreDeclarado)
+        existe_nombre = entorno.BuscarSimboloLocal(self.nombreDeclarado)
+        if not existe_nombre:
+            existe_nombre = entorno.BuscarInterfaceLocal(self.nombreDeclarado)
+            if not existe_nombre:
+                existe_nombre = entorno.BuscarInterfaceDeclaradaLocal(self.nombreDeclarado)
         if existe_nombre:
             #error semantico
             s = SingletonErrores.getInstance()
@@ -71,7 +75,7 @@ class Instancia(Instruccion, Simbolo):
                     if lista_parametros_objeto[i].id == self.listaParams[j].id:
                         verificacion = True
                         exp = self.listaParams[j].expresion.ejecutar(entorno, helper)
-                        if lista_parametros_objeto[i].tipo != exp.tipo:
+                        if lista_parametros_objeto[i].tipo != exp.tipo and lista_parametros_objeto[i].tipo != TIPO_DATO.ANY:
                             #error semantico
                             s = SingletonErrores.getInstance()
                             err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
@@ -89,10 +93,8 @@ class Instancia(Instruccion, Simbolo):
             
 
         #creamos el simbolo
-        print("SI LO CREAMOS PTM")
-        self.crearStructDeclarado(self.nombreDeclarado, lista_ya_Declarada, self.fila, self.columna)
+        self.crearStructDeclarado(self.nombreDeclarado, lista_ya_Declarada,self.id_interface, self.fila, self.columna)
         entorno.AgregarInterfaceDeclarada(self.nombreDeclarado, self)
-        print("QUE SIIIII")
     
     def genArbol(self) -> Nodo:
         nodo = Nodo("INSTANCIA")

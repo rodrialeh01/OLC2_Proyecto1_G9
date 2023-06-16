@@ -47,14 +47,14 @@ class For(Instruccion):
                     for instruccion in self.instrucciones:
                         result = instruccion.ejecutar(entornoLocal2, helper)
                         
-                        print(result)
+                        #print(result)
                         if isinstance(result, Break):
                             helper.setCiclo(helperTemp)
                             helper.setTs(entornoLocal2)
                             return result
                         
                         if isinstance(result, Continue):
-                            print("continue")
+                            #print("continue")
                             raise Exception
                         
                         if isinstance(result, Return):

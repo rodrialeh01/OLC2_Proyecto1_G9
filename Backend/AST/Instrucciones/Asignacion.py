@@ -14,16 +14,16 @@ class Asignacion(Instruccion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print("aSIgnacion")
+        #print("aSIgnacion")
         existe = entorno.ExisteSimbolo(self.id)
-        print(existe)
+        #print(existe)
         if existe:
             valorG = self.valor.ejecutar(entorno, helper)
             simb = entorno.ObtenerSimbolo(self.id)
-            print(simb.valor)
+            #print(simb.valor)
             if simb.tipo == valorG.tipo or  simb.tipo == TIPO_DATO.ANY:
-                print("XD")
-                print(valorG.valor)
+                #print("XD")
+                #print(valorG.valor)
                 simb.valor = valorG.valor
                 entorno.ActualizarSimbolo(self.id, simb)
             else:

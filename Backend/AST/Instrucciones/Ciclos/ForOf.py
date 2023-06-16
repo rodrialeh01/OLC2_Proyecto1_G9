@@ -1,14 +1,14 @@
 from AST.Abstract.Instruccion import Instruccion
+from AST.Error import Error
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
-from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
-from AST.Error import Error
-from AST.Simbolos.Enums import obtTipoDato
+
 
 class ForOf(Instruccion):
     def __init__(self, variable, exp1, instrucciones, fila, columna):
@@ -26,7 +26,7 @@ class ForOf(Instruccion):
         helperTemp = helper.getCiclo()
         helper.setCiclo("ciclo")
 
-        print(str(val.tipo))
+        #print(str(val.tipo))
         if val.tipo == TIPO_DATO.CADENA:
             for v in val.valor:
                 
@@ -65,7 +65,7 @@ class ForOf(Instruccion):
                 entornoLocal.AgregarSimbolo(simboloInterno.nombre, simboloInterno)
                 try:
                     for instruccion in self.instrucciones:
-                        print(instruccion)
+                        #print(instruccion)
                         result = instruccion.ejecutar(entornoLocal2, helper)
                         
                         if isinstance(result, Break):

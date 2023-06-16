@@ -13,7 +13,8 @@ class TIPO_DATO(Enum):
     ARRAY_STRING = 8,
     ARRAY_BOOLEAN = 9,
     INTERFACE = 10,
-    ARRAY_INTERFACE = 11
+    ARRAY_INTERFACE = 11,
+    ARRAY_NULL = 12
 
 def obtTipoDato(i):
     if i == TIPO_DATO.NUMERO:
@@ -39,6 +40,8 @@ def obtTipoDato(i):
     elif i == TIPO_DATO.INTERFACE:
         return "interface"
     elif i == TIPO_DATO.ARRAY_INTERFACE:
+        return "Array"
+    elif i == TIPO_DATO.ARRAY_NULL:
         return "Array"
 
 class ERROR(Enum):

@@ -1,4 +1,4 @@
-from AST.Simbolos.Enums import *
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 
 
 class Helper:
@@ -34,7 +34,7 @@ class Helper:
         for i in actual.tablaSimbolos:
             codigo_html += "<tr>"
             codigo_html += "<td>" + str(i) + "</td>\n"
-            #print("-------------- TIPO: ", actual.tablaSimbolos[i].tipo)
+            ##print("-------------- TIPO: ", actual.tablaSimbolos[i].tipo)
             codigo_html += "<td>" + obtTipoDato(actual.tablaSimbolos[i].tipo) + "</td>\n"
             codigo_html += "<td>" + str(actual.actual) + "</td>\n"
             codigo_html += "<td>" + str(actual.tablaSimbolos[i].linea) + "</td>\n"
@@ -44,7 +44,13 @@ class Helper:
         for i in actual.tablaFunciones:
             codigo_html += "<tr>"
             codigo_html += "<td>" + str(actual.tablaFunciones[i].nombre) + "</td>\n"
-            codigo_html += "<td> FALTA EL TIPO DE FUNCIÓN AAAAAAAAAAAAAAAAAAAAAAAAA </td>\n"
+            if actual.tablaFunciones[i].tipo != None:
+                if (isinstance(actual.tablaFunciones[i].tipo,TIPO_DATO)):
+                    codigo_html += "<td> " +  obtTipoDato(actual.tablaFunciones[i].tipo) + " </td>\n"
+                else:
+                    codigo_html += "<td> Interface: " +  actual.tablaFunciones[i].tipo + " </td>\n"
+            else:
+                codigo_html += "<td> Void </td>\n"
             # codigo_html += "<td>" + str(actual.tablaFunciones[i].tipo) + "</td>\n"
             codigo_html += "<td>" + str(actual.actual) + "</td>\n"
             codigo_html += "<td>" + str(actual.tablaFunciones[i].linea) + "</td>\n"

@@ -12,7 +12,7 @@ class Inc(Expresion):
         self.orden = orden
         self.fila = fila
         self.columna = columna
-        print("ZSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+        #print("ZSSSSSSSSSSSSSSSSSSSSSSSSSSS")
 
     def ejecutar(self, entorno, helper):
         obtenido = entorno.ObtenerSimbolo(self.id)

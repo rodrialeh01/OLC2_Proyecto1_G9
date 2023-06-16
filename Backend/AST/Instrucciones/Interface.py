@@ -29,7 +29,7 @@ class Interface(Simbolo, Instruccion):
             return
 
     def genArbol(self) -> Nodo:
-        print("ENTRO A CREAR INTERFACE")
+        #print("ENTRO A CREAR INTERFACE")
         nodo = Nodo("CREAR INTERFACE")
         nodo.agregarHijo(self.id)
         atribs = Nodo("ATRIBUTOS")

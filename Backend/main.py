@@ -27,7 +27,7 @@ def ejecutar():
     global helpe
     nodo = Nodo("INICIO")
     texto = request.json["texto"]
-    print(texto)
+    #print(texto)
 
     #utilizando singleton para errores:
     singletonErr = Sing.getInstance()
@@ -49,46 +49,34 @@ def ejecutar():
                 try:
                     if isinstance(i, Funcion):
                         verif = entornoGlobal.ExisteFuncion(i.nombre)
-
+                        if not verif:
+                            verif = entornoGlobal.BuscarSimboloLocal(i.nombre)
+                            if not verif:
+                                verif = entornoGlobal.BuscarInterfaceLocal(i.nombre)
+                                if not verif:
+                                    verif = entornoGlobal.BuscarInterfaceDeclaradaLocal(i.nombre)
+                        if verif:
+                            s = singletonErr.getInstance()
+                            s.addError(Error(i.linea, i.columna, "Error Semántico", "La función no puede tener el mismo nombre que una variable o instancia ya declarada."))
+                            helpe.setConsola("[ERROR] La función no puede tener el mismo nombre que una variable, instancia o función ya declarada.")
+                            pass
                         if not verif:
                             entornoGlobal.AgregarFuncion(i.nombre, i)
+                                    
                     else:
                         i.ejecutar(entornoGlobal, helpe)         
                 except Exception as e:
                     if isinstance(e, Error):
                         singletonErr.addError(e)
-                        print(e)
-
-        # for i in parseado:
-        #     if i is not None:
-        #         try:
-        #             if isinstance(i, Interface) or isinstance(i, Declaracion) or isinstance(i, DeclaracionArray) :
-        #                 i.ejecutar(entornoGlobal,helpe)
-                        
-        #         except Exception as e:
-        #             if isinstance(e, Error):
-        #                 singletonErr.addError(e)
-        #                 print(e)
-
-        # for i in parseado:
-        #     if i is not None:
-        #         try:
-        #             if not isinstance(i, Funcion) and not isinstance(i, Interface) and not isinstance(i, Declaracion) and not isinstance(i, DeclaracionArray):
-        #                 i.ejecutar(entornoGlobal,helpe)
-                        
-        #         except Exception as e:
-        #             if isinstance(e, Error):
-        #                 singletonErr.addError(e)
-        #                 print(e)
+                        #print(e)
     
-        # for i in parseado:
-        #     if i is not None:
-        #         try:
-        #             nodo.agregarHijo(i.genArbol())
-        #         except Exception as e:
-        #             print(e)
+        for i in parseado:
+            if i is not None:
+                try:
+                    nodo.agregarHijo(i.genArbol())
+                except Exception as e:
+                    print(e)
 
-    #print(singletonErr.getErrores())
     entornoTemp = ""
     entornoTemp = entornoGlobal.getSimbolos()
     return jsonify({"message": helpe.getConsola()})
@@ -105,12 +93,10 @@ def ts():
     codigo_html = '''
         <table align="center" class="table table-striped "> \n
         <thead><tr> <th colspan="5">TABLA DE SÍMBOLOS</th> </tr></thead>\n
-        <h6> NOTA: FALTA CAMBIAR LOS TIPOS DE ALGUNAS COSAS (EJ: TIPO_DATO.NUMBER -> NUMBER) </h6>\n
-        <h6> NOTA: FALTA AGREGAR SÍMBOLOS DE LAS FUNCIONES </h6>\n
         <tr class="table-dark"><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Fila</th><th>Columna</th></tr>\n
         '''
     codigo_html += entornoTemp + helpe.getTs() + "\n</table>"
-    print(codigo_html)
+    #print(codigo_html)
     return jsonify({"texto": codigo_html})
 
 @app.route('/Arbol', methods=['GET'])

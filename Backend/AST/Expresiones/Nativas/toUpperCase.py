@@ -13,15 +13,7 @@ class ToUpperCase(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        #print("TO UPPER CASE")
-        found = entorno.ObtenerSimbolo(self.expresion)
-        if found == None:
-            s = SingletonErrores.getInstance()
-            err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la función toUpperCase, no se ha encontrado la expresión." )
-            s.addError(err)
-            helper.setConsola("[ERROR]: Se ha encontrado un error en la función toUpperCase, no se ha encontrado la expresión.")
-            return Retorno(None, TIPO_DATO.ERROR)
-            #error semantico
+        found = self.expresion.ejecutar(entorno, helper)
 
         if found.tipo != TIPO_DATO.CADENA:
             #error semantico

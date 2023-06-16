@@ -14,30 +14,26 @@ class Split(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        existe = entorno.ExisteSimbolo(self.expresion)        
-        if existe == False:
-            pass
+        cadena = self.expresion.ejecutar(entorno, helper)
+        separador = self.separador.ejecutar(entorno, helper)
+        #print(separador.valor)
+        if cadena.tipo != TIPO_DATO.CADENA or separador.tipo != TIPO_DATO.CADENA:
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo) )
+            s.addError(err)
+            #print("[ERROR]: No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo)+" en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+            helper.setConsola("[ERROR]: No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo)+" en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
+            return Retorno(None, TIPO_DATO.ERROR)
+        
+        new_array = []
+        if separador.valor == "":
+            for i in str(cadena.valor):
+                new_array.append(Retorno(i, TIPO_DATO.CADENA))  
         else:
-            cadena = entorno.ObtenerSimbolo(self.expresion)
-            separador = self.separador.ejecutar(entorno, helper)
-            print(separador.valor)
-            if cadena.tipo != TIPO_DATO.CADENA or separador.tipo != TIPO_DATO.CADENA:
-                s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo) )
-                s.addError(err)
-                print("[ERROR]: No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo)+" en la línea " + str(self.fila) + " y columna "+ str(self.columna))
-                helper.setConsola("[ERROR]: No es posible realizar split con una variable de tipo " + obtTipoDato(cadena.tipo) + " y un separador de tipo " + obtTipoDato(separador.tipo)+" en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
-                return Retorno(None, TIPO_DATO.ERROR)
-            
-            new_array = []
-            if separador.valor == "":
-                for i in str(cadena.valor):
-                    new_array.append(Retorno(i, TIPO_DATO.CADENA))  
-            else:
-                for i in str(cadena.valor).split(separador.valor):
-                    new_array.append(Retorno(i, TIPO_DATO.CADENA))
+            for i in str(cadena.valor).split(separador.valor):
+                new_array.append(Retorno(i, TIPO_DATO.CADENA))
 
-            return Retorno(new_array, TIPO_DATO.ARRAY_STRING)
+        return Retorno(new_array, TIPO_DATO.ARRAY_STRING)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("SPLIT")

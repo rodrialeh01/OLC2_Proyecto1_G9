@@ -15,11 +15,14 @@ class Declaracion(Instruccion):
         self.columna = columna
     
     def ejecutar(self, entorno, helper):
-        print("Declaracion")
+        #print("Declaracion")
         identificador = self.id
         tipo = self.tipo
         existe = entorno.BuscarSimboloLocal(identificador)
-        
+        if not existe:
+            existe = entorno.BuscarInterfaceLocal(identificador)
+            if not existe:
+                existe = entorno.BuscarInterfaceDeclaradaLocal(identificador)
         if existe:
             #error semantico
             s = SingletonErrores.getInstance()

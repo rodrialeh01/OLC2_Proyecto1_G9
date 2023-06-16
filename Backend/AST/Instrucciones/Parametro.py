@@ -21,10 +21,10 @@ class Parametro(Instruccion):
         self.valorRef = None 
 
     def ejecutar(self, entorno, helper):
-        print("**********************PARAMETRO")
-        print(self.tipo)
-        print(self.utilizado.tipo)
-        print(self.id)
+        #print("**********************PARAMETRO")
+        #print(self.tipo)
+        #print(self.utilizado.tipo)
+        #print(self.id)
         if self.valor != None or self.utilizado != None:
             retorno = Retorno()
             if self.valor != None: 
@@ -52,11 +52,11 @@ class Parametro(Instruccion):
                 
                 existencia_id = entorno.BuscarSimboloLocal(self.id)
                 tipo_obj = entorno.ObtenerInterface(self.tipo)
-                print("EXISTENCIA ID", existencia_id)
+                #print("EXISTENCIA ID", existencia_id)
                 if existencia_id is False:
-                    print("INTERFAXXXX")
+                    #print("INTERFAXXXX")
                     simbolo = self.utilizado.valor
-                    print(simbolo.listaParams)
+                    #print(simbolo.listaParams)
                     verificacion = True
                     lista_parametros_objeto = tipo_obj.listaParametros
                     listaParams = simbolo.listaParams
@@ -70,7 +70,7 @@ class Parametro(Instruccion):
                                 if lista_parametros_objeto[i].id == listaParams[j].id:
                                     verificacion = True
                                     exp = listaParams[j].expresion.ejecutar(entorno, helper)
-                                    if lista_parametros_objeto[i].tipo != exp.tipo:
+                                    if lista_parametros_objeto[i].tipo != exp.tipo and lista_parametros_objeto[i].tipo != TIPO_DATO.ANY:
                                         #error semantico
                                         s = SingletonErrores.getInstance()
                                         err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
@@ -85,9 +85,9 @@ class Parametro(Instruccion):
                                     j = len(listaParams)
                         else:
                             break
-                    simbolo.crearStructDeclarado(self.id, lista_ya_Declarada, self.fila, self.columna)
+                    simbolo.crearStructDeclarado(self.id, lista_ya_Declarada,self.tipo, self.fila, self.columna)
                     entorno.AgregarInterfaceDeclarada(self.id, simbolo)
-                    print("Me creee :D con el id: ", self.id)
+                    #print("Me creee :D con el id: ", self.id)
                     return
                 else:
                     s = SingletonErrores.getInstance()
@@ -98,9 +98,9 @@ class Parametro(Instruccion):
                     #ERROR
                     return
 
-            #print("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIUUUUUUUUUUUUU")
+            ##print("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIUUUUUUUUUUUUU")
             existencia = entorno.BuscarSimboloLocal(self.id)
-            print(existencia)
+            #print(existencia)
             if existencia is False:
                 simbolo = Simbolo()
                 simbolo.nombre = self.id

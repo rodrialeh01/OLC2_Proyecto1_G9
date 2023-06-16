@@ -28,9 +28,10 @@ class Simbolo:
         for param in self.params:
             param.ejecutar(None,None)
     
-    def crearStructDeclarado(self, nombre, paramsDeclarados, linea, columna):
+    def crearStructDeclarado(self, nombre, paramsDeclarados, objeto, linea, columna):
         
         self.nombre = nombre
         self.paramDeclarados = paramsDeclarados 
+        self.objeto = objeto
         self.linea = linea
         self.columna = columna

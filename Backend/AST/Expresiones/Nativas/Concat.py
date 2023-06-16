@@ -15,83 +15,78 @@ class Concat(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        existe = entorno.ExisteSimbolo(self.expresion1)
-        #suponiendo que si se puedan tambien cadenas que es un array de caracteres
-        if existe == False:
-            pass
+        valor1 = self.expresion1.ejecutar(entorno, helper)
+        valor2 = self.expresion2.ejecutar(entorno, helper)
+        
+        if valor1.tipo == TIPO_DATO.CADENA and valor2.tipo == TIPO_DATO.CADENA: #
+            return Retorno(str(valor1.valor) + str(valor2.valor), TIPO_DATO.CADENA)
+        elif valor1.tipo == TIPO_DATO.ARRAY_STRING: #
+            if valor2.tipo == TIPO_DATO.CADENA:
+                return Retorno(valor1.valor + [valor2], TIPO_DATO.ARRAY_STRING)
+            elif valor2.tipo == TIPO_DATO.ARRAY_STRING:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_STRING)
+            elif valor2.tipo == TIPO_DATO.ARRAY:
+                bandera = True
+                bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.CADENA, bandera)
+                if bandera == None:
+                    bandera = True
+                if not bandera: 
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo string pero se obtuvo un array de tipo any." )
+                    s.addError(err)
+                    helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo string pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
+                    return Retorno(None, TIPO_DATO.ERROR)
+
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_STRING)
+        elif valor1.tipo == TIPO_DATO.ARRAY_NUMBER: #
+            if valor2.tipo == TIPO_DATO.NUMERO:
+                return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY_NUMBER)
+            elif valor2.tipo == TIPO_DATO.ARRAY_NUMBER:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_NUMBER)
+            elif valor2.tipo == TIPO_DATO.ARRAY:
+                bandera = True
+                bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.NUMERO, bandera)
+                if bandera == None:
+                    bandera = True
+                if not bandera: 
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo number pero se obtuvo un array de tipo any. " )
+                    s.addError(err)
+                    helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo number pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
+                    return Retorno(None, TIPO_DATO.ERROR)
+
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_NUMBER)
+        elif valor1.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+            if valor2.tipo == TIPO_DATO.BOOLEANO:
+                return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY_BOOLEAN)
+            elif valor2.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_BOOLEAN)
+            elif valor2.tipo == TIPO_DATO.ARRAY:
+                bandera = True
+                bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.BOOLEANO, bandera)
+                if bandera == None:
+                    bandera = True
+                if not bandera: 
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo boolean pero se obtuvo un array de tipo any. " )
+                    s.addError(err)
+                    helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo boolean pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
+                    return Retorno(None, TIPO_DATO.ERROR)
+                    
+                return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_BOOLEAN)
+        elif valor1.tipo == TIPO_DATO.ARRAY:
+                if valor2.tipo == TIPO_DATO.ARRAY or valor2.tipo == TIPO_DATO.ARRAY_NUMBER or valor2.tipo == TIPO_DATO.ARRAY_BOOLEAN or valor2.tipo == TIPO_DATO.ARRAY_STRING:
+                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY)
+                elif valor2.tipo == TIPO_DATO.NUMERO or valor2.tipo == TIPO_DATO.BOOLEANO or valor2.tipo == TIPO_DATO.CADENA:
+                    return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY)
         else:
-            valor1 = entorno.ObtenerSimbolo(self.expresion1)
-            valor2 = self.expresion2.ejecutar(entorno, helper)
-            
-            if valor1.tipo == TIPO_DATO.CADENA and valor2.tipo == TIPO_DATO.CADENA: #
-                return Retorno(str(valor1.valor) + str(valor2.valor), TIPO_DATO.CADENA)
-            elif valor1.tipo == TIPO_DATO.ARRAY_STRING: #
-                if valor2.tipo == TIPO_DATO.CADENA:
-                    return Retorno(valor1.valor + [valor2], TIPO_DATO.ARRAY_STRING)
-                elif valor2.tipo == TIPO_DATO.ARRAY_STRING:
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_STRING)
-                elif valor2.tipo == TIPO_DATO.ARRAY:
-                    bandera = True
-                    bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.CADENA, bandera)
-                    if bandera == None:
-                        bandera = True
-                    if not bandera: 
-                        s = SingletonErrores.getInstance()
-                        err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo string pero se obtuvo un array de tipo any." )
-                        s.addError(err)
-                        helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo string pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
-                        return Retorno(None, TIPO_DATO.ERROR)
-
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_STRING)
-            elif valor1.tipo == TIPO_DATO.ARRAY_NUMBER: #
-                if valor2.tipo == TIPO_DATO.NUMERO:
-                    return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY_NUMBER)
-                elif valor2.tipo == TIPO_DATO.ARRAY_NUMBER:
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_NUMBER)
-                elif valor2.tipo == TIPO_DATO.ARRAY:
-                    bandera = True
-                    bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.NUMERO, bandera)
-                    if bandera == None:
-                        bandera = True
-                    if not bandera: 
-                        s = SingletonErrores.getInstance()
-                        err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo number pero se obtuvo un array de tipo any. " )
-                        s.addError(err)
-                        helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo number pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
-                        return Retorno(None, TIPO_DATO.ERROR)
-
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_NUMBER)
-            elif valor1.tipo == TIPO_DATO.ARRAY_BOOLEAN:
-                if valor2.tipo == TIPO_DATO.BOOLEANO:
-                    return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY_BOOLEAN)
-                elif valor2.tipo == TIPO_DATO.ARRAY_BOOLEAN:
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_BOOLEAN)
-                elif valor2.tipo == TIPO_DATO.ARRAY:
-                    bandera = True
-                    bandera = self.Verificar_Tipos_array(valor2.valor, TIPO_DATO.BOOLEANO, bandera)
-                    if bandera == None:
-                        bandera = True
-                    if not bandera: 
-                        s = SingletonErrores.getInstance()
-                        err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array de tipo boolean pero se obtuvo un array de tipo any. " )
-                        s.addError(err)
-                        helper.setConsola("[ERROR]: No es posible realizar 'Concat'. Tipos no compatibles. Se esperaba un array tipo boolean pero se obtuvo un array de tipo any. en la línea " + str(self.fila) + " y columna "+ str(self.columna) )
-                        return Retorno(None, TIPO_DATO.ERROR)
-                        
-                    return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY_BOOLEAN)
-            elif valor1.tipo == TIPO_DATO.ARRAY:
-                    if valor2.tipo == TIPO_DATO.ARRAY or valor2.tipo == TIPO_DATO.ARRAY_NUMBER or valor2.tipo == TIPO_DATO.ARRAY_BOOLEAN or valor2.tipo == TIPO_DATO.ARRAY_STRING:
-                        return Retorno(valor1.valor + valor2.valor, TIPO_DATO.ARRAY)
-                    elif valor2.tipo == TIPO_DATO.NUMERO or valor2.tipo == TIPO_DATO.BOOLEANO or valor2.tipo == TIPO_DATO.CADENA:
-                        return Retorno(valor1.valor + [valor2.valor], TIPO_DATO.ARRAY)
-            else:
-                #error semántico
-                s = SingletonErrores.getInstance()
-                err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat' entre "+ obtTipoDato(valor1.tipo) + " y " + obtTipoDato(valor2.tipo))
-                s.addError(err)
-                helper.setConsola("[ERROR] No es posible realizar 'Concat' entre "+ obtTipoDato(valor1.tipo) + " y " + obtTipoDato(valor2.tipo) + " en la línea: "+ str(self.fila) + " y columna "+ str(self.columna) )
-                return Retorno(None, TIPO_DATO.ERROR)
-                #error
+            #error semántico
+            s = SingletonErrores.getInstance()
+            err = Error(self.fila, self.columna, "Error Semántico", "No es posible realizar 'Concat' entre "+ obtTipoDato(valor1.tipo) + " y " + obtTipoDato(valor2.tipo))
+            s.addError(err)
+            helper.setConsola("[ERROR] No es posible realizar 'Concat' entre "+ obtTipoDato(valor1.tipo) + " y " + obtTipoDato(valor2.tipo) + " en la línea: "+ str(self.fila) + " y columna "+ str(self.columna) )
+            return Retorno(None, TIPO_DATO.ERROR)
+            #error
 
     def Verificar_Tipos_array(self,arr, tipo, bandera):
         if isinstance(arr,list):
@@ -118,10 +113,10 @@ class Concat(Expresion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONCATENACION")
-        nodo.addHijoNodo(self.expresion1.genArbol())
-        nodo.addHijoNodo(Nodo("."))
-        nodo.addHijoNodo(Nodo("concat"))
-        nodo.addHijoNodo(Nodo("("))
-        nodo.addHijoNodo(self.expresion2.genArbol())
-        nodo.addHijoNodo(Nodo(")"))
+        nodo.agregarHijo(self.expresion1.genArbol())
+        nodo.agregarHijo(Nodo("."))
+        nodo.agregarHijo(Nodo("concat"))
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.expresion2.genArbol())
+        nodo.agregarHijo(Nodo(")"))
         return nodo

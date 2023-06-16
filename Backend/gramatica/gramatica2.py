@@ -13,6 +13,7 @@ from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
 from AST.Expresiones.Nativas.Length import Length
+from AST.Expresiones.Nativas.Push import Push
 from AST.Expresiones.Nativas.Split import Split
 from AST.Expresiones.Nativas.toExponential import ToExponential
 from AST.Expresiones.Nativas.toFixed import ToFixed
@@ -88,6 +89,7 @@ reservadas = {
     'Array' : 'ARRAY',
     'typeof' : 'TYPEOF',
     'length' : 'LENGTH',
+    'push' : 'PUSH'
 }
 
 tokens = [
@@ -169,11 +171,11 @@ identifier = r'[a-zA-Z_ñÑ]([a-zA-Z0-9_ñÑ])*'
 def t_DECIMAL(t):
     r'\d+\.\d+'
     try:
-        #print("DECIMAL")
+        ##print("DECIMAL")
         t.value = float(t.value)
-        #print(str(t.value))
+        ##print(str(t.value))
     except ValueError:
-        #print("F")
+        ##print("F")
         t.value = 0.0
     return t
 
@@ -181,10 +183,10 @@ def t_DECIMAL(t):
 def t_ENTERO(t):
     r'\d+'
     try:
-        ##print("ENTERO")
+        ###print("ENTERO")
         t.value = int(t.value)
     except ValueError:
-        #print("F")
+        ##print("F")
         t.value = 0
     return t
 
@@ -211,7 +213,7 @@ def t_newline(t):
 def t_COMENTARIO(t):
     r'\/\/.*\n'
     t.lexer.lineno += 1
-    #print("Comentario de linea")
+    ##print("Comentario de linea")
 
 #comentarios de bloque
 def t_COMENTARIO_MULTILINEA(t):
@@ -228,7 +230,7 @@ def t_error(t):
     columna = f_columna(entrada, t)
     s.addError(Error(str(t.lexer.lineno), str(columna) ,"Error Lexico", "No se reconoce "+t.value[0]+" como parte del lenguaje") )
     errores.append(Error(str(t.lexer.lineno), str(columna) ,"Error Lexico", "No se reconoce "+t.value[0]+" como parte del lenguaje"))
-    print(f"AAAAAAAAAAAAAAAAAAAAAAAA Se encontro un error lexico '%s'" % t.value[0])
+    #print(f"AAAAAAAAAAAAAAAAAAAAAAAA Se encontro un error lexico '%s'" % t.value[0])
     t.lexer.skip(1)
 
 t_ignore = " \t\r"
@@ -290,13 +292,14 @@ def p_instruccion_funcion(t):
     '''
     t[0] = t[1]
 
+'''
 # ? instruccion : comentarios
 def p_instruccion_comentarios(t):
-    '''
-    instruccion : comentarios
-    '''
-    t[0] = t[1]
 
+    instruccion : comentarios
+
+    t[0] = t[1]
+'''
 # ? instruccion2 : instruccion3 PTOYCOMA
 def p_instruccion2(t):
     '''
@@ -366,29 +369,28 @@ def p_instruccion3(t):
                  | return
                  | break
                  | continue
-                 | comentarios
                  | instanciar
                  | declaracionInterface
                  | declaracionArray
                  | asignacion_array
     '''
     t[0] = t[1]
-
+'''
 # ? instruccion : COMENTARIO
 def p_instruccion_comentario(t):
-    '''
+    
     comentarios : COMENTARIO
-    '''
-    #print("comentario")
+    
+    ##print("comentario")
     t[0] = Comentarios(t[1], t.lineno(1), t.lexpos(1))
 
 # ? instruccion : COMENTARIO_MULTILINEA
 def p_instruccion_comentario_multilinea(t):
-    '''
+    
     comentarios : COMENTARIO_MULTILINEA
-    '''
+    
     t[0] = Comentarios(t[1], t.lineno(1), t.lexpos(1))
-
+'''
 # ? declaracion : LET ID IGUAL expresion
 # ?             | LET ID
 # ?             | LET ID DOSPUNTOS tipo IGUAL expresion
@@ -477,7 +479,7 @@ def p_impresion(t):
     '''
     impresion : CONSOLE PUNTO LOG PARIZQ expresion PARDER
     '''
-    print("impresion")
+    #print("impresion")
     t[0] = Consolelog(t[5], t.lineno(1), t.lexpos(1))
 
 # ? impresion : CONSOLE PUNTO LOG PARIZQ lista_argumentos PARDER
@@ -485,7 +487,7 @@ def p_impresion_1(t):
     '''
     impresion : CONSOLE PUNTO LOG PARIZQ lista_argumentos PARDER
     '''
-    print("impresion 2")
+    #print("impresion 2")
     t[0] = Consolelog(t[5], t.lineno(1), t.lexpos(1))
 
 
@@ -657,7 +659,7 @@ def p_parametro_1(t):
     '''
     parametro : ID DOSPUNTOS tipo CORIZQ CORDER
     '''
-    print("Parametro Array")
+    #print("Parametro Array")
     if t[3] == TIPO_DATO.NUMERO:
         t[0] = Parametro(t[1], TIPO_DATO.ARRAY_NUMBER, None, t.lineno(1), t.lexpos(1), False)
     elif t[3] == TIPO_DATO.CADENA:
@@ -672,7 +674,7 @@ def p_exp_llamada(t):
     '''
     expresion : llamada_funcion
     '''
-    print("Llamada a funcion")
+    #print("Llamada a funcion")
     t[0] = t[1]
 
 
@@ -682,11 +684,6 @@ def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARIZQ lista_argumentos PARDER
     '''
-    print("--------------------------------------------LLAMAR")
-    print(t[3])
-    for p in t[3]:
-        if isinstance(p, Llamada):
-            print("TIENE UNA LLAMADA")
     t[0] = Llamada(t[1], t[3], t.lineno(1), t.lexpos(1))
 
 def p_llamada_funcion_1(t):
@@ -783,7 +780,7 @@ def p_expresion_aritmetica(t):
     if len(t) == 3:
         t[0] = Operacion(t[2], None, TIPO_OPERACION_ARITMETICA.NEGATIVO, t.lineno(1), t.lexpos(1),True)
     elif t[2] == '+':
-        #print("entro a suma")
+        ##print("entro a suma")
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.SUMA, t.lineno(1), t.lexpos(1),False)
     elif t[2] == '-':
         t[0] = Operacion(t[1], t[3], TIPO_OPERACION_ARITMETICA.RESTA, t.lineno(1), t.lexpos(1),False)
@@ -905,53 +902,60 @@ def p_funciones_nativas(t):
                     | exponencial
                     | separador
                     | concatenacion
+                    | to_mayusculas
                     | to_minusculas
     '''
-    print("funciones nativas")
+    #print("funciones nativas")
     t[0] = t[1]
 
 # ? aproximacion : expresion PUNTO TOFIXED PARIZQ expresion PARDER
 def p_aproximacion(t):
     '''
-    aproximacion : ID PUNTO TOFIXED PARIZQ expresion PARDER
+    aproximacion : TOFIXED PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = ToFixed(t[1], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = ToFixed(t[3], t[5], t.lineno(1), t.lexpos(1))
 
 # ? exponencial : expresion PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
 def p_exponencial(t):
     '''
-    exponencial : ID PUNTO TOEXPONENTIAL PARIZQ expresion PARDER
+    exponencial : TOEXPONENTIAL PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = ToExponential(t[1], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = ToExponential(t[3], t[5], t.lineno(1), t.lexpos(1))
 
 # ? to_mayusculas : expresion PUNTO TOUPPERCASE PARIZQ PARDER
 def p_to_mayusculas(t):
     '''
-    expresion : ID PUNTO TOUPPERCASE PARIZQ PARDER
+    to_mayusculas : TOUPPERCASE PARIZQ expresion PARDER
     '''
-    print("to_mayusculas desde gramática")
-    t[0] = ToUpperCase(t[1], t.lineno(1), t.lexpos(1))
+    #print("to_mayusculas desde gramática")
+    t[0] = ToUpperCase(t[3], t.lineno(1), t.lexpos(1))
 
 # ? to_minusculas : expresion PUNTO TOLOWERCASE PARIZQ PARDER
 def p_to_minusculas(t):
     '''
-    to_minusculas : ID PUNTO TOLOWERCASE PARIZQ PARDER
+    to_minusculas : TOLOWERCASE PARIZQ expresion PARDER
     '''
-    t[0] = ToLowerCase(t[1], t.lineno(1), t.lexpos(1))
+    t[0] = ToLowerCase(t[3], t.lineno(1), t.lexpos(1))
 
 # ? separador : expresion PUNTO SPLIT PARIZQ expresion PARDER
 def p_separador(t):
     '''
-    separador : ID PUNTO SPLIT PARIZQ expresion PARDER
+    separador : SPLIT PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = Split(t[1], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = Split(t[3], t[5], t.lineno(1), t.lexpos(1))
 
 # ? concatenacion : expresion PUNTO CONCAT PARIZQ expresion PARDER
 def p_concatenacion(t):
     '''
-    concatenacion : ID PUNTO CONCAT PARIZQ expresion PARDER
+    concatenacion : CONCAT PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = Concat(t[1], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = Concat(t[3], t[5], t.lineno(1), t.lexpos(1))
+
+def p_push_array(t):
+    '''
+    instruccion3 : ID PUNTO PUSH PARIZQ expresion PARDER
+    '''
+    t[0] = Push(t[1], t[5], t.lineno(1), t.lexpos(1))
 
 # ? casteo : expresion PUNTO TOSTRING PARIZQ PARDER
 # ?        | CAST_STRING PARIZQ expresion PARDER
@@ -1031,6 +1035,14 @@ def p_paramStruct(t):
     '''
     t[0] = Params_Interface(t[1], t[3], t.lineno(1),t.lexpos(1))
     #objeto de paramStruct
+
+def p_paramStruct2(t):
+    '''
+    param_struct : ID PTOYCOMA
+    '''
+    t[0] = Params_Interface(t[1], TIPO_DATO.ANY, t.lineno(1),t.lexpos(1))
+    #objeto de paramStruct
+
 def p_decInterface(t):
     '''
     declaracionInterface : LET ID DOSPUNTOS ID IGUAL expresion_interface
@@ -1081,12 +1093,12 @@ def p_asignacionInterface2(t):
     '''
     asignacionInterface : ID PUNTO ID IGUAL expresion
     '''
-    #print("asignacion interface")
-    ##print(t[1])
-    #print(t[3])
-    #print(t[5])
+    ##print("asignacion interface")
+    ###print(t[1])
+    ##print(t[3])
+    ##print(t[5])
     t[0] = AsignarInterface(t[1], t[3], t[5], t.lineno(1), t.lexpos(1))
-    #print(t[0])
+    ##print(t[0])
 
 # ? Arrays
 # ? declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER -- 
@@ -1101,6 +1113,7 @@ def p_asignacionInterface2(t):
 # ?                  | LET ID DOSPUNTOS ID IGUAL CORIZQ lista_exp CORDER
 # ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER
 # ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
+
 
 def p_declaracionArray3(t):
     '''
@@ -1262,7 +1275,7 @@ def p_acceso_array_interface(t):
     '''
     acceso_array_interface : ID lista_acceso_array PUNTO ID
     '''
-    print("acceso array interface")
+    #print("acceso array interface")
     t[0] = AccesoArrayInterface(t[1], t[2], t[4], t.lineno(1), t.lexpos(1))
 
 # ? lista_acceso_array : lista_acceso_array acceso_array
@@ -1304,19 +1317,19 @@ def p_typeOf(t):
 
 def p_length(t):
     '''
-    expresion : ID PUNTO LENGTH
+    expresion : LENGTH PARIZQ expresion PARDER
     '''
-    t[0] = Length(t[1], t.lineno(1), t.lexpos(1))
+    t[0] = Length(t[3], t.lineno(1), t.lexpos(1))
 
 #errores sintacticos
-    #print(str(t[1].value))
+    ##print(str(t[1].value))
     #s = SingletonErrores.getInstance()
     # s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
     
 def p_error(t):
     if t != None:
         s = SingletonErrores.getInstance()
-        print("Error sintáctico en '%s'" % t.value)
+        #print("Error sintáctico en '%s'" % t.value)
         s.addError(Error(1, 1 , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición") )
         errores.append(Error(str(1), str(1) , "Error Sintáctico", "No se esperaba " + str(t.value) + " en esa posición"))
 

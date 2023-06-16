@@ -11,24 +11,12 @@ class ToString(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-
-        found = entorno.ObtenerSimbolo(self.expresion)
-        if entorno.ExisteSimbolo(self.expresion):
-            valor = found.valor
-            if found.tipo == TIPO_DATO.ARRAY or found.tipo == TIPO_DATO.ARRAY_STRING or found.tipo == TIPO_DATO.ARRAY_NUMBER or found.tipo == TIPO_DATO.ARRAY_BOOLEAN:
-                arr = []
-                arr = self.StringArrays(arr, valor)
-                salida = ""
-                for a in range(len(arr)):
-                    if a == len(arr) - 1:
-                        salida += str(arr[a])
-                    else:
-                        salida += str(arr[a]) + ","
-                return Retorno(str(salida), TIPO_DATO.CADENA)
-            return Retorno(str(valor), TIPO_DATO.CADENA)
-        else:
-            valor = self.expresion.ejecutar(entorno, helper)
-            return Retorno(str(valor.valor), TIPO_DATO.CADENA)
+        valor = self.expresion.ejecutar(entorno, helper)
+        if valor.tipo == TIPO_DATO.ARRAY or valor.tipo == TIPO_DATO.ARRAY_NUMBER or valor.tipo == TIPO_DATO.ARRAY_STRING or valor.tipo == TIPO_DATO.ARRAY_BOOLEAN:
+            arr = []
+            arr = self.StringArrays(arr, valor.valor)
+            return Retorno(str(arr), TIPO_DATO.CADENA)
+        return Retorno(str(valor.valor), TIPO_DATO.CADENA)
         
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_STRING")

@@ -14,27 +14,23 @@ class ToExponential(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        existe = entorno.ExisteSimbolo(self.expresion)
-        if existe == False:
-            pass
-        else:
-            valor = entorno.ObtenerSimbolo(self.expresion)
-            cantidad = self.cantidad.ejecutar(entorno, helper)
-            if valor.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.ANY or valor.tipo != TIPO_DATO.ANY:
-                if valor.tipo != TIPO_DATO.NUMERO:
-                    s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
-                    s.addError(err)
-                    helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
-                    return Retorno(None, TIPO_DATO.ERROR)
-                if cantidad.tipo != TIPO_DATO.NUMERO:
-                    s = SingletonErrores.getInstance()
-                    err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
-                    helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
-                    s.addError(err)
-                    return Retorno(None, TIPO_DATO.ERROR)
-            formato = "{:." + str(int(cantidad.valor)) + "e}"
-            return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
+        valor = self.expresion.ejecutar(entorno, helper)
+        cantidad = self.cantidad.ejecutar(entorno, helper)
+        if valor.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.NUMERO or cantidad.tipo != TIPO_DATO.ANY or valor.tipo != TIPO_DATO.ANY:
+            if valor.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) )
+                s.addError(err)
+                helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, la expresion debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(valor.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+                return Retorno(None, TIPO_DATO.ERROR)
+            if cantidad.tipo != TIPO_DATO.NUMERO:
+                s = SingletonErrores.getInstance()
+                err = Error(self.fila, self.columna, "Error Semántico", "Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) )
+                helper.setConsola("[ERROR]: Se ha encontrado un error en la funcion nativa toExponential, el argumento debe de ser de tipo Number, pero se encontró de tipo " + obtTipoDato(cantidad.tipo) + " en la línea " + str(self.fila) + " y columna "+ str(self.columna))
+                s.addError(err)
+                return Retorno(None, TIPO_DATO.ERROR)
+        formato = "{:." + str(int(cantidad.valor)) + "e}"
+        return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_EXPONENTIAL")

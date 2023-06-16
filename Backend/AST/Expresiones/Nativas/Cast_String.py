@@ -26,9 +26,9 @@ class Cast_String(Expresion):
 
     def genArbol(self):
         nodo = Nodo("CASTEO-STRING")
-        nodo.addHijoValor(Nodo("("))
-        nodo.addHijoNodo(self.expresion.genArbol())
-        nodo.addHijoValor(Nodo(")"))
+        nodo.agregarHijo(Nodo("("))
+        nodo.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(Nodo(")"))
         return nodo
 
     def ToStringArrays(self, arr, arrexist):

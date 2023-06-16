@@ -13,13 +13,13 @@ class Identificador(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        print("Desde Identificador (): ")
+        #print("Desde Identificador (): ")
         existe = entorno.ExisteSimbolo(self.nombre)
-        print(existe)
+        #print(existe)
         if existe:
             ret = entorno.ObtenerSimbolo(self.nombre)
-            #print("Desde Identificador 2 (): ")
-            #print(ret)
+            ##print("Desde Identificador 2 (): ")
+            ##print(ret)
             return Retorno(ret.valor, ret.tipo)
         else:
             existe2 = entorno.ObtenerInterfaceDeclarada(self.nombre)

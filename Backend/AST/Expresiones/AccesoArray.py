@@ -42,10 +42,10 @@ class AccesoArray(Expresion):
             index = pila.pop(0)
             try:
                 valor = lista.valor[index]
-                print(isinstance(valor, Retorno))
+                #print(isinstance(valor, Retorno))
             except:
                 #error semantico
-                print("ERROR SOTE")
+                #print("ERROR SOTE")
                 s = SingletonErrores.getInstance()
                 err = Error(self.linea, self.columna, "Error Semántico", "El indice al que se intenta acceder no existe en el array")
                 s.addError(err)
@@ -59,14 +59,14 @@ class AccesoArray(Expresion):
                 return self.accesar(pila, valor, entorno, helper)
             else:
                 if len(pila) == 0:
-                    print(lista.valor[index])
+                    #print(lista.valor[index])
                     return lista.valor[index]
                 else:
                     #error semantico
                     s = SingletonErrores.getInstance()
                     err = Error(self.linea, self.columna, "Error Semántico", "No se puede acceder al valor que se intenta acceder al array")
                     s.addError(err)
-                    print("esto es un ERRRRRRRRROR")
+                    #print("esto es un ERRRRRRRRROR")
                     helper.setConsola("[ERROR]: No se puede acceder al valor que se intenta acceder al array en la linea: " + str(self.linea) + " y columna: " + str(self.columna))
                     return Retorno(None, TIPO_DATO.ERROR)
 

@@ -12,7 +12,7 @@ class Funcion(Simbolo, Instruccion):
     def __init__(self, nombre, params, listaInstrucciones, linea, columna, tipo) -> None:
         super().__init__()
         super().crearFuncion(nombre, params, listaInstrucciones, linea, columna, tipo)
-        #print("Creando funcion")
+        ##print("Creando funcion")
         self.nombre = nombre
         self.params = params
         self.listaInstrucciones = listaInstrucciones
@@ -21,7 +21,7 @@ class Funcion(Simbolo, Instruccion):
         self.columna = columna
 
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
-        #print("EXP: ", exp)
+        ##print("EXP: ", exp)
         if self.params is None and exp is None:
             return True
         
@@ -39,12 +39,12 @@ class Funcion(Simbolo, Instruccion):
             err = Error(self.linea, self.columna, "Error Semántico", "La cantidad de argumentos no coincide con la cantidad de parametros")
             s.addError(err)
             helper.setConsola("[ERROR] La cantidad de argumentos no coincide con la cantidad de parametros en la línea "+ str(self.linea) +" y columna " + str(self.columna))
-            #print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")
+            ##print("Error semántico, la cantidad de argumentos no coincide con la cantidad de parametros")
             return False
         
-        #print("-------------------------", str(self.params))
+        ##print("-------------------------", str(self.params))
         contador = 0
-        #print(paramsDecl)
+        ##print(paramsDecl)
         for param in paramsDecl:
             param.utilizado = exp[contador].ejecutar(entornoPadre, helper)
             param.ejecutar(entorno, helper)
@@ -55,25 +55,15 @@ class Funcion(Simbolo, Instruccion):
     def ejecutar(self, entorno, helper):
         tempHelper = helper.getFuncion()
         helper.setFuncion("Funcion")
-
-        print("VOY A EJECUTAR UNA FUNCION")
-        print("INSTRUCCIONES")
-        print(self.listaInstrucciones)
+        
         for instruccion in self.listaInstrucciones:
-            print("EJECUTANDO INSTRUCCION DE FUNCION")
+
             #instruccion.ejecutar(entorno, helper)
             if instruccion is None:
                 continue
-            '''
-            print(instruccion)
-            print((isinstance(instruccion, Return) or isinstance(instruccion, Retorno)) and not isinstance(self.tipo, TIPO_DATO))
-            if (isinstance(instruccion, Return) or isinstance(instruccion, Retorno)) and not isinstance(self.tipo, TIPO_DATO):
-                print("XDXDXD")
-            '''
             accion = instruccion.ejecutar(entorno, helper)
-            print(accion)
+
             if accion is not None:
-                #print(accion,  " QUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                 if isinstance(accion, Return) or isinstance(accion, Retorno):
                     if isinstance(accion.valor, int) or isinstance(accion.valor, float):
                         accion.tipo = TIPO_DATO.NUMERO
@@ -91,28 +81,26 @@ class Funcion(Simbolo, Instruccion):
                                     err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")
                                     s.addError(err)
                                     helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
-                                    #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
+                                    ##print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
                                     return
                             else:
                                 #busca si existe el objeto al cual se esta referenciando
                                 existe_interface = entorno.ExisteInterface(self.tipo)
-                                print(existe_interface)
+                                ##print(existe_interface)
                                 if existe_interface is None:
                                     s = SingletonErrores.getInstance()
                                     err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato ",self.tipo," de la funcion ",self.nombre," no existe")
                                     s.addError(err)
                                     helper.setConsola("[ERROR] El tipo de dato ", self.tipo," de la funcion ", self.nombre," no existe en la línea "+ str(self.linea) +" y columna " + str(self.columna))
-                                    #print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
+                                    ##print("Error semantico, tipo de dato de retorno no coincide con el de la funcion")
                                     return
                                 
-                                print("Existe interface: ", existe_interface)
+
                                 #busca si coincide el objeto a retornar con el tipo de objeto de la funcion
                                 list_params = accion.valor.paramDeclarados
                                 referencia = entorno.ObtenerInterface(self.tipo)
-                                print("Referencia: ", referencia)
+
                                 lista_parametros_objeto = referencia.params
-                                print("List params: ", list_params)
-                                print("Lista parametros objeto: ", lista_parametros_objeto)
                                 lista_ya_Declarada = []
                                 verificacion = True
                                 #recorremos la lista de parametros del objeto
@@ -134,17 +122,15 @@ class Funcion(Simbolo, Instruccion):
                                                 j = len(list_params)
                                     else:
                                         break
-                                print(verificacion)
                                 if verificacion == False:
-                                    print("SI HAY ERROR")
                                     #error semantico
                                     s = SingletonErrores.getInstance()
                                     err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato que va a retornar no coincide con el tipo de objeto " + self.tipo + " que es de la funcion" )
                                     s.addError(err)
                                     helper.setConsola("[ERROR] El tipo de dato que va a retornar no coincide con el tipo de objeto " + self.tipo + " que es de la funcion no coincide en la línea "+ str(self.linea) +" y columna " + str(self.columna))
                                     return
-                                    
-                        print(accion.tipo)
+                        
+                        helper.setTs(entorno)
                         return Retorno(accion.valor, accion.tipo)
                     else:
 
@@ -155,7 +141,8 @@ class Funcion(Simbolo, Instruccion):
                         #helper.setConsola("[ERROR] El tipo de dato de retorno no coincide con el de la funcion en la línea "+ str(self.linea) +" y columna " + str(self.columna))
                         helper.setConsola("[ERROR] REVISAR POR QUÉ SE GENERA ESTE ERROR EN LA FUNCIÓN")
                         return Return(None, TIPO_DATO.ERROR)
-                    
+        helper.setTs(entorno)
+        helper.setFuncion(tempHelper)            
         
     def genArbol(self) -> Nodo:
         nodo = Nodo("Funcion")

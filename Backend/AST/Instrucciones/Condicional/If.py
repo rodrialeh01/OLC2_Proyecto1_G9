@@ -21,7 +21,7 @@ class If(Instruccion):
         self.columna = columna
         
     def ejecutar(self, entorno, helper):
-        #print("ejecutando if")
+        ##print("ejecutando if")
         condicion = self.expresion.ejecutar(entorno, helper)
         entornoLocal = Entorno(entorno)
         helperTemp = helper.getFuncion()
@@ -85,7 +85,7 @@ class If(Instruccion):
                 return
         #if-else/ else-if
         else:
-            #print("la condición del if no es true")
+            ##print("la condición del if no es true")
             if self.lista_elseifs is not None:
                 for accion in self.lista_elseifs:
                     condicion2 = accion.expresion.ejecutar(entornoLocal, helper)
@@ -95,10 +95,10 @@ class If(Instruccion):
                         helper.setConsola("[ERROR]: Se ha encontrado un error en ELSE IF, debe de ser de tipo booleano, pero se encontró de tipo " + obtTipoDato(condicion2.tipo) + " en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
                         s.addError(err)
                         return
-                    #print("ELIF: ", condicion2.valor)
+                    ##print("ELIF: ", condicion2.valor)
                     if condicion2.valor:
                         entornoLocal.setActual("elif")
-                        #print("vas a entrar?")
+                        ##print("vas a entrar?")
                         for ifTemp in accion.lista_instrucciones:
                             instruc = ifTemp.ejecutar(entornoLocal, helper)
                             if isinstance(instruc, Return):

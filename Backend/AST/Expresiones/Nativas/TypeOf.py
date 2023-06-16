@@ -11,14 +11,9 @@ class TypeOf(Expresion):
         self.columna = columna
 
     def ejecutar(self, entorno, helper):
-        found = entorno.ObtenerSimbolo(self.expresion)
-        if entorno.ExisteSimbolo(self.expresion):
-            tipo = obtTipoDato(found.tipo)
-            return Retorno(tipo, TIPO_DATO.CADENA)
-        else:
-            valor = self.expresion.ejecutar(entorno, helper)
-            tipo = obtTipoDato(valor.tipo)
-            return Retorno(tipo, TIPO_DATO.CADENA)
+        valor = self.expresion.ejecutar(entorno, helper)
+        tipo = obtTipoDato(valor.tipo)
+        return Retorno(tipo, TIPO_DATO.CADENA)
 
 
     def genArbol(self) -> Nodo:

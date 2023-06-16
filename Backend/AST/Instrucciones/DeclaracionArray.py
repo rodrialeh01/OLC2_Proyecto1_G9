@@ -49,7 +49,11 @@ class DeclaracionArray(Instruccion):
             simbolo.columna = self.columna
 
             #agregar el simbolo al entorno
-            verifExistencia = entorno.ExisteSimbolo(simbolo.nombre)
+            verifExistencia = entorno.BuscarSimboloLocal(simbolo.nombre)
+            if not verifExistencia:
+                verifExistencia = entorno.BuscarInterfaceDeclaradaLocal(simbolo.nombre)
+                if not verifExistencia:
+                    verifExistencia = entorno.BuscarInterfaceLocal(simbolo.nombre)
             if verifExistencia:
                 #error semantico
                 s = SingletonErrores.getInstance()

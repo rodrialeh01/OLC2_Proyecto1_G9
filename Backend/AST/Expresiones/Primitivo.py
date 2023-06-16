@@ -15,6 +15,6 @@ class Primitivo(Expresion):
         return Retorno(self.valor, self.tipo)
     
     def genArbol(self):
-        #print("ENTRO A PRIMITIVO")
-        #print(self.valor)
+        ##print("ENTRO A PRIMITIVO")
+        ##print(self.valor)
         return Nodo(str(self.valor))

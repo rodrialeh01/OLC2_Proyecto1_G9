@@ -112,11 +112,7 @@ class Concat(Expresion):
                 return bandera
 
     def genArbol(self) -> Nodo:
-        nodo = Nodo("CONCATENACION")
+        nodo = Nodo("CONCAT")
         nodo.agregarHijo(self.expresion1.genArbol())
-        nodo.agregarHijo(Nodo("."))
-        nodo.agregarHijo(Nodo("concat"))
-        nodo.agregarHijo(Nodo("("))
         nodo.agregarHijo(self.expresion2.genArbol())
-        nodo.agregarHijo(Nodo(")"))
         return nodo

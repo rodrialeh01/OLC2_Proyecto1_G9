@@ -106,13 +106,11 @@ class AsignacionArray(Instruccion):
     def genArbol(self) -> Nodo:
 
         nodo = Nodo("ASIGNACION ARRAY")
-        nodo.agregarHijo(Nodo(str(self.id)))
-        acc = Nodo("ACCESO")
-        nodo.agregarHijo(acc)
+        nodo_id = Nodo(str(self.id))
         for a in self.accesos:
-            acc.agregarHijo(Nodo("["))
-            acc.agregarHijo(a.genArbol())
-            acc.agregarHijo(Nodo("]"))
-        nodo.agregarHijo(Nodo("="))
-        nodo.agregarHijo(self.expresion.genArbol())
+            nodo_id.agregarHijo(a.genArbol())
+        igual = Nodo("=")
+        igual.agregarHijo(nodo_id)
+        igual.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(igual)
         return nodo

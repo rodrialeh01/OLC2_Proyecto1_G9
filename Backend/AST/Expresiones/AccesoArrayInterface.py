@@ -1,5 +1,6 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
@@ -76,4 +77,14 @@ class AccesoArrayInterface(Expresion):
                     return Retorno(None, TIPO_DATO.ERROR)
 
     def genArbol(self):
-        pass
+        nodo = Nodo("ACCESO ARRAY")
+        nodoPunto = Nodo(".")
+        nodo.agregarHijo(nodoPunto)
+
+        nodoP = Nodo(str(self.id))
+        nodoPunto.agregarHijo(nodoP)
+        for a in self.accesos:
+            nodoP.agregarHijo(a.genArbol())
+        nodoPunto.agregarHijo(str(self.id_param))
+        return nodo
+    

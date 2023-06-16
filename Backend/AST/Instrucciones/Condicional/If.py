@@ -202,25 +202,25 @@ class If(Instruccion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("IF")
-        nodo.agregarHijo(self.expresion.genArbol())
-        instrucciones = Nodo("INSTRUCCIONES")
+        nodo.agregarHijo(self.expresion.genArbol())#IF -> CONDICION
+        instrucciones = Nodo("TRUE")
         for instruccion in self.lista_instrucciones:
             instrucciones.agregarHijo(instruccion.genArbol())
         nodo.agregarHijo(instrucciones)
 
-        
-        if self.lista_elseifs is not None:
-            nodo2 = Nodo("ELSE IF")
-            for elseif in self.lista_elseifs:
-                nodo2.agregarHijo(elseif.genArbol())
-            nodo.agregarHijo(nodo2)
-
-        if self.lista_instrucciones2 is not None:
-            nodo3 = Nodo("ELSE")
-            for instruccion in self.lista_instrucciones2:
-                nodo3.agregarHijo(instruccion.genArbol())
-        
-            nodo.agregarHijo(nodo3)
+        if self.lista_elseifs is not None or self.lista_instrucciones2 is not None:
+            instrucciones2 = Nodo("FALSE")
+            if self.lista_elseifs is not None:
+                for elseif in self.lista_elseifs:
+                    instrucciones2.agregarHijo(elseif.genArbol())
+            
+            if self.lista_instrucciones2 is not None:
+                nodo3 = Nodo("ELSE")
+                for instruccion in self.lista_instrucciones2:
+                    nodo3.agregarHijo(instruccion.genArbol())
+            
+                instrucciones2.agregarHijo(nodo3)
+            nodo.agregarHijo(instrucciones2)
 
         return nodo
 

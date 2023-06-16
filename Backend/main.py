@@ -102,7 +102,7 @@ def ts():
 @app.route('/Arbol', methods=['GET'])
 def arbol():
     global nodo
-    textoG = "digraph G {"
+    textoG = "graph G { "
     tree = nodo.instArbol()
     textoG += tree
     textoG += "}"

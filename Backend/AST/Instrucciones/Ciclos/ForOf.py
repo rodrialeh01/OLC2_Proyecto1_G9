@@ -93,9 +93,8 @@ class ForOf(Instruccion):
         helper.setCiclo(helperTemp)
                 
     def genArbol(self) -> Nodo:
-        nodo = Nodo("FOR")
+        nodo = Nodo("FOR-OF")
         nodo.agregarHijo(Nodo(str(self.variable)))
-        nodo.agregarHijo(Nodo("of"))
         nodo.agregarHijo(self.exp1.genArbol())
         instrucciones = Nodo("INSTRUCCIONES")
         for instruccion in self.instrucciones:

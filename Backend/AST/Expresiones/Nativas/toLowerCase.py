@@ -36,8 +36,5 @@ class ToLowerCase(Expresion):
             
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_LOWER_CASE")
-        nodo.agregarHijo(Nodo("("))
         nodo.agregarHijo(self.expresion.genArbol())
-        nodo.agregarHijo(Nodo(")"))
-
         return nodo

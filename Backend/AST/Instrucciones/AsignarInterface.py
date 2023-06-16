@@ -60,11 +60,13 @@ class AsignarInterface(Instruccion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("ASIGNAR INTERFACE")
-        nodo.agregarHijo(Nodo(self.id_interface))
-        nodo.agregarHijo(Nodo("."))
-        nodo.agregarHijo(Nodo(self.id_param))
-        nodo.agregarHijo(Nodo("="))
-        nodo.agregarHijo(self.expresion.genArbol())
+        nodo_p = Nodo(".")
+        nodo_i = Nodo("=")
+        nodo_p.agregarHijo(Nodo(self.id_interface))
+        nodo_p.agregarHijo(Nodo(self.id_param))
+        nodo_i.agregarHijo(nodo_p)
+        nodo_i.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(nodo_i)
         return nodo
 
 

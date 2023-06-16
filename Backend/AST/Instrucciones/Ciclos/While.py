@@ -67,13 +67,10 @@ class While(Instruccion):
 
     def genArbol(self):
         nodo = Nodo("WHILE")
-        nodo.agregarHijo(Nodo("while"))
-        nodo.agregarHijo(Nodo("("))
-        nodo.agregarHijo(self.condicion.getNodo())
-        nodo.agregarHijo(Nodo(")"))
+        nodo.agregarHijo(self.condicion.genArbol())
         if self.instrucciones != None:
             ins = Nodo("INSTRUCCIONES")
             for instruccion in self.instrucciones:
-                ins.agregarHijo(instruccion.getNodo())
+                ins.agregarHijo(instruccion.genArbol())
             nodo.agregarHijo(ins)
         return nodo

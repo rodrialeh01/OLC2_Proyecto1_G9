@@ -28,8 +28,6 @@ class ToUpperCase(Expresion):
     
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_UPPER_CASE")
-        nodo.agregarHijo(Nodo("("))
         nodo.agregarHijo(self.expresion.genArbol())
-        nodo.agregarHijo(Nodo(")"))
 
         return nodo

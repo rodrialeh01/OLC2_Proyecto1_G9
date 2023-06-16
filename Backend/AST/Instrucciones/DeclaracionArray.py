@@ -131,7 +131,11 @@ class DeclaracionArray(Instruccion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("DECLARACION ARRAY")
-        nodo.agregarHijo(Nodo(str(self.id)))
-        nodo.agregarHijo(Nodo(str(self.tipo)))
-        nodo.agregarHijo(self.expresion.genArbol())
+        nodo_id = Nodo(str(self.id))
+        if isinstance(self.tipo, TIPO_DATO):
+            nodo_id.agregarHijo(Nodo(obtTipoDato(self.tipo)))
+        else:
+            nodo_id.agregarHijo(Nodo(self.tipo))
+        nodo_id.agregarHijo(self.expresion.genArbol())
+        nodo.agregarHijo(nodo_id)
         return nodo

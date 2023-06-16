@@ -77,7 +77,5 @@ class AccesoArray(Expresion):
         for a in self.accesos:
             listaAcc.append(a.genArbol())
         for a in listaAcc:
-            nodo.agregarHijo(Nodo("["))
             nodo.agregarHijo(a)
-            nodo.agregarHijo(Nodo("]"))
         return nodo

@@ -51,15 +51,11 @@ class Llamada(Instruccion, Expresion):
     def genArbol(self):
         nodo = Nodo("LLAMADA FUNCIÓN")
         nodohijo = Nodo(self.id)
-        nodohijo2 = Nodo("(")
         nodohijo3 = Nodo("PARAMETROS")
-        nodohijo4 = Nodo(")")
         nodo.agregarHijo(nodohijo)
-        nodo.agregarHijo(nodohijo2)
-        for param in self.params:
-            nodohijo3.agregarHijo(param.genArbol())
-        nodo.agregarHijo(nodohijo3)
-        nodo.agregarHijo(nodohijo4)
-
+        if self.params is not None:
+            for param in self.params:
+                nodohijo3.agregarHijo(param.genArbol())
+            nodo.agregarHijo(nodohijo3)
         return nodo
     

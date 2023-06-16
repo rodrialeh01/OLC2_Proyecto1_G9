@@ -1,5 +1,6 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Nodo import Nodo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 
 
 class Params_Interface(Instruccion):
@@ -16,5 +17,5 @@ class Params_Interface(Instruccion):
     def genArbol(self) -> Nodo:
         nodo = Nodo("PARAMS_INTERFACE")
         nodo.agregarHijo(Nodo(str(self.id)))
-        nodo.agregarHijo(Nodo(str(self.tipo)))
+        nodo.agregarHijo(Nodo(obtTipoDato(self.tipo)))
         return nodo

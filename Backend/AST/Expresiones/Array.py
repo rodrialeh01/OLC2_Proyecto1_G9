@@ -32,6 +32,15 @@ class Array(Expresion):
                 arr2 = []
                 arr2 = self.ImpresionArrays(arr2, a.valor)
                 arr.append(arr2)
+            elif a.tipo == TIPO_DATO.INTERFACE:
+                mostrarxd = "{"
+                #print(a.valor.paramDeclarados)
+                for vals in a.valor.paramDeclarados:
+                    for dic in vals:
+                        valuexd = vals[dic]
+                        mostrarxd += dic + " : " + str(valuexd.valor) + " "
+                mostrarxd += "}"
+                arr.append(mostrarxd)
             else:
                 arr.append(a.valor)
         return arr

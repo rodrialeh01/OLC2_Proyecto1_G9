@@ -40,8 +40,10 @@ class Asignacion(Instruccion):
             return 
 
     def genArbol(self) -> Nodo:
-        nodo = Nodo("Asignacion")
-        nodo.agregarHijo(Nodo(str(self.id)))
-        nodo.agregarHijo(self.valor.genArbol())
+        nodo = Nodo("Asignacion ")
+        nodo_assig = Nodo("=")
+        nodo_assig.agregarHijo(Nodo(str(self.id)))
+        nodo_assig.agregarHijo(self.valor.genArbol())
+        nodo.agregarHijo(nodo_assig)
         return nodo
     

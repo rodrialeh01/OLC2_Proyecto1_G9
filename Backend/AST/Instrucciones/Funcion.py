@@ -145,12 +145,13 @@ class Funcion(Simbolo, Instruccion):
         helper.setFuncion(tempHelper)            
         
     def genArbol(self) -> Nodo:
-        nodo = Nodo("Funcion")
+        nodo = Nodo("FUNCIÓN")
         nodo.agregarHijo(Nodo(str(self.nombre)))
         nodo2 = Nodo("Parametros")
-        for param in self.params:
-            nodo2.agregarHijo(param.genArbol())
-        nodo.agregarHijo(nodo2)
+        if self.params is not None:
+            for param in self.params:
+                nodo2.agregarHijo(param.genArbol())
+            nodo.agregarHijo(nodo2)
         nodo3 = Nodo("Instrucciones")
         for instruccion in self.listaInstrucciones:
             nodo3.agregarHijo(instruccion.genArbol())

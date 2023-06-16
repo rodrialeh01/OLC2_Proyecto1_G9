@@ -117,9 +117,10 @@ class Declaracion(Instruccion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("Declaracion")
-        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo_id = Nodo(str(self.id))
         if self.tipo != None:
-            nodo.agregarHijo(Nodo(str(self.tipo)))
+            nodo_id.agregarHijo(Nodo(obtTipoDato(self.tipo)))
         if self.valor != None:
-            nodo.agregarHijo(self.valor.genArbol())
+            nodo_id.agregarHijo(self.valor.genArbol())
+        nodo.agregarHijo(nodo_id)
         return nodo

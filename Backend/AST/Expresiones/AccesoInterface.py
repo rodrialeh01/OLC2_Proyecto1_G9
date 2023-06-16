@@ -38,6 +38,5 @@ class AccesoInterface(Expresion):
     def genArbol(self) -> Nodo:
         nodo = Nodo("ACCESO INTERFACE")
         nodo.agregarHijo(Nodo(str(self.id_interface)))
-        nodo.agregarHijo(Nodo("."))
         nodo.agregarHijo(Nodo(str(self.id_param)))
         return nodo

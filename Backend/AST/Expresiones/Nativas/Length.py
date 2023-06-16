@@ -1,5 +1,6 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
@@ -24,5 +25,8 @@ class Length(Expresion):
         return Retorno(len(valor.valor), TIPO_DATO.NUMERO)
 
     def genArbol(self):
-        pass
+        nodo = Nodo("LENGTH")
+        nodo.agregarHijo(self.exp1.genArbol())
+        return nodo
+        
         

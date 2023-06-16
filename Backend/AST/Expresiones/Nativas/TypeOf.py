@@ -17,4 +17,6 @@ class TypeOf(Expresion):
 
 
     def genArbol(self) -> Nodo:
-        pass
+        nodo = Nodo("TYPEOF")
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo

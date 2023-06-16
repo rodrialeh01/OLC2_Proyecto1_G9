@@ -35,10 +35,7 @@ class ToFixed(Expresion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_FIXED")
-        nodo.agregarHijo(Nodo("("))
         nodo.agregarHijo(self.expresion.genArbol())
-        nodo.agregarHijo(Nodo(","))
         nodo.agregarHijo(self.cantidad.genArbol())
-        nodo.agregarHijo(Nodo(")"))
 
         return nodo

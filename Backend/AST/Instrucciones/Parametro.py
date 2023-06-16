@@ -127,14 +127,14 @@ class Parametro(Instruccion):
             return
 
     def genArbol(self) -> Nodo:
-        nodo = Nodo("Parametro")
-        nodo.agregarHijo(Nodo(str(self.id)))
+        nodo = Nodo("PARAMETRO")
+        nodoId = Nodo(str(self.id))
+        nodo.agregarHijo(nodoId)
         if self.tipo != None:
-            nodo.agregarHijo(Nodo(str(self.tipo)))
+            nodo.agregarHijo(Nodo(obtTipoDato(self.tipo)))
         if self.valor != None:
             nodo.agregarHijo(self.valor.genArbol())
 
-            
         return nodo
 
 

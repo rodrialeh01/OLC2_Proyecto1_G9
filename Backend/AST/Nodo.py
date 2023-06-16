@@ -18,7 +18,7 @@ class Nodo:
 
         for hijo in range(len(nodo.listaH)):
             temp = hijo+1
-            dot += "nodo"+str(c)+" -> nodo"+str(c)+str(contador)+str(temp)+";\n"
+            dot += "nodo"+str(c)+" -- nodo"+str(c)+str(contador)+str(temp)+";\n"
             dot += self.graphviz(nodo.listaH[hijo], str(c)+str(contador)+str(temp))
             temp += 1
             contador+=1

@@ -34,10 +34,7 @@ class ToExponential(Expresion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_EXPONENTIAL")
-        nodo.agregarHijo(Nodo("("))
         nodo.agregarHijo(self.expresion.genArbol())
-        nodo.agregarHijo(Nodo(","))
         nodo.agregarHijo(self.cantidad.genArbol())
-        nodo.agregarHijo(Nodo(")"))
 
         return nodo

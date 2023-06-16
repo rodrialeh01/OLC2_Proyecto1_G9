@@ -1,5 +1,6 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
+from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
@@ -66,8 +67,8 @@ class Push(Instruccion):
 
             elif val.tipo == TIPO_DATO.ARRAY_INTERFACE:
                 if val2.tipo == TIPO_DATO.INTERFACE:
-                    
-                    pass
+                    val.valor.append(val2)
+                    entorno.ActualizarSimbolo(self.id, val)
                 else:
                     s = SingletonErrores.getInstance()
                     s.addError(Error(self.linea, self.columna, "Semantico", "No es posible hacer push de tipo de dato "+obtTipoDato(val2.tipo)+ " a un array de tipo interface"))
@@ -75,4 +76,7 @@ class Push(Instruccion):
                     return
 
     def genArbol(self):
-        pass
+        nodo = Nodo("PUSH")
+        nodo.agregarHijo(str(self.id))
+        nodo.agregarHijo(self.expresion.genArbol())
+        return nodo

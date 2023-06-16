@@ -72,9 +72,7 @@ class For(Instruccion):
     def genArbol(self) -> Nodo:
         nodo = Nodo("FOR")
         nodo.agregarHijo(self.exp1.genArbol())
-        nodo.agregarHijo(Nodo(";"))
         nodo.agregarHijo(self.condicion.genArbol())
-        nodo.agregarHijo(Nodo(";"))
         nodo.agregarHijo(self.incremento.genArbol())
         instrucciones = Nodo("INSTRUCCIONES")
         for instruccion in self.instrucciones:

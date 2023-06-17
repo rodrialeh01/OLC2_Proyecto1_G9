@@ -10,7 +10,7 @@ from AST.SingletonErrores import SingletonErrores as Sing
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from gramatica import gramatica2
-
+from AST.Simbolos.generador import Generador
 # importando los errores que se agregaron a la gramatica2:
 
 
@@ -64,8 +64,79 @@ def ejecutar():
                             entornoGlobal.AgregarFuncion(i.nombre, i)
                                     
                     else:
-                        i.ejecutar(entornoGlobal, helpe)         
+                        i.ejecutar(entornoGlobal, helpe)
                 except Exception as e:
+                    print(e)
+                    if isinstance(e, Error):
+                        singletonErr.addError(e)
+                        #print(e)
+    
+        for i in parseado:
+            if i is not None:
+                try:
+                    nodo.agregarHijo(i.genArbol())
+                except Exception as e:
+                    print(e)
+
+    
+
+    entornoTemp = ""
+    entornoTemp = entornoGlobal.getSimbolos()
+
+
+    return jsonify({"message": helpe.getConsola()})
+
+@app.route('/C3D', methods=['POST'])
+def c3d():
+    global entornoTemp
+    global nodo
+    global helpe
+    nodo = Nodo("INICIO")
+    texto = request.json["texto"]
+    #print(texto)
+
+    #utilizando singleton para errores:
+    singletonErr = Sing.getInstance()
+    singletonErr.reinicioErrores()
+    parseado = gramatica2.parse(texto)
+    entornoGlobal = Entorno(None)
+    entornoGlobal.setActual("Global")
+    helpe = Helper()
+    helpe.Ts = ""
+
+    gen = Generador() #?
+    gen.clean()     #?
+    generador = gen.getInstance() #?
+
+    for err in gramatica2.errores:
+        if isinstance(err, Error):
+            helpe.setConsola("[ERROR] "+err.desc )
+
+
+    if parseado is not None:
+        for i in parseado:
+            if i is not None:
+                try:
+                    if isinstance(i, Funcion):
+                        verif = entornoGlobal.ExisteFuncion(i.nombre)
+                        if not verif:
+                            verif = entornoGlobal.BuscarSimboloLocal(i.nombre)
+                            if not verif:
+                                verif = entornoGlobal.BuscarInterfaceLocal(i.nombre)
+                                if not verif:
+                                    verif = entornoGlobal.BuscarInterfaceDeclaradaLocal(i.nombre)
+                        if verif:
+                            s = singletonErr.getInstance()
+                            s.addError(Error(i.linea, i.columna, "Error Semántico", "La función no puede tener el mismo nombre que una variable o instancia ya declarada."))
+                            helpe.setConsola("[ERROR] La función no puede tener el mismo nombre que una variable, instancia o función ya declarada.")
+                            pass
+                        if not verif:
+                            entornoGlobal.AgregarFuncion(i.nombre, i)
+                                    
+                    else:
+                        i.genC3D(entornoGlobal, helpe)         
+                except Exception as e:
+                    print(e)
                     if isinstance(e, Error):
                         singletonErr.addError(e)
                         #print(e)
@@ -78,8 +149,11 @@ def ejecutar():
                     print(e)
 
     entornoTemp = ""
-    entornoTemp = entornoGlobal.getSimbolos()
-    return jsonify({"message": helpe.getConsola()})
+    #entornoTemp = entornoGlobal.getSimbolos()
+
+
+    return jsonify({"message": generador.obtCodigo()})
+
 
 @app.route('/errores', methods=['GET'])
 def errores():

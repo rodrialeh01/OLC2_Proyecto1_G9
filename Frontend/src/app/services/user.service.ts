@@ -15,6 +15,10 @@ export class UserService {
     return this.http.post(`${this.API}/ejecutar`, archivo);
   }
 
+  C3D(archivo: Archivo|JSON){
+    return this.http.post(`${this.API}/C3D`, archivo);
+  }
+
   getConsola(){
     return this.http.get(`${this.API}/consola`);
   }

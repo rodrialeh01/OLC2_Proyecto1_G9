@@ -4,6 +4,7 @@ from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
+from AST.Simbolos.generador import Generador
 
 
 class Declaracion(Instruccion):
@@ -13,6 +14,11 @@ class Declaracion(Instruccion):
         self.valor = valor
         self.fila = fila
         self.columna = columna
+
+        self.find = True
+        self.hide = -1
+
+        super().__init__()
     
     def ejecutar(self, entorno, helper):
         #print("Declaracion")
@@ -113,8 +119,6 @@ class Declaracion(Instruccion):
 
                 entorno.AgregarSimbolo(identificador, simb)
 
-        
-
     def genArbol(self) -> Nodo:
         nodo = Nodo("Declaracion")
         nodo_id = Nodo(str(self.id))
@@ -124,3 +128,37 @@ class Declaracion(Instruccion):
             nodo_id.agregarHijo(self.valor.genArbol())
         nodo.agregarHijo(nodo_id)
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        generador.addComment("Declaracion de variable")
+        s_C3D = None
+        val = None
+
+        if self.tipo != None:
+            val = self.valor.genC3D(entorno, helper)
+
+        if self.tipo != None:
+            if val != None:
+                if self.tipo == val.tipo:
+                    inHeap = val.tipo == TIPO_DATO.CADENA #or val.tipo == TIPO_DATO.INTERFACE or TIPO_DATO.ARRAY
+                    s_C3D = entorno.setEntorno(self.id, val.tipo, inHeap, self.find)
+                else:
+                    generador.addComentario("Error: el tipo de dato no coincide al declarado")
+                    #agregar error...
+                
+            
+        else:
+            pass
+        
+        
+        posicionTemp = s_C3D.posicion
+        print(s_C3D.globalVar)
+        if not s_C3D.globalVar:
+            posicionTemp = generador.addTemp()
+            generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
+
+        generador.setStack(posicionTemp, val.valor)
+        generador.addComment("Fin declaracion de variable")

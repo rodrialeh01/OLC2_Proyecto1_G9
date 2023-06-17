@@ -6,6 +6,8 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
 
+from AST.Simbolos.generador import Generador
+from AST.Simbolos.Retorno2 import Retorno2
 
 class Operacion(Expresion):
     def __init__(self, exp1, exp2, operador, fila, columna, unario = False):
@@ -15,6 +17,8 @@ class Operacion(Expresion):
         self.fila = fila
         self.columna = columna
         self.unario = unario
+        super().__init__()
+
 
     def ejecutar(self, entorno, helper) -> Retorno:
         val1 = Retorno()
@@ -131,3 +135,45 @@ class Operacion(Expresion):
         nodo.agregarHijo(self.exp1.genArbol())
         nodo.agregarHijo(self.exp2.genArbol())
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+        temporal = ''
+        operador = ''
+        val1 = self.exp1.genC3D(entorno, helper)
+        val2 = self.exp2.genC3D(entorno, helper)
+        
+        if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
+            operador = '+'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+        
+        elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
+            operador = '-'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+        
+        elif self.operador == TIPO_OPERACION_ARITMETICA.MULTIPLICACION:
+            operador = '*'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+        elif self.operador == TIPO_OPERACION_ARITMETICA.DIVISION:
+            operador = '/'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+        elif self.operador == TIPO_OPERACION_ARITMETICA.POTENCIA:
+            operador = '^'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+        elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
+            operador = '%'
+            temporal = generador.addTemp()
+            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            return Retorno2(temporal, TIPO_DATO.NUMERO, True)
+    

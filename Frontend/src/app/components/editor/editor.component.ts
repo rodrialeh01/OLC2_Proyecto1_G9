@@ -43,6 +43,18 @@ export class EditorComponent implements OnInit {
     )
   }
 
+  Compilar(){
+    console.log(this.archivo.texto);
+    this.service.C3D(this.archivo).subscribe(
+      res => {
+        console.log(res);
+        this.response = res;
+        this.obtConsola(this.response);
+      },
+      err => console.log(err)
+    )
+  }
+
   obtConsola(texto: Message){
     this.consola.texto = 'PyTypeCraft Console\nCopyright (C) PyTypeCraft-OLC2-P1.\nCreated by Rodrigo Hernández & Andrea Cabrera 2023\n\n' + texto.message ;
     console.log("CONSOLA");

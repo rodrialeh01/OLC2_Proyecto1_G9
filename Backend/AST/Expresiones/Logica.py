@@ -14,6 +14,7 @@ class Logica(Expresion):
         self.fila = fila
         self.columna = columna
         self.negacion = negacion
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         val1 = Retorno()
@@ -71,5 +72,6 @@ class Logica(Expresion):
             nodo.agregarHijo(self.exp2.genArbol())
             return nodo
         
-            
+    def genC3D(self, entorno, helper):
+        pass
         

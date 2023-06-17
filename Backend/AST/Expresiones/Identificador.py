@@ -4,6 +4,8 @@ from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
+from AST.Simbolos.generador import Generador
+from AST.Simbolos.Retorno2 import Retorno2
 
 
 class Identificador(Expresion):
@@ -11,6 +13,7 @@ class Identificador(Expresion):
         self.nombre = nombre
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         #print("Desde Identificador (): ")
@@ -33,7 +36,28 @@ class Identificador(Expresion):
             else:
                 return Retorno(existe2, TIPO_DATO.INTERFACE)
 
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
 
+        generador.addComment("Acceso a Identificador")
+        
+        existe = entorno.ExisteSimbolo(self.nombre)
+        if not existe:
+            generador.addComment("Fin Acceso a Identificador - No existe")
+        
+        s_c3d = entorno.ObtenerSimbolo(self.nombre)
+        temp = generador.addTemp()
+
+        #Se obtiene la posicion de la variable.
+        posicionTemp = s_c3d.posicion
+        if not s_c3d.globalVar:
+            posicionTemp = generador.addTemp()
+            generador.addExpresion(posicionTemp, "P", str(s_c3d.posicion), '+')
+
+        generador.getStack(temp, posicionTemp)
+        generador.addComment("Fin Acceso a Identificador")
+        return Retorno2(temp, s_c3d.tipo, True)
         
     def genArbol(self) -> Nodo:
         return Nodo(self.nombre)

@@ -2,6 +2,7 @@ from AST.Abstract.Instruccion import Instruccion
 from AST.Expresiones.Identificador import Identificador
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.generador import Generador
 
 
 class Consolelog(Instruccion):
@@ -9,6 +10,7 @@ class Consolelog(Instruccion):
         self.expresion = expresion
         self.fila = fila
         self.columna = columna
+        super().__init__()
         
     def ejecutar(self, entorno, helper):
         listTemp = []
@@ -149,6 +151,30 @@ class Consolelog(Instruccion):
             arr.append(mostrarxd)
         return arr
     
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        exp = self.expresion.genC3D(entorno, helper)
+
+        if exp.tipo == TIPO_DATO.NUMERO:
+            generador.addPrint('f', exp.valor)
+        elif exp.tipo == TIPO_DATO.CADENA:
+            generador.fPrintString()
+
+            paramTemp = generador.addTemp()
+
+            generador.addExpresion(paramTemp, 'P', entorno.size , '+')
+            generador.addExpresion(paramTemp, paramTemp, '1', '+')
+            generador.setStack(paramTemp, exp.valor)
+
+            generador.crearEntorno(entorno.size)
+            generador.callFun('printString')
+
+            temp = generador.addTemp()
+            generador.getStack(temp, 'P')
+            generador.retornarEntorno(entorno.size)
+
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")
         nodo.agregarHijo(self.expresion.genArbol())

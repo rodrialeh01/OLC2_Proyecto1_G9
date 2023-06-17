@@ -1,4 +1,5 @@
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.C3DSimbolo import C3DSimbolo
 
 
 class Entorno:
@@ -11,6 +12,14 @@ class Entorno:
         self.tablaInterfaces = {}
         self.tablaInterfacesDeclaradas = {}
         self.actual = ""
+
+        #! PARA EL C3D:
+        self.breakLabel = ""
+        self.returnLabel = ""
+        self.retencionTemps = False
+        self.size = 0 #? puntero que se va incrementando
+        if anterior != None:
+            self.size = self.anterior.size
 
     def getActual(self):
         return self.actual
@@ -202,3 +211,28 @@ class Entorno:
         #codigo_html += "</table>"
 
         return codigo_html
+    
+
+    #*---------------------------------------------------------------------------
+    #*- C3D:
+    def setEntorno(self, id, tipo, inHeap, find = True):
+        if find:
+            actual = self
+            while actual != None:
+                if id in actual.tablaSimbolos:
+                    actual.tablaSimbolos[id].inHeap = inHeap
+                    actual.tablaSimbolos[id].tipo = tipo
+                    return actual.tablaSimbolos[id]
+                else:
+                    actual = actual.getAnterior()
+        
+        if id in self.tablaSimbolos:
+            self.tablaSimbolos[id].inHeap = inHeap
+            self.tablaSimbolos[id].tipo = tipo
+            return self.tablaSimbolos[id]
+        else:
+            simbolo = C3DSimbolo(id, tipo, self.size, self.anterior == None, inHeap)
+            self.size += 1 
+            self.tablaSimbolos[id] = simbolo
+            return self.tablaSimbolos[id]
+    #!----- EN C3D TAMBIÉN SE UTILIZA Obtenersimbolo() y ExisteSimbolo() PARA VERIFICACIONES -----!

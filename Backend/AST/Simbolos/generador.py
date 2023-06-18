@@ -45,8 +45,9 @@ class Generador:
     #*
 
     def setImport(self, libreria):
-        if libreria not in self.importaciones2:
-            self.importaciones2.remove(libreria)
+        #si no esta en la lista de importaciones, la agrega, sino no hace nada
+        if libreria not in self.importaciones:
+            self.importaciones.append(libreria)
         else:
             return
         
@@ -59,8 +60,13 @@ class Generador:
 /*----------- HEADER -----------*/
 package main;\n \n'''
         if len(self.importaciones) > 0:
-            for imp in self.importaciones:
-                code += imp
+            code += 'import (\n'
+            for i in range(len(self.importaciones)):
+                if i != len(self.importaciones) - 1:
+                    code += '\t\"' + self.importaciones[i] + '\",\n'
+                else:
+                    code += '\t\"' + self.importaciones[i] + '\"\n'
+            code += ')\n'
         if len(self.temporales) > 0:
             code += 'var '
             for temporal in self.temporales:
@@ -68,10 +74,10 @@ package main;\n \n'''
             code = code[:-2]
             code += ' float64; \n'
         code+= '''
-var P, H float64;\n
-var stack[30101999] float64;\n
-var heap[30101999] float64;\n
-\n'''
+var P, H float64;
+var stack[30101999] float64;
+var heap[30101999] float64;
+'''
         return code
     
     def obtCodigo(self):   
@@ -81,11 +87,11 @@ var heap[30101999] float64;\n
     def addCodigo(self, codigo, tab='\t'):
         if self.inNative:
             if self.natives == '':
-                self.natives = self.natives + "\* --- NATIVAS --- */"
-            self.natives += tab + codigo
+                self.natives = self.natives + "/* --- NATIVAS --- */\n"
+            self.natives += codigo
         elif self.inFunc:
             if self.funcs == '':
-                self.funcs = self.funcs + "\* --- FUNCIONES --- */"
+                self.funcs = self.funcs + "/* --- FUNCIONES --- */"
             self.funcs += tab + codigo
         else:
             self.codigo += tab + codigo
@@ -127,13 +133,15 @@ var heap[30101999] float64;\n
     # *
 
     def setHeap(self, pos, valor): #agrega un valor al heap
-        self.codigo += f'heap[int({pos})]= {valor};\n'
+        self.addCodigo(f'heap[int({pos})]= {valor};\n')
     
     def getHeap(self, place, pos): #obtiene un valor del heap
-        self.codigo += f'{place} = heap[int({pos})];\n'
+        print("ORDEN2")
+        self.addCodigo(f'{place} = heap[int({pos})];\n')
 
     def nextHeap(self): #obtiene la siguiente posicion del heap
-        self.codigo += f'H = H + 1;\n'
+        print("ORDEN1")
+        self.addCodigo(f'H = H + 1;\n')
 
     #* 
     #* MANEJO DE LABELS
@@ -145,10 +153,11 @@ var heap[30101999] float64;\n
         return label
     
     def putLabel(self, label): #agrega una etiqueta
+        print("LABEEEEEEEEEL")
         self.addCodigo(f'{label}:\n')
 
     def addIndent(self):
-        self.addCodigo("")
+        self.addCodigo("\t")
 
     #*
     #* GOTO
@@ -206,20 +215,24 @@ var heap[30101999] float64;\n
         self.setImport('fmt')
         self.addCodigo(f'fmt.Printf("%{type}", {valor});\n')
 
+    #para imprimir el string
+    def addPrintString(self, type, valor):
+        self.setImport('fmt')
+        self.addCodigo(f'fmt.Printf("%{type}", int({valor}));\n')
 
     #! --------------------------------------------------!
     #!                    FUNCIONES                        !
     #! --------------------------------------------------!
 
     def addBeginFunc(self, id):
-        if not self.inNatives:
+        if not self.inNative:
             self.inFunc = True
         
         self.addCodigo(f'/*----------- FUNCION {id} -----------*/\n')
         self.addCodigo(f'func {id}() {{\n')
 
     def addEndFunc(self):
-        if not self.inNatives:
+        if not self.inNative:
             self.inFunc = False
         self.addCodigo('}\n\n')
 
@@ -227,15 +240,15 @@ var heap[30101999] float64;\n
     #!                    NATIVAS                         !
     #! --------------------------------------------------!
 
-
     def fPrintString(self):
         self.setImport('fmt')
         if(self.printString): #se revisa si ya se ha creado la funcion, esto para solo agregarla una vez.
             return 
         self.printString = True #se marca que ya se ha creado la funcion
-        self.inNatives = True #se marca que se esta en una funcion nativa
+        self.inNative = True #se marca que se esta en una funcion nativa
 
         self.addBeginFunc('printString')
+        print(self.inFunc)
         # Label para salir de la funcion
         returnLbl = self.newLabel()
         # Label para la comparacion para buscar fin de cadena
@@ -244,7 +257,9 @@ var heap[30101999] float64;\n
         tempP = self.addTemp()
         # Temporal puntero a Heap
         tempH = self.addTemp()
+        self.addIndent()
         self.addExpresion(tempP, 'P', '1', '+')
+        self.addIndent()
         self.getStack(tempH, tempP)
         # Temporal para comparar
         tempC = self.addTemp()
@@ -254,11 +269,11 @@ var heap[30101999] float64;\n
         self.addIndent()
         self.addIf(tempC, '-1', '==', returnLbl)
         self.addIndent()
-        self.addPrint('c', tempC)
+        self.addPrintString('c', tempC)
         self.addIndent()
         self.addExpresion(tempH, tempH, '1', '+')
         self.addIndent()
         self.addGoto(compareLbl)
         self.putLabel(returnLbl)
         self.addEndFunc()
-        self.inNatives = False
+        self.inNative = False

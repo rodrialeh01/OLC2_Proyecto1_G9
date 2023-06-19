@@ -66,7 +66,7 @@ package main;\n \n'''
                     code += '\t\"' + self.importaciones[i] + '\",\n'
                 else:
                     code += '\t\"' + self.importaciones[i] + '\"\n'
-            code += ')\n'
+            code += ')\n\n'
         if len(self.temporales) > 0:
             code += 'var '
             for temporal in self.temporales:
@@ -247,33 +247,36 @@ var heap[30101999] float64;
         self.printString = True #se marca que ya se ha creado la funcion
         self.inNative = True #se marca que se esta en una funcion nativa
 
-        self.addBeginFunc('printString')
+        self.addBeginFunc('printString') # funcion printString (){
         print(self.inFunc)
         # Label para salir de la funcion
         returnLbl = self.newLabel()
+        print("RETURN LABEL", returnLbl) #L0
         # Label para la comparacion para buscar fin de cadena
         compareLbl = self.newLabel()
+        print("COMPARE LABEL", compareLbl) #L1
         # Temporal puntero a Stack
-        tempP = self.addTemp()
+        tempP = self.addTemp() # t1
         # Temporal puntero a Heap
-        tempH = self.addTemp()
+        tempH = self.addTemp() # t2
         self.addIndent()
-        self.addExpresion(tempP, 'P', '1', '+')
+        self.addExpresion(tempP, 'P', '1', '+') # t1 = P + 1
         self.addIndent()
-        self.getStack(tempH, tempP)
+        self.getStack(tempH, tempP) # t2 = stack[t1]
         # Temporal para comparar
-        tempC = self.addTemp()
-        self.putLabel(compareLbl)
+        tempC = self.addTemp() # t3
+        self.putLabel(compareLbl) # L1: 
         self.addIndent()
-        self.getHeap(tempC, tempH)
+        self.getHeap(tempC, tempH) # t3 = heap[t2]
         self.addIndent()
-        self.addIf(tempC, '-1', '==', returnLbl)
+        self.addIf(tempC, '-1', '==', returnLbl) # if t3 == -1 goto L0
         self.addIndent()
-        self.addPrintString('c', tempC)
+        self.addPrintString('c', tempC) # printf("%c", t3)
         self.addIndent()
-        self.addExpresion(tempH, tempH, '1', '+')
+        self.addExpresion(tempH, tempH, '1', '+') # t2 = t2 + 1
         self.addIndent()
-        self.addGoto(compareLbl)
-        self.putLabel(returnLbl)
-        self.addEndFunc()
+        self.addGoto(compareLbl) # goto L1
+        self.putLabel(returnLbl) # L0:
+        self.addCodigo('\n') # }
+        self.addEndFunc() # }
         self.inNative = False

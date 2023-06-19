@@ -3,11 +3,11 @@ from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 obtTipoDato)
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
-from AST.Simbolos.generador import Generador
-from AST.Simbolos.Retorno2 import Retorno2
 
 class Operacion(Expresion):
     def __init__(self, exp1, exp2, operador, fila, columna, unario = False):
@@ -147,7 +147,10 @@ class Operacion(Expresion):
         if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
             operador = '+'
             temporal = generador.addTemp()
-            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            if val1.tipo == val2.tipo == TIPO_DATO.NUMERO:
+                generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            elif val1.tipo == val2.tipo == TIPO_DATO.CADENA:
+                pass
             return Retorno2(temporal, TIPO_DATO.NUMERO, True)
         
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:

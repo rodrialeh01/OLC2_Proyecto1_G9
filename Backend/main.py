@@ -21,6 +21,10 @@ cors = CORS(app)
 nodo = Nodo("INICIO")
 entornoTemp = ""
 helpe = Helper()
+@app.route('/')
+def index():
+    return "<h1>Servidor Corriendo Perfectamente</h1>"
+
 @app.route('/ejecutar', methods=['POST'])
 def ejecutar():
     global entornoTemp

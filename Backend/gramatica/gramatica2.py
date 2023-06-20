@@ -13,6 +13,7 @@ from AST.Expresiones.Logica import Logica
 from AST.Expresiones.Nativas.Cast_String import Cast_String
 from AST.Expresiones.Nativas.Concat import Concat
 from AST.Expresiones.Nativas.Length import Length
+from AST.Expresiones.Nativas.Pop import Pop
 from AST.Expresiones.Nativas.Push import Push
 from AST.Expresiones.Nativas.Split import Split
 from AST.Expresiones.Nativas.toExponential import ToExponential
@@ -42,6 +43,7 @@ from AST.Instrucciones.Interface import Interface
 from AST.Instrucciones.Parametro import Parametro
 from AST.Instrucciones.Params_Declarado import Params_Declarado
 from AST.Instrucciones.Params_Interface import Params_Interface
+from AST.Instrucciones.Pop_Ins import Pop_Ins
 from AST.Instrucciones.Transferencia.Break import Break
 from AST.Instrucciones.Transferencia.Continue import Continue
 from AST.Instrucciones.Transferencia.Return import Return
@@ -89,7 +91,8 @@ reservadas = {
     'Array' : 'ARRAY',
     'typeof' : 'TYPEOF',
     'length' : 'LENGTH',
-    'push' : 'PUSH'
+    'push' : 'PUSH',
+    'pop':'POP'
 }
 
 tokens = [
@@ -129,8 +132,6 @@ tokens = [
     'ENTERO',
     'DECIMAL',
     'CADENA',
-    'COMENTARIO',
-    'COMENTARIO_MULTILINEA',
 
 ] + list(reservadas.values())
 
@@ -957,6 +958,12 @@ def p_push_array(t):
     '''
     t[0] = Push(t[1], t[5], t.lineno(1), t.lexpos(1))
 
+def p_pop_array_ins(t):
+    '''
+    instruccion3 : ID PUNTO POP PARIZQ PARDER
+    '''
+    t[0] = Pop_Ins(t[1], t.lineno(1), t.lexpos(1))
+
 # ? casteo : expresion PUNTO TOSTRING PARIZQ PARDER
 # ?        | CAST_STRING PARIZQ expresion PARDER
 # ?        | CAST_NUMBER PARIZQ expresion PARDER
@@ -1320,6 +1327,12 @@ def p_length(t):
     expresion : LENGTH PARIZQ expresion PARDER
     '''
     t[0] = Length(t[3], t.lineno(1), t.lexpos(1))
+
+def p_pop_array(t):
+    '''
+    expresion : POP PARIZQ expresion PARDER
+    '''
+    t[0] = Pop(t[3], t.lineno(1), t.lexpos(1))
 
 #errores sintacticos
     ##print(str(t[1].value))

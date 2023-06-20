@@ -20,7 +20,8 @@ class DeclaracionArray(Instruccion):
         exp = self.expresion.ejecutar(entorno, helper) #obtiene objeto Array
         if isinstance(self.tipo, TIPO_DATO):
             bandera = True
-            if self.tipo != TIPO_DATO.ANY or self.tipo != TIPO_DATO.ARRAY:
+            if self.tipo != TIPO_DATO.ANY and self.tipo != TIPO_DATO.ARRAY:
+                
                 bandera = self.Verificar_Tipos_array(exp.valor, self.tipo, bandera, entorno)
                 if bandera == None:
                     bandera = True
@@ -74,7 +75,7 @@ class DeclaracionArray(Instruccion):
             
             #crear el simbolo
             bandera = True
-            if self.tipo != TIPO_DATO.ANY or self.tipo != TIPO_DATO.ARRAY:
+            if self.tipo != TIPO_DATO.ANY and self.tipo != TIPO_DATO.ARRAY:
                 bandera = self.Verificar_Tipos_array(exp.valor, self.tipo, bandera, entorno)
                 if bandera == None:
                     bandera = True
@@ -139,3 +140,6 @@ class DeclaracionArray(Instruccion):
         nodo_id.agregarHijo(self.expresion.genArbol())
         nodo.agregarHijo(nodo_id)
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        pass

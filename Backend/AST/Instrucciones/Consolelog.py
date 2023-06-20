@@ -21,7 +21,6 @@ class Consolelog(Instruccion):
         if isinstance(self.expresion, list):
             for exp in self.expresion:
                 val = exp.ejecutar(entorno, helper)
-
                 if val.tipo == TIPO_DATO.ERROR:
                     return
 
@@ -111,7 +110,7 @@ class Consolelog(Instruccion):
                 ##print(impresion)
                 helper.setConsola(impresion)
             else:
-                ##print(exp.valor)
+                print(exp.tipo)
                 helper.setConsola(exp.valor)
             return
         except Exception:

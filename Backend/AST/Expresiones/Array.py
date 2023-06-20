@@ -50,3 +50,6 @@ class Array(Expresion):
         nuevo = []
         mostrar = self.ImpresionArrays(nuevo,arr)
         return Nodo(mostrar)
+    
+    def genC3D(self, entorno, helper):
+        pass

@@ -1,5 +1,6 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Expresiones.Identificador import Identificador
+from AST.Expresiones.Primitivo import Primitivo
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.generador import Generador
@@ -154,9 +155,8 @@ class Consolelog(Instruccion):
     def genC3D(self, entorno, helper):
         gen = Generador()
         generador = gen.getInstance()
-
+        print("ENTRO A IMPRIMIR")
         exp = self.expresion.genC3D(entorno, helper)
-
         if exp.tipo == TIPO_DATO.NUMERO:
             generador.addPrint('f', exp.valor)
         elif exp.tipo == TIPO_DATO.CADENA:
@@ -174,6 +174,18 @@ class Consolelog(Instruccion):
             temp = generador.addTemp()
             generador.getStack(temp, 'P')
             generador.retornarEntorno(entorno.size)
+        elif exp.tipo == TIPO_DATO.BOOLEANO:
+            tempLbl = generador.newLabel()
+            generador.putLabel(exp.trueLabel)
+            generador.printTrue()
+
+            generador.addGoto(tempLbl)
+
+            generador.putLabel(exp.falseLabel)
+            generador.printFalse()
+
+            generador.putLabel(tempLbl)
+        generador.addPrint('c', 10)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")

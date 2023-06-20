@@ -54,10 +54,26 @@ class Identificador(Expresion):
         if not s_c3d.globalVar:
             posicionTemp = generador.addTemp()
             generador.addExpresion(posicionTemp, "P", str(s_c3d.posicion), '+')
-
         generador.getStack(temp, posicionTemp)
+
+        if s_c3d.tipo != TIPO_DATO.BOOLEANO:
+            generador.addComment("Fin Acceso a Identificador")
+            return Retorno2(temp, s_c3d.tipo, True)
+        if self.trueLabel == '':
+            self.trueLabel = generador.newLabel()
+        if self.falseLabel == '':
+            self.falseLabel = generador.newLabel()
+
+        generador.addIf(temp, '1', '==', self.trueLabel)
+        generador.addGoto(self.falseLabel)
+
         generador.addComment("Fin Acceso a Identificador")
-        return Retorno2(temp, s_c3d.tipo, True)
-        
+        ret = Retorno2(None, TIPO_DATO.BOOLEANO, True)
+        ret.trueLabel = self.trueLabel
+        ret.falseLabel = self.falseLabel
+        return ret
+    
+
+
     def genArbol(self) -> Nodo:
         return Nodo(self.nombre)

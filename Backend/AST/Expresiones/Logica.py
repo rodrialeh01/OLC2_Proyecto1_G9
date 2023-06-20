@@ -2,7 +2,9 @@ from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, TIPO_OPERACION_LOGICA, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -73,5 +75,75 @@ class Logica(Expresion):
             return nodo
         
     def genC3D(self, entorno, helper):
-        pass
+        gen = Generador()
+        generador = gen.getInstance()
+
+        generador.addComment('Inicia Operacion Lógica')
+        
+        if not self.negacion:
+            self.checkLabels()
+            #left = self.exp1.genC3D(entorno, helper)
+            #right = self.exp2.genC3D(entorno, helper)
+            #if not(left.tipo == TIPO_DATO.BOOLEANO and right.tipo == TIPO_DATO.BOOLEANO):
+            #    generador.addComment('Error en tipos de datos al realizar operacion logica')
+            #    return Retorno2(None, TIPO_DATO.ERROR, False)
+            
+            lblandor = ''
+            if self.operador == TIPO_OPERACION_LOGICA.AND:
+                lblandor = generador.newLabel()
+                self.exp1.trueLabel = lblandor
+                self.exp2.trueLabel = self.trueLabel
+                self.exp1.falseLabel = self.exp2.falseLabel = self.falseLabel
+                #generador.putLabel(lblandor)
+
+                left = self.exp1.genC3D(entorno, helper)
+                generador.putLabel(lblandor)
+                right = self.exp2.genC3D(entorno, helper)
+
+            elif self.operador == TIPO_OPERACION_LOGICA.OR:
+                self.exp1.trueLabel = self.trueLabel
+                self.exp2.trueLabel = self.trueLabel
+                
+
+                lblandor = generador.newLabel()
+
+                self.exp1.falseLabel = lblandor
+                self.exp2.falseLabel = self.falseLabel
+                
+                left = self.exp1.genC3D(entorno, helper)
+                generador.putLabel(lblandor)
+                right = self.exp2.genC3D(entorno, helper)
+        else:
+
+            #if left.tipo is not TIPO_DATO.BOOLEANO:
+            #    generador.addComment('Error en tipos de datos para NOT al realizar la operación lógica')
+            #    return Retorno2(None, TIPO_DATO.ERROR, False)
+            
+            self.exp1.falseLabel = self.trueLabel
+            self.exp1.trueLabel = self.falseLabel
+            lblNot = self.exp1.genC3D(entorno, helper)
+            
+            lbltrue = lblNot.trueLabel
+            lblfalse = lblNot.falseLabel
+            lblNot.trueLabel = lblfalse
+            lblNot.falseLabel = lbltrue
+
+            return lblNot
+        
+        generador.addComment('Finaliza Operacion Logica')
+
+        result = Retorno2(None, TIPO_DATO.BOOLEANO, False)
+        result.trueLabel = self.trueLabel
+        result.falseLabel = self.falseLabel
+        return result
+        
+        
+    def checkLabels(self):
+        gen = Generador()
+        generador = gen.getInstance()
+        if self.trueLabel == '':
+            self.trueLabel = generador.newLabel()
+        if self.falseLabel == '':
+            self.falseLabel = generador.newLabel()
+        
         

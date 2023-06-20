@@ -6,7 +6,7 @@ import { Archivo } from '../models/Archivo';
 })
 export class UserService {
 
-  API = 'http://3.145.156.239:3000';
+  API = 'http://localhost:3000';
 
 
   constructor(private http:HttpClient) { }

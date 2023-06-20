@@ -2,9 +2,9 @@ from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
-from AST.Simbolos.generador import Generador
 
 
 class Declaracion(Instruccion):
@@ -145,9 +145,8 @@ class Declaracion(Instruccion):
                 if self.tipo == val.tipo:
                     inHeap = val.tipo == TIPO_DATO.CADENA #or val.tipo == TIPO_DATO.INTERFACE or TIPO_DATO.ARRAY
                     s_C3D = entorno.setEntorno(self.id, val.tipo, inHeap, self.find)
-                else:
-                    generador.addComentario("Error: el tipo de dato no coincide al declarado")
-                    #agregar error...
+            else:
+                generador.addComentario("Error: el tipo de dato no coincide al declarado")
                 
             
         else:
@@ -159,6 +158,24 @@ class Declaracion(Instruccion):
         if not s_C3D.globalVar:
             posicionTemp = generador.addTemp()
             generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
+        
+        if self.tipo == TIPO_DATO.BOOLEANO:
+            tempLbl = generador.newLabel()
+            generador.putLabel(val.trueLabel)
+            generador.setStack(posicionTemp, '1')
+            
+            generador.addGoto(tempLbl)
+            
+            generador.putLabel(val.falseLabel)
+            generador.setStack(posicionTemp, '0')
 
-        generador.setStack(posicionTemp, val.valor)
+            generador.putLabel(tempLbl)
+
+        if self.tipo != TIPO_DATO.BOOLEANO:
+            generador.setStack(posicionTemp, val.valor)
+        else:
+            if val.valor == True:
+                generador.setStack(posicionTemp, '1')
+            else:
+                generador.setStack(posicionTemp, '0')
         generador.addComment("Fin declaracion de variable")

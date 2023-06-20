@@ -103,8 +103,90 @@ class Relacional(Expresion):
         nodo.agregarHijo(self.exp1.genArbol())
         nodo.agregarHijo(self.exp2.genArbol())
         return nodo
+        
     
+
     def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        generador.addComment('Inicia Operacion Relacional')
+
+        left = self.exp1.genC3D(entorno, helper)
+        operador = ""
+        if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
+            operador = '>'
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_QUE:
+            operador = '<'
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_IGUAL_QUE:
+            operador = '>='
+        elif self.operador == TIPO_OPERACION_RELACIONAL.MENOR_IGUAL_QUE:
+            operador = '<='
+        elif self.operador == TIPO_OPERACION_RELACIONAL.IGUAL_IGUAL:
+            operador = '=='
+        elif  self.operador == TIPO_OPERACION_RELACIONAL.DIFERENTE:
+            operador = '!='
+
+        result = Retorno2(None, TIPO_DATO.BOOLEANO, False)
+        print("OPERADOR RELACIONAL: ", operador)
+        if left.tipo != TIPO_DATO.BOOLEANO:
+            #buscar si hay derecho:
+            right = self.exp2.genC3D(entorno, helper)
+            if right.valor != None:
+                if right.tipo == TIPO_DATO.NUMERO and left.tipo == TIPO_DATO.NUMERO:
+                    self.checkLabels()
+                    generador.addIf(left.valor, right.valor, operador, self.trueLabel)
+                    generador.addGoto(self.falseLabel)
+                elif right.tipo == TIPO_DATO.CADENA and left.tipo == TIPO_DATO.CADENA:
+                    if operador == '==' or operador == '!=':
+                        generador.fcompareString()
+                        paramTemp = generador.addTemp()
+                        
+                        generador.addExpresion(paramTemp, 'P', entorno.size, '+')
+                        generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                        generador.setStack(paramTemp, left.valor)
+
+                        generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                        generador.setStack(paramTemp, right.valor)
+
+                        generador.crearEntorno(entorno.size)
+                        generador.callFun('compareString')
+
+                        temp = generador.addTemp()
+                        generador.getStack(temp, 'P')
+                        generador.retornarEntorno(entorno.size)
+                        
+                        self.checkLabels()
+                        num = ""
+                        if operador == '==':                            
+                            num = '1'
+                        elif operador == '!=':
+                            num = '0'
+                        
+                        generador.addIf(temp, num, '==', self.trueLabel)
+                        generador.addGoto(self.falseLabel)
+
+                        result.trueLabel = self.trueLabel
+                        result.falseLabel = self.falseLabel
+                        return result
+
+                    else:
+                        generador.addComment('Error Semantico: No se puede realizar una operacion relacional con strings que no sea == o !=')
+        else:
+            self.checkLabels()
+            generador.addIf(left.valor, '1', '==', self.trueLabel)
+            generador.addGoto(self.falseLabel)
+
+            result.trueLabel = self.trueLabel
+            result.falseLabel = self.falseLabel
+            return result
+        generador.addComment('Finaliza Operacion Relacional')
+            
+        result.trueLabel = self.trueLabel
+        result.falseLabel = self.falseLabel
+        return result
+
+        '''
         gen = Generador()
         generador = gen.getInstance()
         temporalizq = ''
@@ -291,3 +373,13 @@ class Relacional(Expresion):
 
                 return retorno
         
+        '''
+
+
+    def checkLabels(self):
+        gen = Generador()
+        generador = gen.getInstance()
+        if self.trueLabel == '':
+            self.trueLabel = generador.newLabel()
+        if self.falseLabel == '':
+            self.falseLabel = generador.newLabel()

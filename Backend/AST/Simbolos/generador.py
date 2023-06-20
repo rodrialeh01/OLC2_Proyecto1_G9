@@ -18,6 +18,7 @@ class Generador:
 
         # ? Nativas:
         self.printString = False
+        self.compareString = False
 
         self.importaciones = [] #lista de importaciones
         self.importaciones2 = ['fmt', 'math']
@@ -37,6 +38,7 @@ class Generador:
 
         # ? Limpieza de Nativas:
         self.printString = False
+        self.compareString = False
 
         Generador.generador = Generador()
 
@@ -220,6 +222,33 @@ var heap[30101999] float64;
         self.setImport('fmt')
         self.addCodigo(f'fmt.Printf("%{type}", int({valor}));\n')
 
+    def printTrue(self):
+        self.setImport('fmt')
+        self.addIndent()
+        self.addPrintString('c', '116')
+        self.addIndent()
+        self.addPrintString('c', '114')
+        self.addIndent()
+        self.addPrintString('c', '117')
+        self.addIndent()
+        self.addPrintString('c', '101')
+        self.addIndent()
+
+
+    def printFalse(self):
+        self.setImport('fmt')
+        self.addIndent()
+        self.addPrintString('c', '102')
+        self.addIndent()
+        self.addPrintString('c', '97')
+        self.addIndent()
+        self.addPrintString('c', '108')
+        self.addIndent()
+        self.addPrintString('c', '115')
+        self.addIndent()
+        self.addPrintString('c', '101')
+        self.addIndent()
+
     #! --------------------------------------------------!
     #!                    FUNCIONES                        !
     #! --------------------------------------------------!
@@ -280,3 +309,66 @@ var heap[30101999] float64;
         self.addCodigo('\n') # }
         self.addEndFunc() # }
         self.inNative = False
+
+    def fcompareString(self):
+        if self.compareString:
+            return
+        self.compareString = True
+        self.inNative = True
+
+        self.addBeginFunc('compareString')
+
+        returnLbl = self.newLabel()
+
+        t2 = self.addTemp()
+        self.addExpresion(t2, 'P', '1', '+')
+        t3 = self.addTemp()
+        self.getStack(t3,t2)
+        self.addExpresion(t2, t2, '1', '+')
+        t4 = self.addTemp()
+        self.getStack(t4,t2)
+
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        L3 = self.newLabel()
+        self.putLabel(L1)
+        '''
+        l1:
+            t5 = heap[t3]
+            t6 = heap[t4]
+            if t5 == t6 goto l3
+            if t5 == -1 goto l2
+        '''
+        t5 = self.addTemp()
+        self.addIndent()
+        self.getHeap(t5, t3)
+
+        t6 = self.addTemp()
+        self.addIndent()
+        self.getHeap(t6, t4)
+
+        self.addIndent()
+        self.addIf(t5, t6, '!=', L3)
+        self.addIndent()
+        self.addIf(t5,'-1', '==', L2)
+
+        self.addIndent()
+        self.addExpresion(t3, t3, '1', '+')
+        self.addIndent()
+        self.addExpresion(t4, t4, '1', '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        self.putLabel(L2)
+        self.addIndent() 
+        self.setStack('P', '1')
+        self.addIndent()
+        self.addGoto(returnLbl)
+        self.putLabel(L3)
+        self.addIndent()
+        self.setStack('P', '0')
+        self.putLabel(returnLbl)
+        self.addEndFunc()
+        self.inNative = False
+
+

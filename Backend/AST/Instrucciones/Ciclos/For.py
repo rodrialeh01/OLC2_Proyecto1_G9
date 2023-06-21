@@ -6,6 +6,7 @@ from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -17,6 +18,7 @@ class For(Instruccion):
         self.instrucciones = instrucciones
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
 
     def ejecutar(self, entorno, helper):
@@ -79,3 +81,57 @@ class For(Instruccion):
             instrucciones.agregarHijo(instruccion.genArbol())
         nodo.agregarHijo(instrucciones)
         return nodo
+
+    def genC3D(self, entorno, helper):
+        # for dec/asig ; cond ; inc/dec:  Instrucciones
+        gen = Generador()
+        generador = gen.getInstance()
+
+        generador.addComment("INICIO FOR")
+        entornoLocal = Entorno(entorno)
+        
+        lblPrincipal = generador.newLabel()
+        generador.addGoto(lblPrincipal)
+        generador.putLabel(lblPrincipal) # L0: INS DECLARACION
+        self.exp1.genC3D(entornoLocal, helper)
+        
+        lblCondicion = generador.newLabel() # L1: INS CONDICION
+        generador.putLabel(lblCondicion)
+        condicion = self.condicion.genC3D(entornoLocal, helper)
+        
+        self.trueLabel = condicion.trueLabel
+        self.falseLabel = condicion.falseLabel
+
+        generador.putLabel(self.trueLabel)
+        tempbool = generador.addTemp()
+        generador.addExpresion(tempbool, "1", "", "")
+        lbl_new = generador.newLabel()
+        generador.addGoto(lbl_new)
+        
+        generador.putLabel(self.falseLabel)
+        generador.addExpresion(tempbool, "0", "", "")
+
+        generador.putLabel(lbl_new) # L3:
+        lbl_ins = generador.newLabel()
+        lbl_salida = generador.newLabel()
+        generador.addIf(tempbool, "1", "==", lbl_ins)
+        generador.addGoto(lbl_salida)
+
+        entornoLocal.breakLabel = lbl_salida
+        entornoLocal.continueLabel = lblCondicion
+
+        generador.putLabel(lbl_ins) # L4:
+        for instruccion in self.instrucciones:
+            instruccion.genC3D(entornoLocal, generador)
+            if isinstance(instruccion, Break):
+                generador.addGoto(lbl_salida)
+            if isinstance(instruccion, Continue):
+                generador.addGoto(lblCondicion)
+            if isinstance(instruccion, Return):
+                generador.addGoto(lbl_salida)
+        
+        self.incremento.genC3D(entornoLocal, generador)
+
+        generador.addGoto(lblCondicion)
+
+        generador.putLabel(lbl_salida) # L5:

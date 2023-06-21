@@ -6,6 +6,7 @@ from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
 
@@ -17,6 +18,7 @@ class ForOf(Instruccion):
         self.instrucciones = instrucciones
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         entornoLocal = Entorno(entorno)
@@ -101,3 +103,72 @@ class ForOf(Instruccion):
             instrucciones.agregarHijo(instruccion.genArbol())
         nodo.agregarHijo(instrucciones)
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        entornoLocal = Entorno(entorno)
+        entornoLocal2 = Entorno(entornoLocal)
+
+        generador.addComment("Inicia ForOf")
+        val = self.exp1.genC3D(entornoLocal, helper)
+        if val.tipo == TIPO_DATO.CADENA:
+
+
+            temp = generador.addTemp() # t2
+            generador.getStack(temp,val.valor)
+
+            temp2 = generador.addTemp() # t3
+            s = entornoLocal2.setEntorno(self.variable, TIPO_DATO.CADENA, False)
+            generador.getHeap(temp2,temp)
+
+            regreso = generador.newLabel()
+            generador.addGoto(regreso)
+            generador.putLabel(regreso)
+
+            labelins = generador.newLabel()
+            labelsalida = generador.newLabel()
+            generador.addIf(temp2, "-1", '!=', labelins)
+            generador.addGoto(labelsalida)
+
+            generador.putLabel(labelins)
+            for instruccion in self.instrucciones:
+                generador.addComment("Instruccion ForOf")
+                result = instruccion.genC3D(entornoLocal2, helper)
+            
+            generador.addExpresion(temp, temp, "1", "+")
+            #generador.addAsignacion(self.variable, temp2)
+            generador.getHeap(temp2,temp)
+            print("temp:", temp)
+            print(generador.codigo)
+            generador.addGoto(regreso)
+
+            generador.putLabel(labelsalida)
+            
+
+            '''
+                t2 = stack[int(t1)]
+                declaracion y se asigna el heap[int(t2)]
+                t3 = heap[int(t2)]
+                goto L1
+                L1:
+                if t3 != -1: goto L2
+                goto L3
+                L2:
+                for instruccion in self.instrucciones:
+                    result = instruccion.genC3D(entornoLocal, helper)
+                t2 = t2 + 1
+                t3 = heap[int(t2)]
+                goto L1
+                L3:
+                    salida
+            '''
+        #for (let i of arreglo) {
+        # instrucciones
+        #}
+
+        # declaracion: genc3d
+        # condicion: genc3d
+        # instrucciones: genc3d
+        

@@ -139,6 +139,9 @@ class Declaracion(Instruccion):
 
         if self.tipo != None:
             val = self.valor.genC3D(entorno, helper)
+        else:
+            val = self.valor.genC3D(entorno, helper)
+            self.tipo = val.tipo
 
         if self.tipo != None:
             if val != None:
@@ -152,8 +155,9 @@ class Declaracion(Instruccion):
         else:
             pass
         
-        
+        print("DECLARACION")
         posicionTemp = s_C3D.posicion
+        print("DECLARACION 2")
         print(s_C3D.globalVar)
         if not s_C3D.globalVar:
             posicionTemp = generador.addTemp()

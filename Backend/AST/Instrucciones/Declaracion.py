@@ -146,7 +146,7 @@ class Declaracion(Instruccion):
                     inHeap = val.tipo == TIPO_DATO.CADENA #or val.tipo == TIPO_DATO.INTERFACE or TIPO_DATO.ARRAY
                     s_C3D = entorno.setEntorno(self.id, val.tipo, inHeap, self.find)
             else:
-                generador.addComentario("Error: el tipo de dato no coincide al declarado")
+                generador.addComment("Error: el tipo de dato no coincide al declarado")
                 
             
         else:

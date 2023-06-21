@@ -9,6 +9,7 @@ class Return(Instruccion):
         self.valor = valor
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         if helper.getFuncion() == "Funcion":
@@ -34,3 +35,15 @@ class Return(Instruccion):
         else:
             nodo = Nodo("RETURN")
             return nodo
+    
+    def genC3D(self, entorno, helper):
+        result = self.genC3D(entorno, helper)
+        if isinstance(result, Error):
+            return result
+        else:
+            self.tipo = result.tipo
+            self.valor = result.valor
+        if self.tipo == 'boolean':
+            self.trueLabel = result.trueLabel
+            self.falseLabel = result.falseLabel
+        return self

@@ -4,7 +4,9 @@ from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -14,6 +16,7 @@ class Llamada(Instruccion, Expresion):
         self.columna = columna
         self.id = id
         self.params = params
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         #print("Ejecutando llamada a función")
@@ -46,7 +49,55 @@ class Llamada(Instruccion, Expresion):
             if ret is not None:
                 helper.setFuncion(helperTemp)
                 return Retorno(ret.valor, ret.tipo)
-            
+    
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        fun = entorno.ExisteFuncion(self.id)
+        fn = entorno.ObtenerFuncion(self.id)
+        if fun is False:
+            print("La función " + self.id + " no existe en el entorno actual")
+            generador.addComment("La función " + self.id + " no existe en el entorno actual")
+            return Retorno(None, TIPO_DATO.ERROR)
+        
+        generador.addComment("Llamada a función " + self.id)
+        parametros = []
+        temps = []
+        size = entorno.size
+        if self.params is not None:
+            for param in self.params:
+                val = param.genC3D(entorno, helper)
+                if val.tipo == TIPO_DATO.ERROR:
+                    return Retorno2(None, TIPO_DATO.ERROR, False)
+                parametros.append(val)
+                temps.append(val.valor)
+        
+        temp = generador.addTemp()
+
+        generador.addExpresion(temp, 'P',size+1,'+')
+
+        aux = 0
+
+        if fn.params is not None:
+            if len(fn.params) == len(parametros):
+                for param in parametros:
+                    if fn.params[aux].tipo == param.tipo:
+                        aux += 1
+                        generador.setStack(temp, param.valor)
+                        if aux != len(parametros):
+                            generador.addExpresion(temp, temp, 1, '+')
+                    else:
+                        generador.addComment('Error en la llamada a función ' + self.id)
+                        return Retorno2(None, TIPO_DATO.ERROR, False)
+                
+        generador.crearEntorno(size)
+        generador.callFun(fn.nombre)
+        generador.getStack(temp, 'P')
+        generador.retornarEntorno(size)
+        generador.addComment('Fin llamada a función ' + self.id)
+
+        
 
     def genArbol(self):
         nodo = Nodo("LLAMADA FUNCIÓN")

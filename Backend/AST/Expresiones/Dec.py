@@ -2,7 +2,9 @@ from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -40,3 +42,30 @@ class Dec(Expresion):
         elif self.orden == "postDec":
             nodo = Nodo(str(self.id)+"--")
         return nodo
+
+    def genC3D(self, entorno, helper):
+        obt = entorno.ObtenerSimbolo(self.id)
+        gen = Generador()
+
+        generador = gen.getInstance()
+        if obt != None:
+            print("XD")
+            if obt.tipo != TIPO_DATO.NUMERO:
+                pass
+            #Se obtiene la posicion de la variable.
+            temp = generador.addTemp()
+            posicionTemp = obt.posicion
+            if not obt.globalVar:
+                posicionTemp = generador.addTemp()
+                generador.addExpresion(posicionTemp, "P", str(obt.posicion), '+')
+            generador.getStack(temp, posicionTemp)
+            #Se suma 1 al valor de la variable.
+            temp2 = generador.addTemp()
+            generador.addExpresion(temp2, temp, 1, '-')
+            #Se guarda el nuevo valor en la variable.
+            generador.setStack(posicionTemp, temp2)
+            #Se retorna el valor de la variable.
+            if self.orden == "preInc":
+                return Retorno2(temp2, TIPO_DATO.NUMERO,True)
+            elif self.orden == "postInc":
+                return Retorno2(temp, TIPO_DATO.NUMERO,True)

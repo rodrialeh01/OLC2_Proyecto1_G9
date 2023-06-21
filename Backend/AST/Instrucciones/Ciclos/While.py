@@ -6,6 +6,7 @@ from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -15,6 +16,7 @@ class While(Instruccion):
         self.instrucciones = instrucciones
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         condTemp = True
@@ -64,6 +66,59 @@ class While(Instruccion):
 
         #if entorno_local != None:
         helper.setCiclo(helperTemp)
+
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        entornoLocal = Entorno(entorno)
+        
+        
+
+        lblprinc = generador.newLabel() # L0:
+        generador.putLabel(lblprinc)
+
+        condicion = self.condicion.genC3D(entornoLocal, generador)
+        
+        if condicion.tipo != TIPO_DATO.BOOLEANO:
+            generador.addComment("Error Semantico, la condición a evaluar del while no es booleana")
+            pass
+
+        labelT = condicion.trueLabel
+        labelF = condicion.falseLabel
+
+        generador.putLabel(labelT) # L1:
+        tempbool = generador.addTemp()
+        generador.addExpresion(tempbool, "1", "", "")
+        lbl_new = generador.newLabel()
+        generador.addGoto(lbl_new)
+
+        generador.putLabel(labelF) # L2:
+        generador.addExpresion(tempbool, "0", "", "")
+        
+        generador.putLabel(lbl_new) # L3:
+        lbl_ins = generador.newLabel()
+        lbl_salida = generador.newLabel()
+        generador.addIf(tempbool, "1", "==", lbl_ins)
+        generador.addGoto(lbl_salida)
+
+        entornoLocal.breakLabel = lbl_salida
+        entornoLocal.continueLabel = lblprinc
+
+        generador.putLabel(lbl_ins) # L4:
+        for instruccion in self.instrucciones:
+            instruccion.genC3D(entornoLocal, generador)
+            if isinstance(instruccion, Break):
+                generador.addGoto(lbl_salida)
+            if isinstance(instruccion, Continue):
+                generador.addGoto(lblprinc)
+            if isinstance(instruccion, Return):
+                generador.addGoto(lbl_salida)
+        
+        generador.addGoto(lblprinc)
+
+        generador.putLabel(lbl_salida) # L5:
+
 
     def genArbol(self):
         nodo = Nodo("WHILE")

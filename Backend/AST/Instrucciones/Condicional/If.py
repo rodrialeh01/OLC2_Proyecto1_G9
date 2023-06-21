@@ -7,6 +7,7 @@ from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
 
@@ -19,6 +20,7 @@ class If(Instruccion):
         self.lista_instrucciones2 = lista_instrucciones2
         self.fila = fila
         self.columna = columna
+        super().__init__()
         
     def ejecutar(self, entorno, helper):
         ##print("ejecutando if")
@@ -87,6 +89,7 @@ class If(Instruccion):
         else:
             ##print("la condición del if no es true")
             if self.lista_elseifs is not None:
+
                 for accion in self.lista_elseifs:
                     condicion2 = accion.expresion.ejecutar(entornoLocal, helper)
                     if condicion2.tipo != TIPO_DATO.BOOLEANO:
@@ -198,7 +201,71 @@ class If(Instruccion):
                                 helper.setConsola("[ERROR]: Se ha encontrado un error en ELSE, no se puede retornar en un ambito que no sea una función en la linea: " + str(self.fila)+ " y columna: " + str(self.columna))
                                 return
                 helper.setTs(entornoLocal)
-            
+
+    def genC3D(self, entorno, helper):
+        
+        gen = Generador()
+        generador = gen.getInstance()
+
+        generador.addComment("INSTRUCCIÓN IF")
+
+        condicion = self.expresion.genC3D(entorno, helper)
+
+        labelTrue = condicion.trueLabel
+        labelFalse = condicion.falseLabel
+        tempLabel = generador.newLabel()
+        entornoLocal = Entorno(entorno)
+        labelReturn = generador.newLabel()
+        entornoLocal.returnLabel = labelReturn
+        entornoLocal.size = 1 #se pone en 1 porque se reserva el espacio para el return
+
+        generador.putLabel(labelTrue)
+        for instruccion in self.lista_instrucciones:
+            instruccion.genC3D(entornoLocal, helper)
+            if isinstance(instruccion, Continue):
+                if entorno.continueLabel != "":
+                    generador.addGoto(entorno.continueLabel)
+            if isinstance(instruccion, Break):
+                if entorno.breakLabel != "":
+                    generador.addGoto(entorno.breakLabel)
+            #revisar return, break, continue
+        generador.addGoto(tempLabel)
+        generador.putLabel(labelFalse)
+        print(tempLabel)
+        #generador.addGoto(labelReturn)
+        
+        #generador.putLabel(labelReturn)
+        if self.lista_elseifs is not None:
+            generador.addComment("INSTRUCCIÓN ELSE IF")
+            for elseif in self.lista_elseifs:
+                condicion2 =  elseif.expresion.genC3D(entornoLocal, helper)
+                labelTrueelif = condicion2.trueLabel
+                labelFalseelif = condicion2.falseLabel
+                generador.putLabel(labelTrueelif)
+
+                for instruccion in elseif.lista_instrucciones:
+                    instruccion.genC3D(entornoLocal, helper)
+                    if isinstance(instruccion, Continue):
+                        if entorno.continueLabel != "":
+                            generador.addGoto(entorno.continueLabel)
+                    if isinstance(instruccion, Break):
+                        if entorno.breakLabel != "":
+                            generador.addGoto(entorno.breakLabel)
+                    #revisar return, break, continue
+                generador.addGoto(tempLabel)
+                generador.putLabel(labelFalseelif)
+
+        if self.lista_instrucciones2 is not None:
+            generador.addComment("INSTRUCCIÓN ELSE")
+            #generador.putLabel(tempLabel)
+            for instruccion in self.lista_instrucciones2:
+                instruccion.genC3D(entornoLocal, helper)
+                if isinstance(instruccion, Continue):
+                    generador.addGoto(tempLabel)
+                #revisar return, break, continue
+        generador.putLabel(tempLabel)
+
+
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("IF")

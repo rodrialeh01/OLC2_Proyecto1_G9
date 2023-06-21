@@ -1,5 +1,5 @@
-from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.C3DSimbolo import C3DSimbolo
+from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 
 
 class Entorno:
@@ -16,6 +16,7 @@ class Entorno:
         #! PARA EL C3D:
         self.breakLabel = ""
         self.returnLabel = ""
+        self.continueLabel = ""
         self.retencionTemps = False
         self.size = 0 #? puntero que se va incrementando
         if anterior != None:

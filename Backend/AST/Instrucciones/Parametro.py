@@ -136,6 +136,9 @@ class Parametro(Instruccion):
             nodo.agregarHijo(self.valor.genArbol())
 
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        return self
 
 
 

@@ -2,7 +2,9 @@ from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
 from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
+from AST.Simbolos.Entorno import Entorno
 from AST.Simbolos.Enums import TIPO_DATO
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
@@ -12,13 +14,14 @@ class Funcion(Simbolo, Instruccion):
     def __init__(self, nombre, params, listaInstrucciones, linea, columna, tipo) -> None:
         super().__init__()
         super().crearFuncion(nombre, params, listaInstrucciones, linea, columna, tipo)
-        ##print("Creando funcion")
+        print("Creando funcion " + nombre)
         self.nombre = nombre
         self.params = params
         self.listaInstrucciones = listaInstrucciones
         self.tipo = tipo
         self.linea = linea
         self.columna = columna
+        
 
     def declaracionesParams(self, entorno, exp, entornoPadre, helper):
         ##print("EXP: ", exp)
@@ -31,7 +34,6 @@ class Funcion(Simbolo, Instruccion):
             s.addError(err)
             helper.setConsola("[ERROR] La cantidad de argumentos no coincide con la cantidad de parametros en la línea "+ str(self.linea) +" y columna " + str(self.columna))
             return False
-
 
         paramsDecl = self.params
         if len(paramsDecl) != len(exp):
@@ -143,6 +145,47 @@ class Funcion(Simbolo, Instruccion):
                         return Return(None, TIPO_DATO.ERROR)
         helper.setTs(entorno)
         helper.setFuncion(tempHelper)            
+
+    def genC3D(self, entorno, helper):
+        print("Generando C3D de funcion")
+        gen = Generador()
+        generador = gen.getInstance()
+        generador.addComment("Inicio de la funcion " + self.nombre)
+
+        
+        entorno.AgregarFuncion(self.nombre, self)
+        entornoLocal = Entorno(entorno)
+
+        labelRetorno = generador.newLabel()
+        entornoLocal.returnLabel = labelRetorno
+        entornoLocal.size = 1
+        print("------------------------")
+        print(self.nombre)
+        generador.addBeginFunc(self.nombre)
+
+        for i in self.listaInstrucciones:
+            accion = i.genC3D(entornoLocal, helper)
+            if isinstance(accion, Return):
+                if accion.trueLabel == '':
+                    generador.addComment("Retorno de la funcion ")
+                    generador.setStack('P', accion.valor)
+                    generador.addGoto(labelRetorno)
+                    generador.addComment("Fin del retorno")
+                else:
+                    generador.addComment("Retorno de la funcion ")
+                    generador.putLabel(accion.trueLabel)
+                    generador.setStack('P', '1')
+                    generador.addGoto(entornoLocal.falseLabel)
+                    generador.setStack('P', '0')
+                    generador.addGoto(entornoLocal.returnLabel)
+                    generador.addComment("Fin del retorno")
+
+        generador.addGoto(labelRetorno)
+        generador.putLabel(labelRetorno)
+        generador.addComment("Fin de la funcion " + self.nombre)
+        generador.addEndFunc()
+        
+        return
         
     def genArbol(self) -> Nodo:
         nodo = Nodo("FUNCIÓN")

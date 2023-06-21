@@ -34,7 +34,9 @@ class Pop_Ins(Instruccion):
 
 
     def genArbol(self) -> Nodo:
-        pass
+        nodo = Nodo("POP")
+        nodo.agregarHijo(self.id)
+        return nodo
     
     def genC3D(self, entorno, helper):
         pass

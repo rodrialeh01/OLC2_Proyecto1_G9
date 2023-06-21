@@ -44,7 +44,9 @@ class Pop(Expresion):
 
 
     def genArbol(self):
-        pass
+        nodo = Nodo("POP")
+        nodo.agregarHijo(self.arreglo.genArbol())
+        return nodo
 
     def genC3D(self, entorno, helper):
         pass

@@ -45,6 +45,7 @@ class Identificador(Expresion):
         existe = entorno.ExisteSimbolo(self.nombre)
         if not existe:
             generador.addComment("Fin Acceso a Identificador - No existe")
+            return
         
         s_c3d = entorno.ObtenerSimbolo(self.nombre)
         temp = generador.addTemp()

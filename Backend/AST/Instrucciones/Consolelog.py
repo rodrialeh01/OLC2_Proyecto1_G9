@@ -156,35 +156,36 @@ class Consolelog(Instruccion):
         generador = gen.getInstance()
         print("ENTRO A IMPRIMIR")
         exp = self.expresion.genC3D(entorno, helper)
-        if exp.tipo == TIPO_DATO.NUMERO:
-            generador.addPrint('f', exp.valor)
-        elif exp.tipo == TIPO_DATO.CADENA:
-            generador.fPrintString()
+        if exp != None:
+            if exp.tipo == TIPO_DATO.NUMERO:
+                generador.addPrint('f', exp.valor)
+            elif exp.tipo == TIPO_DATO.CADENA:
+                generador.fPrintString()
 
-            paramTemp = generador.addTemp()
+                paramTemp = generador.addTemp()
 
-            generador.addExpresion(paramTemp, 'P', entorno.size , '+')
-            generador.addExpresion(paramTemp, paramTemp, '1', '+')
-            generador.setStack(paramTemp, exp.valor)
+                generador.addExpresion(paramTemp, 'P', entorno.size , '+')
+                generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                generador.setStack(paramTemp, exp.valor)
 
-            generador.crearEntorno(entorno.size)
-            generador.callFun('printString')
+                generador.crearEntorno(entorno.size)
+                generador.callFun('printString')
 
-            temp = generador.addTemp()
-            generador.getStack(temp, 'P')
-            generador.retornarEntorno(entorno.size)
-        elif exp.tipo == TIPO_DATO.BOOLEANO:
-            tempLbl = generador.newLabel()
-            generador.putLabel(exp.trueLabel)
-            generador.printTrue()
+                temp = generador.addTemp()
+                generador.getStack(temp, 'P')
+                generador.retornarEntorno(entorno.size)
+            elif exp.tipo == TIPO_DATO.BOOLEANO:
+                tempLbl = generador.newLabel()
+                generador.putLabel(exp.trueLabel)
+                generador.printTrue()
 
-            generador.addGoto(tempLbl)
+                generador.addGoto(tempLbl)
 
-            generador.putLabel(exp.falseLabel)
-            generador.printFalse()
+                generador.putLabel(exp.falseLabel)
+                generador.printFalse()
 
-            generador.putLabel(tempLbl)
-        generador.addPrint('c', 10)
+                generador.putLabel(tempLbl)
+            generador.addPrint('c', 10)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")

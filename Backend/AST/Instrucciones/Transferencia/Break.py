@@ -1,12 +1,14 @@
 from AST.Abstract.Instruccion import Instruccion
-from AST.Nodo import Nodo
 from AST.Error import Error
+from AST.Nodo import Nodo
 from AST.SingletonErrores import SingletonErrores
+
 
 class Break(Instruccion):
     def __init__(self, fila, columna):
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         if helper.getCiclo() == "ciclo":
@@ -20,3 +22,6 @@ class Break(Instruccion):
         
     def genArbol(self) -> Nodo:
         return Nodo("break")
+
+    def genC3D(self, entorno, helper):
+        return self

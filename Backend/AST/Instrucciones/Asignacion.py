@@ -12,6 +12,7 @@ class Asignacion(Instruccion):
         self.valor = valor
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         #print("aSIgnacion")
@@ -38,6 +39,10 @@ class Asignacion(Instruccion):
             s.addError(err)
             helper.setConsola("[ERROR] La variable " + self.id + " no existe en el entorno actual en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return 
+
+    def genC3D(self, entorno, helper):
+        pass
+        
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("Asignacion ")

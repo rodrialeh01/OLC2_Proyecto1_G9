@@ -93,7 +93,7 @@ var heap[30101999] float64;
             self.natives += codigo
         elif self.inFunc:
             if self.funcs == '':
-                self.funcs = self.funcs + "/* --- FUNCIONES --- */"
+                self.funcs = self.funcs + "/* --- FUNCIONES --- */\n"
             self.funcs += tab + codigo
         else:
             self.codigo += tab + codigo
@@ -254,16 +254,19 @@ var heap[30101999] float64;
     #! --------------------------------------------------!
 
     def addBeginFunc(self, id):
+        print("ENTRO A ADD BEGIN FUNC CON ID:", id)
         if not self.inNative:
             self.inFunc = True
         
         self.addCodigo(f'/*----------- FUNCION {id} -----------*/\n')
         self.addCodigo(f'func {id}() {{\n')
+        print("INICIO DE FUNCION")
+        print("NOMBRE DE LA FUNCIÓN A AGREGAR: ", id)
 
     def addEndFunc(self):
+        self.addCodigo('return;\n}\n')
         if not self.inNative:
             self.inFunc = False
-        self.addCodigo('}\n\n')
 
     #! --------------------------------------------------!
     #!                    NATIVAS                         !
@@ -370,5 +373,6 @@ var heap[30101999] float64;
         self.putLabel(returnLbl)
         self.addEndFunc()
         self.inNative = False
+
 
 

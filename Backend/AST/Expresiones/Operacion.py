@@ -143,10 +143,6 @@ class Operacion(Expresion):
         operador = ''
         val1 = self.exp1.genC3D(entorno, helper)
         val2 = self.exp2.genC3D(entorno, helper)
-        print('VAL1', self.exp1)
-        print('val1', val1.valor)
-        print('VAL2', self.exp2)
-        print('val2', val2.valor)
         if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
             operador = '+'
             temporal = generador.addTemp()
@@ -159,9 +155,9 @@ class Operacion(Expresion):
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
             operador = '-'
             temporal = generador.addTemp()
-            print('RESTA', temporal)
-            print('RESTA', val1.valor)
-            print('RESTA', val2.valor)
+            print('resta')
+            print(val1)
+            print(val2)
             generador.addExpresion(temporal, val1.valor, val2.valor, operador)
             return Retorno2(temporal, TIPO_DATO.NUMERO, True)
         

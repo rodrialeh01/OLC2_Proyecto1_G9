@@ -102,9 +102,11 @@ class Llamada(Instruccion, Expresion):
                         return Retorno2(None, TIPO_DATO.ERROR, False)
         generador.crearEntorno(size)
         generador.callFun(fn.nombre)
+        print('a')
         generador.getStack(temp, 'P')
         generador.retornarEntorno(size)
         generador.addComment('Fin llamada a función ' + self.id)
+        print('a')
 
 
         if fn.tipo is not None:

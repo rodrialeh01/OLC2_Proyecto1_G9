@@ -147,7 +147,7 @@ class Funcion(Simbolo, Instruccion):
         helper.setFuncion(tempHelper)            
 
     def genC3D(self, entorno, helper):
-        print("Generando C3D de funcion")
+        #print("Generando C3D de funcion")
         gen = Generador()
         generador = gen.getInstance()
         generador.addComment("Inicio de la funcion " + self.nombre)
@@ -159,8 +159,8 @@ class Funcion(Simbolo, Instruccion):
         labelRetorno = generador.newLabel()
         entornoLocal.returnLabel = labelRetorno
         entornoLocal.size = 1
-        print("------------------------")
-        print(self.nombre)
+        #print("------------------------")
+        #print(self.nombre)
 
         if self.params is not None:
             for p in self.params:
@@ -169,9 +169,11 @@ class Funcion(Simbolo, Instruccion):
         generador.addBeginFunc(self.nombre)
         for i in self.listaInstrucciones:
             accion = i.genC3D(entornoLocal, helper)
-            print('accion',accion)
-            print('i',i)
+            #print('accion',accion)
+            #print('i',i)
             if isinstance(i, Return):
+                print('retorno')
+                print(i)
                 if entornoLocal.returnLbl != '':
                     if accion.trueLabel == '':
                         generador.addComment("Retorno de la funcion ")

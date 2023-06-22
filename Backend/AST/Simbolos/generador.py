@@ -117,9 +117,6 @@ var heap[30101999] float64;
         temp = f't{self.T}'
         self.T += 1
         self.temporales.append(temp)
-        print('VOY A GENERAR EL TEMPORAL: ', temp)
-        if (temp == "t13"):
-            self.addComment("AQUI ESTOY 5555555555555555555555555555555555")
         self.addComment(f'Generando temporal {temp}')
         return temp
     
@@ -142,11 +139,11 @@ var heap[30101999] float64;
         self.addCodigo(f'heap[int({pos})]= {valor};\n')
     
     def getHeap(self, place, pos): #obtiene un valor del heap
-        print("ORDEN2")
+        #print("ORDEN2")
         self.addCodigo(f'{place} = heap[int({pos})];\n')
 
     def nextHeap(self): #obtiene la siguiente posicion del heap
-        print("ORDEN1")
+        #print("ORDEN1")
         self.addCodigo(f'H = H + 1;\n')
 
     #* 
@@ -159,7 +156,7 @@ var heap[30101999] float64;
         return label
     
     def putLabel(self, label): #agrega una etiqueta
-        print("LABEEEEEEEEEL")
+        #print("LABEEEEEEEEEL")
         self.addCodigo(f'{label}:\n')
 
     def addIndent(self):

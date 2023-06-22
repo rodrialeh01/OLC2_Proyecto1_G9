@@ -262,11 +262,11 @@ class If(Instruccion):
                 labelTrueelif = condicion2.trueLabel
                 labelFalseelif = condicion2.falseLabel
                 generador.putLabel(labelTrueelif)
-                print(labelTrueelif)
+                #print(labelTrueelif)
                 for instruccion in elseif.lista_instrucciones:
                     generador.addComment("ESTOY DESDE EL ELSE IF: ------------------ ")
                     accion = instruccion.genC3D(entornoLocal, helper)
-                    print(accion)
+                    #print(accion)
                     if isinstance(instruccion, Continue):
                         if entornoLocal.continueLabel != "":
                             generador.addGoto(entorno.continueLabel)
@@ -276,8 +276,6 @@ class If(Instruccion):
                     if isinstance(instruccion, Return):
                         if entornoLocal.returnLabel != '':
                             generador.addComment('Resultado a retornar en else if')
-                            print(accion.valor)
-                            print(accion.trueLabel)
                             if accion.trueLabel == '':
                                 generador.setStack('P', accion.valor)
                                 generador.addGoto(entornoLocal.returnLabel)

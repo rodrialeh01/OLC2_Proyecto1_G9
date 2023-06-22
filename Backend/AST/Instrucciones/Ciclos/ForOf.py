@@ -110,65 +110,51 @@ class ForOf(Instruccion):
 
         entornoLocal = Entorno(entorno)
         entornoLocal2 = Entorno(entornoLocal)
-
         generador.addComment("Inicia ForOf")
         val = self.exp1.genC3D(entornoLocal, helper)
+
         if val.tipo == TIPO_DATO.CADENA:
-
-
-            temp = generador.addTemp() # t2
-            generador.getStack(temp,val.valor)
-
-            temp2 = generador.addTemp() # t3
-            s = entornoLocal2.setEntorno(self.variable, TIPO_DATO.CADENA, False)
-            generador.getHeap(temp2,temp)
-
+            #se declara la variable
+            temp = generador.addTemp() 
+            entornoLocal2.setEntorno(self.variable, TIPO_DATO.CHAR, False)
+            # obtenemos el simbolo
+            s_c3d = entornoLocal2.ObtenerSimbolo(self.variable)
+            # seteamos el valor en el stack
+            generador.setStack(s_c3d.posicion, val.valor) 
+            
+            # Se crea la etiaquta donde iniciara el for
             regreso = generador.newLabel()
             generador.addGoto(regreso)
-            generador.putLabel(regreso)
 
+            #Desde aqui empieza la etiqueta donde inicia el for
+            generador.putLabel(regreso)
+            
+            generador.getStack(temp,s_c3d.posicion) #se obtiene en el temp la posicion de la variable que se guardó en el stack; temp = stack[s_c3d.posicion]
+            temp2 = generador.addTemp()
+            generador.getHeap(temp2, temp) #se obtiene en el temp2 el valor que se guardó en el heap; temp2 = heap[temp]
+            
+            #Se crea la etiqueta donde se encontraran las instrucciones del for-of 
             labelins = generador.newLabel()
-            labelsalida = generador.newLabel()
+            labelsalida = generador.newLabel() #etiqueta para salir del ciclo
+
+            #Se valida que el valor que se encuentra en el heap sea diferente de -1
             generador.addIf(temp2, "-1", '!=', labelins)
+            #en caso contrario se sale del ciclo
             generador.addGoto(labelsalida)
 
+            #Se pone la etiqueta de instrucciones
             generador.putLabel(labelins)
+
+            #Se agregan las instrucciones
             for instruccion in self.instrucciones:
                 generador.addComment("Instruccion ForOf")
                 result = instruccion.genC3D(entornoLocal2, helper)
+                #verificar los break, return y continue
             
-            generador.addExpresion(temp, temp, "1", "+")
-            #generador.addAsignacion(self.variable, temp2)
-            generador.getHeap(temp2,temp)
-            print("temp:", temp)
-            print(generador.codigo)
-            generador.addGoto(regreso)
-
-            generador.putLabel(labelsalida)
-            
-
-            '''
-                t2 = stack[int(t1)]
-                declaracion y se asigna el heap[int(t2)]
-                t3 = heap[int(t2)]
-                goto L1
-                L1:
-                if t3 != -1: goto L2
-                goto L3
-                L2:
-                for instruccion in self.instrucciones:
-                    result = instruccion.genC3D(entornoLocal, helper)
-                t2 = t2 + 1
-                t3 = heap[int(t2)]
-                goto L1
-                L3:
-                    salida
-            '''
-        #for (let i of arreglo) {
-        # instrucciones
-        #}
-
-        # declaracion: genc3d
-        # condicion: genc3d
-        # instrucciones: genc3d
+            temp3 = generador.addTemp() #se crea un nuevo temporal
+            generador.getStack(temp3, s_c3d.posicion) #la posición de la varible/símbolo se asigna al temporal para irlo actualizando posteriormente
+            generador.addExpresion(temp3, temp3, "1", "+") # se agrega un +1 a la posición para continuar con el siguiente char
+            generador.setStack(s_c3d.posicion, temp3) #se actualiza el valor de la variable/simbolo (stack[s_c3d.posicion] = temp3)
+            generador.addGoto(regreso) # se pone el goto para que regrese a validar la condición del for
+            generador.putLabel(labelsalida) # se pone la etiqueta de salida del ciclo
         

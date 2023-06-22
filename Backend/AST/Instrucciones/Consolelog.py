@@ -159,11 +159,13 @@ class Consolelog(Instruccion):
         if exp != None:
             if exp.tipo == TIPO_DATO.NUMERO:
                 generador.addPrint('f', exp.valor)
+            elif exp.tipo == TIPO_DATO.CHAR:
+                generador.addPrintChar(exp.valor)
             elif exp.tipo == TIPO_DATO.CADENA:
                 generador.fPrintString()
 
                 paramTemp = generador.addTemp()
-
+                print('CONSOLE LOG', paramTemp)
                 generador.addExpresion(paramTemp, 'P', entorno.size , '+')
                 generador.addExpresion(paramTemp, paramTemp, '1', '+')
                 generador.setStack(paramTemp, exp.valor)
@@ -185,7 +187,7 @@ class Consolelog(Instruccion):
                 generador.printFalse()
 
                 generador.putLabel(tempLbl)
-            generador.addPrint('c', 10)
+            generador.addPrintChar(10.0)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")

@@ -63,6 +63,8 @@ class Inc(Expresion):
             generador.getStack(temp, posicionTemp)
             #Se suma 1 al valor de la variable.
             temp2 = generador.addTemp()
+            print("EN EL INCREMENTO?!?!?!? ", temp2)
+            print("EN EL INCREMENTO     2   ?!?!?!? ", temp)
             generador.addExpresion(temp2, temp, 1, '+')
             #Se guarda el nuevo valor en la variable.
             generador.setStack(posicionTemp, temp2)

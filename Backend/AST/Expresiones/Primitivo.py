@@ -18,7 +18,8 @@ class Primitivo(Expresion):
     def genC3D(self, entorno, helper):
         gen = Generador()
         generador = gen.getInstance()
-        if self.tipo == TIPO_DATO.NUMERO:               #No está en el heap
+        if self.tipo == TIPO_DATO.NUMERO:  
+            print('NATIVO NUMERO')             #No está en el heap
             return Retorno2(str(self.valor), self.tipo, False)
         elif self.tipo == TIPO_DATO.CADENA:
             temporal = generador.addTemp()

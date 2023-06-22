@@ -141,9 +141,10 @@ class Relacional(Expresion):
                     if operador == '==' or operador == '!=':
                         generador.fcompareString()
                         paramTemp = generador.addTemp()
-                        
+                        print('RELACIONAL:', paramTemp)
                         generador.addExpresion(paramTemp, 'P', entorno.size, '+')
                         generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                        
                         generador.setStack(paramTemp, left.valor)
 
                         generador.addExpresion(paramTemp, paramTemp, '1', '+')

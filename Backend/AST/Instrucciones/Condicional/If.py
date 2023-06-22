@@ -211,47 +211,88 @@ class If(Instruccion):
 
         condicion = self.expresion.genC3D(entorno, helper)
 
-        labelTrue = condicion.trueLabel
-        labelFalse = condicion.falseLabel
-        tempLabel = generador.newLabel()
-        entornoLocal = Entorno(entorno)
-        labelReturn = generador.newLabel()
-        entornoLocal.returnLabel = labelReturn
-        entornoLocal.size = 1 #se pone en 1 porque se reserva el espacio para el return
+        #labelTrue = condicion.trueLabel
+        #labelFalse = condicion.falseLabel
+        #entornoLocal.returnLabel = entorno.returnLabel
 
-        generador.putLabel(labelTrue)
-        for instruccion in self.lista_instrucciones:
-            instruccion.genC3D(entornoLocal, helper)
+        generador.putLabel(condicion.trueLabel)
+        entornoLocal = Entorno(entorno)
+        for instruccion in self.lista_instrucciones:     
+            entornoLocal.returnLabel = entorno.returnLabel    
+            entornoLocal.continueLabel = entorno.continueLabel   
+            accion = instruccion.genC3D(entornoLocal, helper)
             if isinstance(instruccion, Continue):
-                if entorno.continueLabel != "":
-                    generador.addGoto(entorno.continueLabel)
+                if entornoLocal.continueLabel != "":
+                    generador.addGoto(entornoLocal.continueLabel)
             if isinstance(instruccion, Break):
-                if entorno.breakLabel != "":
+                if entornoLocal.breakLabel != "":
                     generador.addGoto(entorno.breakLabel)
+            if isinstance(instruccion, Return):
+                if entornoLocal.returnLabel != '':
+                    generador.addComment('Resultado a retornar en if')
+                    if accion.trueLabel == '':
+                        generador.setStack('P', accion.valor)
+                        generador.addGoto(entornoLocal.returnLabel)
+                        generador.addComment('Fin del resultado a retornar en retornar en if')
+                    else:
+                        generador.putLabel(accion.trueLabel)
+                        generador.setStack('P', '1')
+                        generador.addGoto(entornoLocal.returnLabel)
+                        generador.putLabel(accion.falseLabel)
+                        generador.setStack('P', '0')
+                        generador.addGoto(entornoLocal.returnLabel)
+                    generador.addComment('Fin del resultado a retornar en retornar en if')
             #revisar return, break, continue
+            
+        tempLabel = generador.newLabel()
         generador.addGoto(tempLabel)
-        generador.putLabel(labelFalse)
-        print(tempLabel)
+        generador.putLabel(condicion.falseLabel)
+        
         #generador.addGoto(labelReturn)
         
         #generador.putLabel(labelReturn)
         if self.lista_elseifs is not None:
+            entornoLocal = Entorno(entorno)
             generador.addComment("INSTRUCCIÓN ELSE IF")
             for elseif in self.lista_elseifs:
+
+                entornoLocal.returnLabel = entorno.returnLabel    
+                entornoLocal.continueLabel = entorno.continueLabel  
                 condicion2 =  elseif.expresion.genC3D(entornoLocal, helper)
                 labelTrueelif = condicion2.trueLabel
                 labelFalseelif = condicion2.falseLabel
                 generador.putLabel(labelTrueelif)
-
+                print(labelTrueelif)
                 for instruccion in elseif.lista_instrucciones:
-                    instruccion.genC3D(entornoLocal, helper)
+                    generador.addComment("ESTOY DESDE EL ELSE IF: ------------------ ")
+                    accion = instruccion.genC3D(entornoLocal, helper)
+                    print(accion)
                     if isinstance(instruccion, Continue):
-                        if entorno.continueLabel != "":
+                        if entornoLocal.continueLabel != "":
                             generador.addGoto(entorno.continueLabel)
                     if isinstance(instruccion, Break):
-                        if entorno.breakLabel != "":
+                        if entornoLocal.breakLabel != "":
                             generador.addGoto(entorno.breakLabel)
+                    if isinstance(instruccion, Return):
+                        if entornoLocal.returnLabel != '':
+                            generador.addComment('Resultado a retornar en else if')
+                            print(accion.valor)
+                            print(accion.trueLabel)
+                            if accion.trueLabel == '':
+                                generador.setStack('P', accion.valor)
+                                generador.addGoto(entornoLocal.returnLabel)
+                                generador.addComment('Fin del resultado a retornar en else if')
+                            else:
+                                generador.putLabel(accion.trueLabel)
+                                generador.setStack('P', '1')
+                                generador.addGoto(entornoLocal.returnLabel)
+                                generador.putLabel(accion.falseLabel)
+                                generador.setStack('P', '0')
+                                generador.addGoto(entornoLocal.returnLabel)
+                            generador.addComment('Fin del resultado a retornar en else if')
                     #revisar return, break, continue
+                generador.addComment("termino ELSE IF: ------------------ ")
+                
                 generador.addGoto(tempLabel)
                 generador.putLabel(labelFalseelif)
 
@@ -259,9 +300,27 @@ class If(Instruccion):
             generador.addComment("INSTRUCCIÓN ELSE")
             #generador.putLabel(tempLabel)
             for instruccion in self.lista_instrucciones2:
-                instruccion.genC3D(entornoLocal, helper)
+                entornoLocal.returnLabel = entorno.returnLabel    
+                entornoLocal.continueLabel = entorno.continueLabel  
+                accion = instruccion.genC3D(entornoLocal, helper)
                 if isinstance(instruccion, Continue):
                     generador.addGoto(tempLabel)
+                if isinstance(instruccion, Return):
+
+                    if entornoLocal.returnLabel != '':
+                        generador.addComment('Resultado a retornar en else')
+                        if accion.trueLabel == '':
+                            generador.setStack('P', accion.valor)
+                            generador.addGoto(entornoLocal.returnLabel)
+                            generador.addComment('Fin del resultado a retornar en else')
+                        else:
+                            generador.putLabel(accion.trueLabel)
+                            generador.setStack('P', '1')
+                            generador.addGoto(entornoLocal.returnLabel)
+                            generador.putLabel(accion.falseLabel)
+                            generador.setStack('P', '0')
+                            generador.addGoto(entornoLocal.returnLabel)
+                        generador.addComment('Fin del resultado a retornar en else')
                 #revisar return, break, continue
         generador.putLabel(tempLabel)
 

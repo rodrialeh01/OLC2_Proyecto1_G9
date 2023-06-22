@@ -161,24 +161,32 @@ class Funcion(Simbolo, Instruccion):
         entornoLocal.size = 1
         print("------------------------")
         print(self.nombre)
-        generador.addBeginFunc(self.nombre)
 
+        if self.params is not None:
+            for p in self.params:
+                entornoLocal.setEntorno(p.id,p.tipo ,(p.tipo == TIPO_DATO.CADENA or p.tipo == TIPO_DATO.INTERFACE or p.tipo == TIPO_DATO.ARRAY))
+        
+        generador.addBeginFunc(self.nombre)
         for i in self.listaInstrucciones:
             accion = i.genC3D(entornoLocal, helper)
-            if isinstance(accion, Return):
-                if accion.trueLabel == '':
-                    generador.addComment("Retorno de la funcion ")
-                    generador.setStack('P', accion.valor)
-                    generador.addGoto(labelRetorno)
-                    generador.addComment("Fin del retorno")
-                else:
-                    generador.addComment("Retorno de la funcion ")
-                    generador.putLabel(accion.trueLabel)
-                    generador.setStack('P', '1')
-                    generador.addGoto(entornoLocal.falseLabel)
-                    generador.setStack('P', '0')
-                    generador.addGoto(entornoLocal.returnLabel)
-                    generador.addComment("Fin del retorno")
+            print('accion',accion)
+            print('i',i)
+            if isinstance(i, Return):
+                if entornoLocal.returnLbl != '':
+                    if accion.trueLabel == '':
+                        generador.addComment("Retorno de la funcion ")
+                        generador.setStack('P', accion.valor)
+                        generador.addGoto(labelRetorno)
+                        generador.addComment("Fin del retorno")
+                    else:
+                        generador.addComment("Retorno de la funcion ")
+                        generador.putLabel(accion.trueLabel)
+                        generador.setStack('P', '1')
+                        generador.addGoto(entornoLocal.returnLabel)
+                        generador.putLabel(entornoLocal.falseLabel)
+                        generador.setStack('P', '0')
+                        generador.addGoto(entornoLocal.returnLabel)
+                        generador.addComment("Fin del retorno")
 
         generador.addGoto(labelRetorno)
         generador.putLabel(labelRetorno)

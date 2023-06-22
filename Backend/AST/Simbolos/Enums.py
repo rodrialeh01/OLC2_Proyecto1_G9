@@ -14,7 +14,8 @@ class TIPO_DATO(Enum):
     ARRAY_BOOLEAN = 9,
     INTERFACE = 10,
     ARRAY_INTERFACE = 11,
-    ARRAY_NULL = 12
+    ARRAY_NULL = 12,
+    CHAR = 13
 
 def obtTipoDato(i):
     if i == TIPO_DATO.NUMERO:
@@ -43,6 +44,7 @@ def obtTipoDato(i):
         return "Array"
     elif i == TIPO_DATO.ARRAY_NULL:
         return "Array"
+    
 
 class ERROR(Enum):
     LEXICO = 1,

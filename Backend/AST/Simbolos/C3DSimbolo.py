@@ -6,6 +6,7 @@ class C3DSimbolo:
         self.nombre = nombre
         self.tipo = tipo
         self.posicion = posicion
+        print('global var: ', globalVar)
         self.globalVar = globalVar
         self.inHeap = inHeap
 

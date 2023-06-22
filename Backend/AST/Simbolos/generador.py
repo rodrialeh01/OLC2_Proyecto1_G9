@@ -117,6 +117,10 @@ var heap[30101999] float64;
         temp = f't{self.T}'
         self.T += 1
         self.temporales.append(temp)
+        print('VOY A GENERAR EL TEMPORAL: ', temp)
+        if (temp == "t13"):
+            self.addComment("AQUI ESTOY 5555555555555555555555555555555555")
+        self.addComment(f'Generando temporal {temp}')
         return temp
     
     #*
@@ -215,12 +219,16 @@ var heap[30101999] float64;
     #*
     def addPrint(self, type, valor):
         self.setImport('fmt')
-        self.addCodigo(f'fmt.Printf("%{type}", {valor});\n')
+        self.addCodigo(f'fmt.Printf("%{type}", float64({valor}));\n')
 
     #para imprimir el string
     def addPrintString(self, type, valor):
         self.setImport('fmt')
         self.addCodigo(f'fmt.Printf("%{type}", int({valor}));\n')
+
+    def addPrintChar(self, valor):
+        self.setImport('fmt')
+        self.addCodigo(f'fmt.Printf("%c", int({valor}));\n')
 
     def printTrue(self):
         self.setImport('fmt')
@@ -324,6 +332,7 @@ var heap[30101999] float64;
         returnLbl = self.newLabel()
 
         t2 = self.addTemp()
+        print('compareString:', t2)
         self.addExpresion(t2, 'P', '1', '+')
         t3 = self.addTemp()
         self.getStack(t3,t2)

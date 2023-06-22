@@ -161,6 +161,7 @@ class Declaracion(Instruccion):
         print(s_C3D.globalVar)
         if not s_C3D.globalVar:
             posicionTemp = generador.addTemp()
+            print("Seré yo el culpable??? ", posicionTemp)
             generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
         
         if self.tipo == TIPO_DATO.BOOLEANO:

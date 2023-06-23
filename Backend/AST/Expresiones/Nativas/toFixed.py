@@ -2,6 +2,7 @@ from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
 
@@ -39,3 +40,44 @@ class ToFixed(Expresion):
         nodo.agregarHijo(self.cantidad.genArbol())
 
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        exp = self.expresion.genC3D(entorno, helper)
+        cantidad = self.cantidad.genC3D(entorno, helper)
+        generador.addComment("----- Inicia toFixed -----")
+        #casos:
+        tempExp = generador.addTemp()
+        tempCantidad = generador.addTemp()
+
+        if exp.tipo == TIPO_DATO.NUMERO and cantidad.tipo == TIPO_DATO.NUMERO:
+            if exp.isTemp and cantidad.isTemp:
+                generador.addAsignacion('P', exp.valor)
+                generador.getStack(tempExp, 'P')
+                    
+                generador.addAsignacion('P', cantidad.valor)
+                generador.getStack(tempCantidad, 'P')
+            elif exp.isTemp and not cantidad.isTemp:
+                generador.addAsignacion('P', exp.valor)
+                generador.getStack(tempExp, 'P')
+
+                generador.addAsignacion(tempCantidad, cantidad.valor)
+            elif not exp.isTemp and cantidad.isTemp:
+                generador.addAsignacion(tempExp, exp.valor)
+
+                generador.addAsignacion('P', cantidad.valor)
+                generador.getStack(tempCantidad, 'P')
+            elif not exp.isTemp and not cantidad.isTemp:
+                generador.addAsignacion(tempExp, exp.valor)
+
+                generador.addAsignacion(tempCantidad, cantidad.valor)
+        else:
+            generador.addComment("Hubo un error en toFixed. No se puede realizar la operación")
+            
+        print("expresion: ", self.expresion)
+        print("cantidad de decimales: ", self.cantidad)
+        
+
+        pass

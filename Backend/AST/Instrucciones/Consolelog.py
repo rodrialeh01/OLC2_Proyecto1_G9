@@ -165,12 +165,11 @@ class Consolelog(Instruccion):
                 generador.fPrintString()
 
                 paramTemp = generador.addTemp()
-                print('CONSOLE LOG', paramTemp)
                 generador.addExpresion(paramTemp, 'P', entorno.size , '+')
                 generador.addExpresion(paramTemp, paramTemp, '1', '+')
                 generador.setStack(paramTemp, exp.valor)
-
                 generador.crearEntorno(entorno.size)
+
                 generador.callFun('printString')
 
                 temp = generador.addTemp()

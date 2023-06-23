@@ -2,7 +2,9 @@ from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -31,3 +33,28 @@ class ToUpperCase(Expresion):
         nodo.agregarHijo(self.expresion.genArbol())
 
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        print("ToUpperCase")
+        gen = Generador()
+        generador = gen.getInstance()
+
+        
+        temp = generador.addTemp()
+        temp2 = generador.addTemp()
+
+        exp = self.expresion.genC3D(entorno, helper)
+        print(exp.tipo)
+        if exp.tipo == TIPO_DATO.CADENA:
+            generador.ftoUpperCase()
+            generador.addExpresion(temp, 'P', entorno.size, '+')
+
+            generador.setStack(temp, exp.valor)
+
+            generador.crearEntorno(entorno.size)
+            generador.addAsignacion('H', exp.valor)
+            generador.callFun('toUpperCase')
+            generador.getStack(temp2, 'P')
+            generador.retornarEntorno(entorno.size)
+            print(generador.codigo)
+            return Retorno2(temp2, TIPO_DATO.CADENA, True)

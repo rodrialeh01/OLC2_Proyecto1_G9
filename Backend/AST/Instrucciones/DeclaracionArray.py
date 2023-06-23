@@ -5,6 +5,7 @@ from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
+from AST.Simbolos.generador import Generador
 
 
 class DeclaracionArray(Instruccion):
@@ -14,6 +15,8 @@ class DeclaracionArray(Instruccion):
         self.expresion = expresion
         self.linea = linea
         self.columna = columna
+        self.find = True
+        super().__init__()
 
     
     def ejecutar(self, entorno, helper):
@@ -104,9 +107,6 @@ class DeclaracionArray(Instruccion):
 
             entorno.AgregarSimbolo(self.id,simbolo)
 
-
-
-    
     def Verificar_Tipos_array(self,arr, tipo, bandera, entorno):
         if isinstance(arr,list):
             for a in arr:
@@ -142,4 +142,83 @@ class DeclaracionArray(Instruccion):
         return nodo
     
     def genC3D(self, entorno, helper):
-        pass
+        gen = Generador()
+        generador = gen.getInstance()
+        generador.addComment("Declaracion de un array")
+
+        s_C3D = None
+        val = None
+
+        if self.tipo != None:
+            val = self.expresion.genC3D(entorno, helper)
+            print(val)
+        else:
+            val = self.expresion.genC3D(entorno, helper)
+            self.tipo = val.tipo
+
+        
+        if self.tipo != None:
+            if val != None:
+                print(self.tipo == val.tipo)
+                print(self.tipo)
+                print(val.tipo)
+                
+                #if self.tipo == val.tipo:
+                inHeap = val.tipo == TIPO_DATO.ARRAY or val.tipo == TIPO_DATO.ARRAY_STRING or val.tipo == TIPO_DATO.ARRAY_BOOLEAN or val.tipo == TIPO_DATO.ARRAY_NUMBER
+                s_C3D = entorno.setEntorno(self.id, val.tipo, inHeap, self.find)
+            else:
+                generador.addComment("Error: el tipo de dato no coincide al declarado")
+
+        generador.visualizarHeap()
+        generador.visualizarStack()
+
+        print("Posicion del array: ", s_C3D.posicion)
+
+        posicionTemp = s_C3D.posicion
+        if not s_C3D.globalVar:
+            posicionTemp = generador.addTemp()
+            generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
+        
+        if self.tipo != TIPO_DATO.BOOLEANO:
+            generador.setStack(posicionTemp, val.valor)
+        else:
+            if val.valor == True:
+                generador.setStack(posicionTemp, '1')
+            else:
+                generador.setStack(posicionTemp, '0')
+        generador.addComment("Fin declaracion de variable")
+                
+        '''    
+        else:
+            pass
+        
+        print("DECLARACION")
+        posicionTemp = s_C3D.posicion
+        print("DECLARACION 2")
+        print(s_C3D.globalVar)
+        if not s_C3D.globalVar:
+            posicionTemp = generador.addTemp()
+            print("Seré yo el culpable??? ", posicionTemp)
+            generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
+        
+        if self.tipo == TIPO_DATO.BOOLEANO:
+            tempLbl = generador.newLabel()
+            generador.putLabel(val.trueLabel)
+            generador.setStack(posicionTemp, '1')
+            
+            generador.addGoto(tempLbl)
+            
+            generador.putLabel(val.falseLabel)
+            generador.setStack(posicionTemp, '0')
+
+            generador.putLabel(tempLbl)
+
+        if self.tipo != TIPO_DATO.BOOLEANO:
+            generador.setStack(posicionTemp, val.valor)
+        else:
+            if val.valor == True:
+                generador.setStack(posicionTemp, '1')
+            else:
+                generador.setStack(posicionTemp, '0')
+        generador.addComment("Fin declaracion de variable")
+        '''

@@ -3,6 +3,8 @@ from AST.Expresiones.Llamada import Llamada
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.generador import Generador
+from AST.Simbolos.Retorno2 import Retorno2
 
 arr = []
 class Array(Expresion):
@@ -12,6 +14,7 @@ class Array(Expresion):
         self.expresiones = expresiones
         self.linea = linea
         self.columna = columna
+        super().__init__()
 
 
     def ejecutar(self, entorno, helper):
@@ -52,4 +55,20 @@ class Array(Expresion):
         return Nodo(mostrar)
     
     def genC3D(self, entorno, helper):
-        pass
+        print("GENERACIÓN DE ARRAY: ")
+        gen = Generador()
+        generador = gen.getInstance()
+        #verificar si es una llamada
+        global arr
+        arr = []
+        if isinstance(self.expresiones, Llamada):
+            pass
+        else:
+            for exp in self.expresiones:
+                exp.genC3D(entorno, helper)
+                arr.append(exp)
+            print(arr.shape)
+            ret = Retorno2(arr, TIPO_DATO.ARRAY, False)
+            return ret
+
+        

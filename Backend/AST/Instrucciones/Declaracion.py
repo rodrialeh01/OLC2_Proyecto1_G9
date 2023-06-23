@@ -21,9 +21,11 @@ class Declaracion(Instruccion):
         super().__init__()
     
     def ejecutar(self, entorno, helper):
-        #print("Declaracion")
+
+        print("Declaracion")
         identificador = self.id
         tipo = self.tipo
+        print(tipo)
         existe = entorno.BuscarSimboloLocal(identificador)
         if not existe:
             existe = entorno.BuscarInterfaceLocal(identificador)
@@ -79,6 +81,12 @@ class Declaracion(Instruccion):
                     simb.columna = self.columna
                     simb.entorno = entorno
                     entorno.AgregarSimbolo(identificador, simb)
+                else:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.fila, self.columna, "Error Semántico", "No se ha podido declarar ya que los tipos no son iguales")
+                    s.addError(err)
+                    helper.setConsola("[ERROR] La variable " + identificador + " no se ha podido declarar ya que los tipos no coinciden en: "+ str(self.fila) +" y columna " + str(self.columna))
+                    return
             else:
                 simb = Simbolo()
                 simb.nombre = identificador
@@ -155,13 +163,9 @@ class Declaracion(Instruccion):
         else:
             pass
         
-        print("DECLARACION")
         posicionTemp = s_C3D.posicion
-        print("DECLARACION 2")
-        print(s_C3D.globalVar)
         if not s_C3D.globalVar:
             posicionTemp = generador.addTemp()
-            print("Seré yo el culpable??? ", posicionTemp)
             generador.addExpresion(posicionTemp, "P", s_C3D.posicion, "+")
         
         if self.tipo == TIPO_DATO.BOOLEANO:

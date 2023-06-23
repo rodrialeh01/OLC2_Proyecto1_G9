@@ -1,4 +1,6 @@
 # ************* IMPORTACIONES *************
+import sys
+
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
 from AST.Expresiones.AccesoArray import AccesoArray
@@ -54,6 +56,9 @@ from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
 from AST.SingletonErrores import SingletonErrores
 from ply.lex import TOKEN
 
+limit = sys.getrecursionlimit()
+new_limit = 5000
+sys.setrecursionlimit(new_limit)
 # ********** ANALIZADOR LEXICO *****************
 
 reservadas = {
@@ -222,7 +227,7 @@ def t_COMENTARIO_MULTILINEA(t):
     t.lexer.lineno += t.value.count('\n')
 
 def f_columna(input,token):
-    line_s = input.rfind('\n',0,token.lexpos) + 1
+    line_s = input.rfind('\n',0, token.lexpos) + 1
     return (token.lexpos - line_s) + 1
 
 #Errores lexicos
@@ -412,6 +417,7 @@ def p_declaracion_2(t):
     '''
     declaracion : LET ID DOSPUNTOS tipo IGUAL expresion
     '''
+    print(t.lexpos(1))
     t[0] = Declaracion(t[2],t[4], t[6], t.lineno(1), t.lexpos(1))
 
 def p_declaracion_3(t):
@@ -862,7 +868,7 @@ def p_expresion_primitiva(t):
     elif t.slice[1].type == 'DECIMAL':
         t[0] = Primitivo(TIPO_DATO.NUMERO, t[1], t.lineno(1), t.lexpos(1))
     elif t.slice[1].type == 'CADENA':
-        t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1), t.lexpos(1))
+        t[0] = Primitivo(TIPO_DATO.CADENA, t[1], t.lineno(1),t.lexpos(1))
     elif t.slice[1].type == 'NULL':
         t[0] = Primitivo(TIPO_DATO.NULL, t[1], t.lineno(1), t.lexpos(1))
 
@@ -921,7 +927,7 @@ def p_exponencial(t):
     '''
     exponencial : TOEXPONENTIAL PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = ToExponential(t[3], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = ToExponential(t[3], t[5], t.lineno(1),t.lexpos(1))
 
 # ? to_mayusculas : expresion PUNTO TOUPPERCASE PARIZQ PARDER
 def p_to_mayusculas(t):
@@ -962,7 +968,7 @@ def p_pop_array_ins(t):
     '''
     instruccion3 : ID PUNTO POP PARIZQ PARDER
     '''
-    t[0] = Pop_Ins(t[1], t.lineno(1), t.lexpos(1))
+    t[0] = Pop_Ins(t[1], t.lineno(1),t.lexpos(1))
 
 # ? casteo : expresion PUNTO TOSTRING PARIZQ PARDER
 # ?        | CAST_STRING PARIZQ expresion PARDER
@@ -1104,7 +1110,7 @@ def p_asignacionInterface2(t):
     ###print(t[1])
     ##print(t[3])
     ##print(t[5])
-    t[0] = AsignarInterface(t[1], t[3], t[5], t.lineno(1), t.lexpos(1))
+    t[0] = AsignarInterface(t[1], t[3], t[5], t.lineno(1),t.lexpos(1))
     ##print(t[0])
 
 # ? Arrays
@@ -1337,7 +1343,7 @@ def p_pop_array(t):
 #errores sintacticos
     ##print(str(t[1].value))
     #s = SingletonErrores.getInstance()
-    # s.addError(Error(str(t.lineno(1)), str(f_columna(entrada, t.slice[1])) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
+    # s.addError(Error(str(t.lineno(1)), str(t.lexpos(1)) , "Error Sintáctico", "No se esperaba " + str(t[1].value) + " en esa posición") )
     
 def p_error(t):
     if t != None:

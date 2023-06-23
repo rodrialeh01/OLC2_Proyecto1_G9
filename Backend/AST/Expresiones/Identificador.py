@@ -57,11 +57,9 @@ class Identificador(Expresion):
         if not s_c3d.globalVar:
             print('no es global')
             posicionTemp = generador.addTemp()
-            if posicionTemp == "t13":
-                generador.addComment("esta acá el 13 pipipipi")
             generador.addExpresion(posicionTemp, "P", s_c3d.posicion, '+')
         generador.getStack(temp, posicionTemp)
-        
+        print('hola')
         if s_c3d.tipo == TIPO_DATO.CHAR:
             tempc = generador.addTemp()
             print('tempc', tempc)

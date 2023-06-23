@@ -3,7 +3,9 @@ from AST.Error import Error
 from AST.Expresiones.Identificador import Identificador
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
+from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
+from AST.Simbolos.Retorno2 import Retorno2
 from AST.SingletonErrores import SingletonErrores
 
 
@@ -110,6 +112,31 @@ class Concat(Expresion):
             else:
                 bandera = True
                 return bandera
+
+    def genC3D(self, entorno, helper):
+        gen = Generador()
+        generador = gen.getInstance()
+
+        exp1 = self.expresion1.genC3D(entorno, helper)
+        exp2 = self.expresion2.genC3D(entorno, helper)
+
+        if exp1.tipo == TIPO_DATO.CADENA and exp2.tipo == TIPO_DATO.CADENA:
+            generador.fConcatString()
+            temp = generador.addTemp()
+            temp2 = generador.addTemp()
+
+            generador.addExpresion(temp, 'P', entorno.size, '+')
+            generador.addExpresion(temp2, temp2, '1', '+')
+
+            generador.setStack(temp, exp1.valor)
+            generador.addExpresion(temp, temp, '1', '+')
+            generador.setStack(temp2, exp2.valor)
+
+            generador.crearEntorno(entorno.size)
+            generador.callFun('ConcatString')
+            generador.getStack(temp2, 'P')
+            generador.retornarEntorno(entorno.size)
+            return Retorno2(temp2, TIPO_DATO.CADENA, True)
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONCAT")

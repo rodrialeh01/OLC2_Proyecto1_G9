@@ -10,7 +10,6 @@ class Generador:
         self.natives = ''
         self.inFunc = False #¿Estoy en una funcion?
         self.inNative = False #¿Estoy en una funcion nativa?
-
         #-------------------------------------
 
 
@@ -19,7 +18,13 @@ class Generador:
         # ? Nativas:
         self.printString = False
         self.compareString = False
-
+        self.length = False
+        self.concatString = False
+        self.toNumber = False
+        self.toString = False
+        self.uppercase = False
+        self.lowercase = False
+        self.toFixed = False
         self.importaciones = [] #lista de importaciones
         self.importaciones2 = ['fmt', 'math']
 
@@ -64,10 +69,7 @@ package main;\n \n'''
         if len(self.importaciones) > 0:
             code += 'import (\n'
             for i in range(len(self.importaciones)):
-                if i != len(self.importaciones) - 1:
-                    code += '\t\"' + self.importaciones[i] + '\",\n'
-                else:
-                    code += '\t\"' + self.importaciones[i] + '\"\n'
+                code += '\t\"' + self.importaciones[i] + '\"\n'
             code += ')\n\n'
         if len(self.temporales) > 0:
             code += 'var '
@@ -117,7 +119,6 @@ var heap[30101999] float64;
         temp = f't{self.T}'
         self.T += 1
         self.temporales.append(temp)
-        self.addComment(f'Generando temporal {temp}')
         return temp
     
     #*
@@ -254,6 +255,10 @@ var heap[30101999] float64;
         self.addPrintString('c', '101')
         self.addIndent()
 
+    def addPotencia(self, res, left, right):
+        self.setImport('math')
+        self.addCodigo(f'{res} = math.Pow({left},{right});\n')
+
     #! --------------------------------------------------!
     #!                    FUNCIONES                        !
     #! --------------------------------------------------!
@@ -274,8 +279,101 @@ var heap[30101999] float64;
             self.inFunc = False
 
     #! --------------------------------------------------!
-    #!                    NATIVAS                         !
+    #!                    NATIVAS                        !
     #! --------------------------------------------------!
+    
+    # ? ToFixed()
+    def fToFixed(self):
+        if self.toFixed:
+            return
+        self.inNative = True
+        self.toFixed = True
+        self.addBeginFunc('toFixed')
+        self.addEndFunc()
+        self.inNative = False
+
+    # ? Number()
+    def fNumber(self):
+        if self.toNumber:
+            return
+        self.toNumber = True
+        self.inNative = True
+        self.addBeginFunc('fNumber')
+        tempReinicio = self.addTemp()
+        print("XD: ", tempReinicio)
+        self.addAsignacion(tempReinicio, 'H')
+        temp = self.addTemp()
+        tempCont = self.addTemp()
+        self.addAsignacion(tempCont, '0')
+        labelInic = self.newLabel()
+        labelFin = self.newLabel()
+        self.putLabel(labelInic)
+        self.getHeap(temp,'H')
+        self.addIf(temp, "-1", "==", labelFin)
+        self.addExpresion(tempCont, tempCont,'1',  "+")
+        self.addExpresion('H', 'H','1',  "+")
+        self.addGoto(labelInic)
+        self.putLabel(labelFin)
+        self.addAsignacion('H', tempReinicio)
+        tempExp = self.addTemp()
+        tempOp = self.addTemp()
+
+        labelCont = self.newLabel()
+        labelContFin = self.newLabel()
+        tempRes = self.addTemp() #resultado de la operacion
+        tempTest = self.addTemp()
+        tempRes2 = self.addTemp()
+        self.addAsignacion(tempTest, '0')
+        self.putLabel(labelCont)
+        self.getHeap(tempTest, 'H')
+        self.addIf(tempTest, '-1', '==', labelContFin)
+        
+        self.addExpresion(tempOp, tempTest, '48', '-')
+        
+        self.addIf(tempOp, '9', '>', labelContFin)
+        self.addIf(tempOp, '0', '<', labelContFin)
+
+        self.addExpresion(tempCont, tempCont, '1', '-')
+        self.addPotencia(tempExp, '10', tempCont)
+        #self.addExpresion(tempExp, '10', tempReal, '^')
+        self.addExpresion(tempRes, tempOp, tempExp, '*')
+        self.addExpresion(tempRes2, tempRes2, tempRes, '+')
+
+        self.addExpresion('H', 'H', '1', '+')
+        self.addGoto(labelCont)
+        self.putLabel(labelContFin)
+
+        self.setStack('P', tempRes2)
+        self.addCodigo('\n') 
+        self.addEndFunc()
+        self.inNative = False
+
+    # ? Length
+    def flength(self):
+        if self.length:
+            return
+        self.length = True
+        self.inNative = True
+        self.addBeginFunc('length')
+        
+        temp = self.addTemp()
+        tempCont = self.addTemp()
+        self.addAsignacion(tempCont, '0')
+        labelInic = self.newLabel()
+        labelFin = self.newLabel()
+        self.putLabel(labelInic)
+        self.getHeap(temp,'H')
+        self.addIf(temp, "-1", "==", labelFin)
+        self.addExpresion(tempCont, tempCont,'1',  "+")
+        self.addExpresion('H', 'H','1',  "+")
+        self.addGoto(labelInic)
+        self.putLabel(labelFin)
+        self.setStack('P', tempCont)
+        self.addCodigo('\n') 
+        self.addEndFunc()
+        self.inNative = False
+
+    # ? Print String
 
     def fPrintString(self):
         self.setImport('fmt')
@@ -318,6 +416,8 @@ var heap[30101999] float64;
         self.addEndFunc() # }
         self.inNative = False
 
+    # ?  fCompareString
+
     def fcompareString(self):
         if self.compareString:
             return
@@ -341,13 +441,6 @@ var heap[30101999] float64;
         L2 = self.newLabel()
         L3 = self.newLabel()
         self.putLabel(L1)
-        '''
-        l1:
-            t5 = heap[t3]
-            t6 = heap[t4]
-            if t5 == t6 goto l3
-            if t5 == -1 goto l2
-        '''
         t5 = self.addTemp()
         self.addIndent()
         self.getHeap(t5, t3)
@@ -369,7 +462,7 @@ var heap[30101999] float64;
         self.addGoto(L1)
 
         self.putLabel(L2)
-        self.addIndent() 
+        self.addIndent()
         self.setStack('P', '1')
         self.addIndent()
         self.addGoto(returnLbl)
@@ -380,5 +473,234 @@ var heap[30101999] float64;
         self.addEndFunc()
         self.inNative = False
 
+    # ? Concatenar String
+
+    def fConcatString(self):
+        if self.concatString:
+            return
+        self.concatString = True
+        self.inNative = True
+        self.addComment('Funcion concatenar String')
+        self.addBeginFunc('ConcatString')
+
+        Lblreturn = self.newLabel()
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        L3 = self.newLabel()
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        t2 = self.addTemp()
+        t3 = self.addTemp()
+        t4 = self.addTemp()
+
+        self.addAsignacion(t0, 'H')
+        self.addExpresion(t1, 'P', '1', '+')
+        self.getStack(t2, t1)
+        self.addExpresion(t3, 'P', '2', '+')
+        
+        self.putLabel(L1)
+        self.addIndent()
+
+        self.getHeap(t4, t2)
+        self.addIndent()
+        self.addIf(t4, '-1', '==', L2)
+        self.addIndent()
+        self.setHeap('H', t4)
+        self.addIndent()
+        self.addExpresion('H', 'H', '1', '+')
+        self.addIndent()
+        self.addExpresion(t2, t2, '1', '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        self.putLabel(L2)
+        self.addIndent()
+
+        self.getStack(t2, t3)
+
+        self.putLabel(L3)
+        self.addIndent()
+
+        self.getHeap(t4, t2)
+        self.addIndent()
+        self.addIf(t4, '-1', '==', Lblreturn)
+        self.addIndent()
+        self.setHeap('H', t4)
+        self.addIndent()
+        self.addExpresion('H', 'H', '1', '+')
+        self.addIndent()
+        self.addExpresion(t2, t2, '1', '+')
+        self.addIndent()
+        self.addGoto(L3)
+
+        self.putLabel(Lblreturn)
+        self.addIndent()
+
+        self.setHeap('H', '-1')
+        self.addIndent()
+        self.addExpresion('H', 'H', '1', '+')
+        self.addIndent()
+        self.setStack('P', t0)
+        self.addEndFunc()
+        self.inNative = False
+
+    # ? ftoString
+    def ftoString(self):
+        if self.toString:
+            return
+        self.toString = True
+        self.inNative = True
+        self.addComment('Funcion toString')
+        self.addBeginFunc('toString')
+
+        lblsalida = self.newLabel()
+
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        t2 = self.addTemp()
+        t3 = self.addTemp()
+        t4 = self.addTemp()
+        
+        
+        self.addAsignacion(t0, 'H')
+        self.addExpresion(t1, 'P', '1', '+')
+        self.getStack(t2, t1)
+
+        self.putLabel(L1)
+        self.addIndent()
+
+        self.addIf(t2 ,0, '>', L2)
+        self.addIndent()
+        self.addGoto(lblsalida)
+
+        self.putLabel(L2)
+        self.addIndent()
+
+        self.addExpresion(t3, t2, '10', '%')
+        self.addIndent()
+        self.setHeap('H', t3)
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+        self.addExpresion(t2, t2, '10', '/')
+        self.addGoto(L1)
+        # ! PENDIENTE....
+
+    def ftoUpperCase(self):
+        if self.uppercase:
+            return
+        self.uppercase = True
+        self.inNative = True
+
+        self.addComment('Funcion toUpperCase')
+        self.addBeginFunc('toUpperCase')
 
 
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        t2 = self.addTemp()
+
+        self.addAsignacion(t0, 'H') # guarda la posicion del heap
+
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        L3 = self.newLabel()
+        L4 = self.newLabel()
+        L5 = self.newLabel()
+        L6 = self.newLabel()
+        L7 = self.newLabel()
+
+        #L1:
+        self.putLabel(L1)
+        self.addIndent()
+        self.getHeap(t2, 'H') # guarda el valor del heap en th
+        self.addIndent()
+        self.addIf(t2, '-1', '!=', L2) # si es diferente de -1, continua
+        self.addIndent()
+        self.addGoto(L3) # si es -1, termina el ciclo
+
+        #L2:
+        self.putLabel(L2)
+        self.addIndent()
+        self.addIf(t2, 97, '>=', L4) # si es mayor o igual a 97, continua
+        self.addIndent()
+        self.addGoto(L5)
+
+        #L4:
+        self.putLabel(L4)
+        self.addIndent()
+        self.addIf(t2, 122, '<=', L6) # si es menor o igual a 122, continua
+        self.addIndent()
+        self.addGoto(L5)
+
+        #L6:
+        t3 = self.addTemp()
+        self.putLabel(L6)
+        self.addIndent()
+        self.addExpresion(t3, t2, 32, '-')
+        self.addIndent()
+        self.setHeap('H', t3)
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+        self.addExpresion(t2, t2, 1, '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        #L3
+        self.putLabel(L3)
+        self.addIndent()
+        self.setHeap('H', '-1')
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+
+        self.setStack(t1, t0)
+        self.addGoto(L7)
+
+        #L5
+        self.putLabel(L5)
+        self.setHeap('H', t2)
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+        self.addExpresion(t2, t2, 1, '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        #L7
+        self.putLabel(L7)
+        
+        #fin funcion
+        self.addEndFunc()
+        self.inNative = False
+
+    def ftoLowerCase(self):
+        if self.lowercase:
+            return
+        self.lowercase = True
+        
+
+
+    #! --------------------------------------------------!
+    #!                    EXTRAS                         !
+    #! --------------------------------------------------!
+
+
+    def visualizarHeap(self):
+        self.setImport('fmt')
+        self.addCodigo(f'fmt.Println("HEAP")\n')
+        self.addCodigo(f'fmt.Println("posicion, valor")\n')
+        self.addCodigo(f'for i := 0; i < 100; i++ {{\n')
+        self.addCodigo(f'fmt.Println(i, " ", heap[i])\n')
+        self.addCodigo(f'}}\n')
+    
+    def visualizarStack(self):
+        self.setImport('fmt')
+        self.addCodigo(f'fmt.Println("STACK")\n')
+        self.addCodigo(f'fmt.Println("posicion, valor")\n')
+        self.addCodigo(f'for i := 0; i < 100; i++ {{\n')
+        self.addCodigo(f'fmt.Println(i, " ", stack[i])\n')
+        self.addCodigo(f'}}\n')

@@ -8,3 +8,5 @@ class Retorno2:
         self.referencia = referencia
         self.trueLabel = ''
         self.falseLabel = ''
+        self.arr = []
+        self.verifArraydec = False

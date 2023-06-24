@@ -156,38 +156,84 @@ class Consolelog(Instruccion):
         generador = gen.getInstance()
         print("ENTRO A IMPRIMIR")
         exp = self.expresion.genC3D(entorno, helper)
+        print("IMPRIMIR CON EL TIPO:", exp.tipo)
         if exp != None:
-            if exp.tipo == TIPO_DATO.NUMERO:
-                generador.addPrint('f', exp.valor)
-            elif exp.tipo == TIPO_DATO.CHAR:
-                generador.addPrintChar(exp.valor)
-            elif exp.tipo == TIPO_DATO.CADENA:
-                generador.fPrintString()
+            if isinstance(exp.valor, list):
+                generador.addComment("Compilación del array")
+                temporal0 = generador.addTemp()
+                temporal1 = generador.addTemp()
 
+                generador.addAsignacion(temporal0, "H")
+                generador.addExpresion(temporal1, temporal0, '1', '+')
+                generador.setHeap('H', len(exp.valor))
+
+                apuntador = str(len(exp.valor)+1)
+                generador.addExpresion('H', 'H', apuntador, '+')
+                
+                length = 0
+                for val in exp.valor:
+                    if val.tipo== TIPO_DATO.NUMERO:
+                        generador.setHeap(temporal1, val.valor)
+                        generador.addExpresion(temporal1, temporal1, '1', '+')
+                        length += 1
+
+                generador.addComment("Fin de la compilación del array")
+
+                generador.fPrintArrayNums()
                 paramTemp = generador.addTemp()
                 generador.addExpresion(paramTemp, 'P', entorno.size , '+')
                 generador.addExpresion(paramTemp, paramTemp, '1', '+')
-                generador.setStack(paramTemp, exp.valor)
+                generador.setStack(paramTemp, temporal0)
                 generador.crearEntorno(entorno.size)
 
-                generador.callFun('printString')
+                generador.callFun('printArray')
 
                 temp = generador.addTemp()
                 generador.getStack(temp, 'P')
                 generador.retornarEntorno(entorno.size)
-            elif exp.tipo == TIPO_DATO.BOOLEANO:
-                tempLbl = generador.newLabel()
-                generador.putLabel(exp.trueLabel)
-                generador.printTrue()
+            else:
+                if exp.tipo == TIPO_DATO.NUMERO:
+                    generador.addPrint('f', exp.valor)
+                elif exp.tipo == TIPO_DATO.CHAR:
+                    generador.addPrintChar(exp.valor)
+                elif exp.tipo == TIPO_DATO.CADENA:
+                    generador.fPrintString()
 
-                generador.addGoto(tempLbl)
+                    paramTemp = generador.addTemp()
+                    generador.addExpresion(paramTemp, 'P', entorno.size , '+')
+                    generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                    generador.setStack(paramTemp, exp.valor)
+                    generador.crearEntorno(entorno.size)
 
-                generador.putLabel(exp.falseLabel)
-                generador.printFalse()
+                    generador.callFun('printString')
 
-                generador.putLabel(tempLbl)
-            elif exp.tipo == TIPO_DATO.ARRAY and exp.tipo == TIPO_DATO.ARRAY_BOOLEAN and exp.tipo == TIPO_DATO.ARRAY_STRING and exp.tipo == TIPO_DATO.ARRAY_NUMBER:
-                pass
+                    temp = generador.addTemp()
+                    generador.getStack(temp, 'P')
+                    generador.retornarEntorno(entorno.size)
+                elif exp.tipo == TIPO_DATO.BOOLEANO:
+                    tempLbl = generador.newLabel()
+                    generador.putLabel(exp.trueLabel)
+                    generador.printTrue()
+
+                    generador.addGoto(tempLbl)
+
+                    generador.putLabel(exp.falseLabel)
+                    generador.printFalse()
+
+                    generador.putLabel(tempLbl)
+                elif exp.tipo == TIPO_DATO.ARRAY_NUMBER :
+                    generador.fPrintArrayNums()
+                    paramTemp = generador.addTemp()
+                    generador.addExpresion(paramTemp, 'P', entorno.size , '+')
+                    generador.addExpresion(paramTemp, paramTemp, '1', '+')
+                    generador.setStack(paramTemp, exp.valor)
+                    generador.crearEntorno(entorno.size)
+
+                    generador.callFun('printArray')
+
+                    temp = generador.addTemp()
+                    generador.getStack(temp, 'P')
+                    generador.retornarEntorno(entorno.size)
 
             generador.addPrintChar(10.0)
 

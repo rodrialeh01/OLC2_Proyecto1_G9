@@ -913,7 +913,7 @@ var heap[30101999] float64;
         self.addPrintString('c', '10')
         self.addIndent()
 
-    def fPrintArray(self):
+    def fPrintArrayNums(self):
         if self.printArray:
             return
         self.printArray = True
@@ -921,7 +921,71 @@ var heap[30101999] float64;
 
         self.addComment('Funcion printArray')
         self.addBeginFunc('printArray')
-        #--------------------------------------
+
+        tempP = self.addTemp() # t1
+        # Temporal puntero a Heap
+        tempH = self.addTemp() # t2
+        self.addIndent()
+        self.addExpresion(tempP, 'P', '1', '+') # t1 = P + 1
+        self.addIndent()
+        self.getStack(tempH, tempP) # t2 = stack[t1]
+
+        templen = self.addTemp() # t3
+        self.getHeap(templen, tempH) # t3 = heap[t2]
+
+        self.addPrintString('c', '91') # [
+        
+        tempPos = self.addTemp() # t4
+        self.addIndent()
+        self.addExpresion(tempPos, tempH, '1', '+') # t4 = t2 + 1
+
+        tempContador = self.addTemp() # t5
+        self.addAsignacion(tempContador, '0') # t5 = 0
+        # L1
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        L3 = self.newLabel()
+        L4 = self.newLabel()
+        self.putLabel(L1)
+
+        self.addIndent()
+        self.addIf(tempContador, templen, '!=', L2) # if t5 != t3 goto L2
+        self.addIndent()
+        self.addGoto(L4) # goto L3
+
+        # L2
+        self.putLabel(L2)
+        self.addIndent()
+        tp = self.addTemp() # t6
+        self.getHeap(tp, tempPos) # t6 = heap[t4]
+        self.addPrint('f',tp)
+        self.addIndent()
+        tp2 = self.addTemp() # t7
+        self.addExpresion(tp2, templen, '1', '-') # t7 = t4 - 1
+        self.addIndent()
+        self.addIf(tp2, tempContador, '==', L3) # if t7 != t5 goto L3
+        self.addIndent()
+        self.addPrintString('c', '44') # ,
+        self.addExpresion(tempContador, tempContador, '1', '+') # t5 = t5 + 1
+        self.addIndent()
+        self.addExpresion(tempPos, tempPos, '1', '+') # t4 = t4 + 1
+        self.addIndent()
+        self.addGoto(L1) # goto L1
+
+        # L3
+        self.putLabel(L3)
+        self.addIndent()
+        self.addPrintString('c', '93') # ]
+        self.addExpresion(tempContador, tempContador, '1', '+') # t5 = t5 + 1
+        self.addIndent()
+        self.addExpresion(tempPos, tempPos, '1', '+') # t4 = t4 + 1
+        self.addIndent()
+        self.addGoto(L1) # goto L1
+
+        # L4
+        self.putLabel(L4)
+        self.addIndent()
+
         self.addEndFunc()
         self.inNative = False
 

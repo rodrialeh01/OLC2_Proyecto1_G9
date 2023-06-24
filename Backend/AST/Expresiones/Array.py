@@ -68,5 +68,7 @@ class Array(Expresion):
                 print(exp)
                 exp.genC3D(entorno, helper)
                 arr.append(exp)
+
             ret = Retorno2(arr, TIPO_DATO.ARRAY, False)
+            ret
             return ret

@@ -29,6 +29,7 @@ class Generador:
         self.strNumber = False
         self.strBoolean = False
         self.strString = False
+        self.printArray = False
         self.importaciones = [] #lista de importaciones
         self.importaciones2 = ['fmt', 'math']
 
@@ -56,7 +57,10 @@ class Generador:
         self.uppercase = False
         self.lowercase = False
         self.toFixed = False
-
+        self.strNumber = False
+        self.strBoolean = False
+        self.strString = False
+        self.printArray = False
         Generador.generador = Generador()
 
     #*
@@ -417,10 +421,7 @@ var heap[30101999] float64;
         print(self.inFunc)
         # Label para salir de la funcion
         returnLbl = self.newLabel()
-        print("RETURN LABEL", returnLbl) #L0
-        # Label para la comparacion para buscar fin de cadena
         compareLbl = self.newLabel()
-        print("COMPARE LABEL", compareLbl) #L1
         # Temporal puntero a Stack
         tempP = self.addTemp() # t1
         # Temporal puntero a Heap
@@ -895,6 +896,37 @@ var heap[30101999] float64;
 
         self.addEndFunc()
         self.inNative = False
+
+    def fPrintError(self):
+        self.setImport('fmt')
+        self.addIndent()
+        self.addPrintString('c', '69')
+        self.addIndent()
+        self.addPrintString('c', '82')
+        self.addIndent()
+        self.addPrintString('c', '82')
+        self.addIndent()
+        self.addPrintString('c', '79')
+        self.addIndent()
+        self.addPrintString('c', '82')
+        self.addIndent()
+        self.addPrintString('c', '10')
+        self.addIndent()
+
+    def fPrintArray(self):
+        if self.printArray:
+            return
+        self.printArray = True
+        self.inNative = True
+
+        self.addComment('Funcion printArray')
+        self.addBeginFunc('printArray')
+        #--------------------------------------
+        self.addEndFunc()
+        self.inNative = False
+
+
+
 
     #! --------------------------------------------------!
     #!                    EXTRAS                         !

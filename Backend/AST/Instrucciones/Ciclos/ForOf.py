@@ -149,6 +149,12 @@ class ForOf(Instruccion):
             for instruccion in self.instrucciones:
                 generador.addComment("Instruccion ForOf")
                 result = instruccion.genC3D(entornoLocal2, helper)
+                if isinstance(instruccion, Break):
+                    generador.addGoto(labelsalida)
+                if isinstance(instruccion, Continue):
+                    generador.addGoto(regreso)
+                if isinstance(instruccion, Return):
+                    generador.addGoto(labelsalida)
                 #verificar los break, return y continue
             
             temp3 = generador.addTemp() #se crea un nuevo temporal

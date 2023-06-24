@@ -2,8 +2,8 @@ from AST.Abstract.Expresion import Expresion
 from AST.Expresiones.Llamada import Llamada
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO
-from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.generador import Generador
+from AST.Simbolos.Retorno import Retorno
 from AST.Simbolos.Retorno2 import Retorno2
 
 arr = []
@@ -65,10 +65,8 @@ class Array(Expresion):
             pass
         else:
             for exp in self.expresiones:
+                print(exp)
                 exp.genC3D(entorno, helper)
                 arr.append(exp)
-            print(arr.shape)
             ret = Retorno2(arr, TIPO_DATO.ARRAY, False)
             return ret
-
-        

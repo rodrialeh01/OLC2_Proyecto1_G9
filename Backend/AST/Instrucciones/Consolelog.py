@@ -186,7 +186,11 @@ class Consolelog(Instruccion):
                 generador.printFalse()
 
                 generador.putLabel(tempLbl)
+            elif exp.tipo == TIPO_DATO.ARRAY and exp.tipo == TIPO_DATO.ARRAY_BOOLEAN and exp.tipo == TIPO_DATO.ARRAY_STRING and exp.tipo == TIPO_DATO.ARRAY_NUMBER:
+                pass
+
             generador.addPrintChar(10.0)
+
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")

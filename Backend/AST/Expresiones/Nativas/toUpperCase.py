@@ -58,3 +58,7 @@ class ToUpperCase(Expresion):
             generador.retornarEntorno(entorno.size)
             print(generador.codigo)
             return Retorno2(temp2, TIPO_DATO.CADENA, True)
+        elif exp.tipo == TIPO_DATO.CHAR:
+            tmp = generador.addTemp()
+            generador.addExpresion(tmp, exp.valor, 32, '-')
+            return Retorno2(tmp, TIPO_DATO.CHAR, True)

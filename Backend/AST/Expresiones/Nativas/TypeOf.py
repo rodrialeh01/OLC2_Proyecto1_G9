@@ -48,7 +48,7 @@ class TypeOf(Expresion):
             else:
                 generador.setStack(temp, 0)
 
-        if exp.tipo == TIPO_DATO.CADENA:
+        if exp.tipo == TIPO_DATO.CADENA or exp.tipo == TIPO_DATO.CHAR:
             generador.addAsignacion('H', exp.valor)
             generador.fStringString()
             generador.callFun('typeString')

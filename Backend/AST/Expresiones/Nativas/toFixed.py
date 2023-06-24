@@ -5,6 +5,7 @@ from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.generador import Generador
 from AST.Simbolos.Retorno import Retorno
 from AST.SingletonErrores import SingletonErrores
+from AST.Simbolos.Retorno2 import Retorno2
 
 
 class ToFixed(Expresion):
@@ -53,26 +54,20 @@ class ToFixed(Expresion):
         tempCantidad = generador.addTemp()
 
         if exp.tipo == TIPO_DATO.NUMERO and cantidad.tipo == TIPO_DATO.NUMERO:
-            if exp.isTemp and cantidad.isTemp:
-                generador.addAsignacion('P', exp.valor)
-                generador.getStack(tempExp, 'P')
-                    
-                generador.addAsignacion('P', cantidad.valor)
-                generador.getStack(tempCantidad, 'P')
-            elif exp.isTemp and not cantidad.isTemp:
-                generador.addAsignacion('P', exp.valor)
-                generador.getStack(tempExp, 'P')
+            
+            generador.addAsignacion(tempExp, exp.valor)
+            generador.addAsignacion(tempCantidad, cantidad.valor)
+            
+            tempRes = generador.addTemp()
+            tempMult = generador.addTemp()
 
-                generador.addAsignacion(tempCantidad, cantidad.valor)
-            elif not exp.isTemp and cantidad.isTemp:
-                generador.addAsignacion(tempExp, exp.valor)
+            generador.addExpresion(tempMult, tempCantidad, 10, '*')
+            tempExpRound = generador.addTemp()
+            generador.addExpresion(tempExpRound, tempExp, tempMult, '*')
+            generador.fotmatPrint(tempRes, tempMult, tempExpRound)
 
-                generador.addAsignacion('P', cantidad.valor)
-                generador.getStack(tempCantidad, 'P')
-            elif not exp.isTemp and not cantidad.isTemp:
-                generador.addAsignacion(tempExp, exp.valor)
+            return Retorno2(tempRes, TIPO_DATO.NUMERO, True)
 
-                generador.addAsignacion(tempCantidad, cantidad.valor)
         else:
             generador.addComment("Hubo un error en toFixed. No se puede realizar la operación")
             

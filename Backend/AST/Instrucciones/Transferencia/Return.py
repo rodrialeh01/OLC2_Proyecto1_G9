@@ -38,10 +38,9 @@ class Return(Instruccion):
             return nodo
     
     def genC3D(self, entorno, helper):
-        #print("QUIERO VER ESTE PRINT:::::::::: ", self.valor)
         result = self.valor.genC3D(entorno, helper)
         if result.valor == None:
-            print("ESTE ES UN ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR")
+            return None
         if isinstance(result, Error):
 
             return None

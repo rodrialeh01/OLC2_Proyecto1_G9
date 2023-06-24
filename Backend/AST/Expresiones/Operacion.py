@@ -1,5 +1,6 @@
 from AST.Abstract.Expresion import Expresion
 from AST.Error import Error
+from AST.Expresiones.Llamada import Llamada
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import (TIPO_DATO, TIPO_OPERACION_ARITMETICA,
                                 obtTipoDato)
@@ -141,8 +142,21 @@ class Operacion(Expresion):
         generador = gen.getInstance()
         temporal = ''
         operador = ''
+        val2 = ''
+
         val1 = self.exp1.genC3D(entorno, helper)
-        val2 = self.exp2.genC3D(entorno, helper)
+        if self.unario:
+            tempUnario = generador.addTemp()
+            generador.addExpresion(tempUnario, 0, val1.valor, '-')
+            return Retorno2(tempUnario, TIPO_DATO.NUMERO, True)
+
+        if isinstance(self.exp2, Llamada):
+            self.exp2.guardarTemps(generador, entorno, [val1.valor])
+            val2 = self.exp2.genC3D(entorno, helper)
+            self.exp2.recuperarTemps(generador, entorno, [val1.valor])
+        else:
+            val2 = self.exp2.genC3D(entorno, helper)
+        
         if self.operador == TIPO_OPERACION_ARITMETICA.SUMA:
             operador = '+'
             temporal = generador.addTemp()

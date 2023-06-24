@@ -22,9 +22,13 @@ class Generador:
         self.concatString = False
         self.toNumber = False
         self.toString = False
+        self.typeOf = False
         self.uppercase = False
         self.lowercase = False
         self.toFixed = False
+        self.strNumber = False
+        self.strBoolean = False
+        self.strString = False
         self.importaciones = [] #lista de importaciones
         self.importaciones2 = ['fmt', 'math']
 
@@ -44,6 +48,14 @@ class Generador:
         # ? Limpieza de Nativas:
         self.printString = False
         self.compareString = False
+        self.length = False
+        self.concatString = False
+        self.toNumber = False
+        self.toString = False
+        self.typeOf = False
+        self.uppercase = False
+        self.lowercase = False
+        self.toFixed = False
 
         Generador.generador = Generador()
 
@@ -215,6 +227,11 @@ var heap[30101999] float64;
     #*
     #* PRINT
     #*
+
+    def fotmatPrint(self,temp, presicion, num):
+        self.setImport('math')
+        self.addCodigo(f'{temp} = math.Round({num})/({presicion});\n')
+
     def addPrint(self, type, valor):
         self.setImport('fmt')
         self.addCodigo(f'fmt.Printf("%{type}", float64({valor}));\n')
@@ -282,6 +299,20 @@ var heap[30101999] float64;
     #!                    NATIVAS                        !
     #! --------------------------------------------------!
     
+    # ? typeof()
+    def fTypeOf(self):
+        if self.typeOf:
+            return
+        self.inNative = True
+        self.typeOf = True
+        self.addBeginFunc('typeOf')
+
+        
+
+        self.addEndFunc()
+        self.inNative = False
+
+
     # ? ToFixed()
     def fToFixed(self):
         if self.toFixed:
@@ -681,8 +712,189 @@ var heap[30101999] float64;
         if self.lowercase:
             return
         self.lowercase = True
-        
+        self.inNative = True
 
+        self.addComment('Funcion toLowerCase')
+        self.addBeginFunc('toLowerCase')
+
+
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        t2 = self.addTemp()
+
+        self.addAsignacion(t0, 'H') # guarda la posicion del heap
+
+        L1 = self.newLabel()
+        L2 = self.newLabel()
+        L3 = self.newLabel()
+        L4 = self.newLabel()
+        L5 = self.newLabel()
+        L6 = self.newLabel()
+        L7 = self.newLabel()
+
+        #L1:
+        self.putLabel(L1)
+        self.addIndent()
+        self.getHeap(t2, 'H') # guarda el valor del heap en th
+        self.addIndent()
+        self.addIf(t2, '-1', '!=', L2) # si es diferente de -1, continua
+        self.addIndent()
+        self.addGoto(L3) # si es -1, termina el ciclo
+
+        #L2:
+        self.putLabel(L2)
+        self.addIndent()
+        self.addIf(t2, 65, '>=', L4) # si es mayor o igual a 97, continua
+        self.addIndent()
+        self.addGoto(L5)
+
+        #L4:
+        self.putLabel(L4)
+        self.addIndent()
+        self.addIf(t2, 90, '<=', L6) # si es menor o igual a 122, continua
+        self.addIndent()
+        self.addGoto(L5)
+
+        #L6:
+        t3 = self.addTemp()
+        self.putLabel(L6)
+        self.addIndent()
+        self.addExpresion(t3, t2, 32, '+')
+        self.addIndent()
+        self.setHeap('H', t3)
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+        self.addExpresion(t2, t2, 1, '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        #L3
+        self.putLabel(L3)
+        self.addIndent()
+        self.setHeap('H', '-1')
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+
+        self.setStack(t1, t0)
+        self.addGoto(L7)
+
+        #L5
+        self.putLabel(L5)
+        self.setHeap('H', t2)
+        self.addIndent()
+        self.nextHeap()
+        self.addIndent()
+        self.addExpresion(t2, t2, 1, '+')
+        self.addIndent()
+        self.addGoto(L1)
+
+        #L7
+        self.putLabel(L7)
+        
+        #fin funcion
+        self.addEndFunc()
+        self.inNative = False
+
+    def fStringNumber(self):
+        if self.strNumber:
+            return
+        self.strNumber = True
+        self.inNative = True
+
+        self.addComment('Funcion stringNumber')
+        self.addBeginFunc('typeNumber')
+
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        self.addAsignacion(t0, 'H') # guarda la posicion del heap
+
+        
+        self.setHeap('H', 78)#N
+        self.nextHeap()
+        self.setHeap('H', 117)#u
+        self.nextHeap()
+        self.setHeap('H', 109)#m
+        self.nextHeap()
+        self.setHeap('H', 98)#b
+        self.nextHeap()
+        self.setHeap('H', 101)#e
+        self.nextHeap()
+        self.setHeap('H', 114)#r
+        self.nextHeap()
+        self.setHeap('H', -1)#-1
+        self.nextHeap()
+        self.setStack(t1, t0)
+
+        self.addEndFunc()
+        self.inNative = False
+
+    def fStringBoolean(self):
+        if self.strBoolean:
+            return
+        self.strBoolean = True
+        self.inNative = True
+
+        self.addComment('Funcion typeBoolean')
+        self.addBeginFunc('typeBoolean')
+
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        self.addAsignacion(t0, 'H') # guarda la posicion del heap
+
+        self.setHeap('H', 66)#B
+        self.nextHeap()
+        self.setHeap('H', 111)#o
+        self.nextHeap()
+        self.setHeap('H', 111)#o
+        self.nextHeap()
+        self.setHeap('H', 108)#l
+        self.nextHeap()
+        self.setHeap('H', 101)#e
+        self.nextHeap()
+        self.setHeap('H', 97)#a
+        self.nextHeap()
+        self.setHeap('H', 110)#n
+        self.nextHeap()
+        self.setHeap('H', -1)#-1
+        self.nextHeap()
+        self.setStack(t1, t0)
+
+        self.addEndFunc()
+        self.inNative = False
+
+    def fStringString(self):
+        if self.strString:
+            return
+        self.strString = True
+        self.inNative = True
+
+        self.addComment('Funcion typeString')
+        self.addBeginFunc('typeString')
+
+        t0 = self.addTemp()
+        t1 = self.addTemp()
+        self.addAsignacion(t0, 'H') # guarda la posicion del heap
+
+        self.setHeap('H', 83)#S
+        self.nextHeap()
+        self.setHeap('H', 116)#t
+        self.nextHeap()
+        self.setHeap('H', 114)#r
+        self.nextHeap()
+        self.setHeap('H', 105)#i
+        self.nextHeap()
+        self.setHeap('H', 110)#n
+        self.nextHeap()
+        self.setHeap('H', 103)#g
+        self.nextHeap()
+        self.setHeap('H', -1)#-1
+        self.nextHeap()
+        self.setStack(t1, t0)
+
+        self.addEndFunc()
+        self.inNative = False
 
     #! --------------------------------------------------!
     #!                    EXTRAS                         !

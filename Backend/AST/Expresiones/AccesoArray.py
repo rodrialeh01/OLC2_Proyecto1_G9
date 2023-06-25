@@ -18,7 +18,6 @@ class AccesoArray(Expresion):
 
 
     def ejecutar(self, entorno, helper):
-
         #buscar el id en el entorno
         existe = entorno.ExisteSimbolo(self.id)
         if not existe:
@@ -30,15 +29,19 @@ class AccesoArray(Expresion):
             Retorno(None, TIPO_DATO.ERROR)
         
         simbolo = entorno.ObtenerSimbolo(self.id)
-        
+        print("-------------------------------")
+        print(simbolo.tipo)
         listaAccesos = []
         #verificar que sea un array
         for a in self.accesos:
+            print(a)
             listaAccesos.append(a.ejecutar(entorno, helper).valor)
         xd = self.accesar(listaAccesos, simbolo, entorno, helper)
+        print("XXDXDXD", xd)
         return xd
 
     def accesar(self, pila, lista, entorno, helper):
+        print("UNA VEZ: ", pila)
         if len(pila) == 0:
             return lista
         else:
@@ -186,7 +189,7 @@ class AccesoArray(Expresion):
             '''
 
     def genArbol(self) -> Nodo:
-        nodo = Nodo("ACCESO ARRAY")
+        nodo = Nodo("=[]")
         nodo.agregarHijo(Nodo(str(self.id)))
         listaAcc = []
         for a in self.accesos:

@@ -20,10 +20,12 @@ class Array(Expresion):
     def ejecutar(self, entorno, helper):
         global arr
         arr = []
+        arrret = []
         if not isinstance(self.expresiones, Llamada):
             for exp in self.expresiones:
-                arr.append(exp.ejecutar(entorno, helper))
-            retor = Retorno(arr, TIPO_DATO.ARRAY)
+                arrret.append(exp.ejecutar(entorno, helper))
+            retor = Retorno(arrret, TIPO_DATO.ARRAY)
+            arr = arrret
             return retor
         else:
             a = self.expresiones.ejecutar(entorno, helper)
@@ -70,5 +72,4 @@ class Array(Expresion):
                 arr.append(exp)
 
             ret = Retorno2(arr, TIPO_DATO.ARRAY, False)
-            ret
             return ret

@@ -8,10 +8,13 @@ class Params_Declarado(Expresion):
         self.expresion = expresion
         self.linea = linea
         self.columna = columna
-        
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         return self
+    
+    def genC3D(self, entorno, helper):
+        pass
     
     def genArbol(self) -> Nodo:
         

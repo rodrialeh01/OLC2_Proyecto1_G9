@@ -9,9 +9,12 @@ class Params_Interface(Instruccion):
         self.tipo = tipo
         self.linea = linea
         self.columna = columna
-        
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
+        pass
+
+    def genC3D(self, entorno, helper):
         pass
 
     def genArbol(self) -> Nodo:

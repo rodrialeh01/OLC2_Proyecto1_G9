@@ -57,7 +57,8 @@ class Funcion(Simbolo, Instruccion):
     def ejecutar(self, entorno, helper):
         tempHelper = helper.getFuncion()
         helper.setFuncion("Funcion")
-        
+        print("EEEEEEEEEEEEEEEEEEEEEEEEEEL TIPOOOOOOOOOOOOOOOOOOOOOOOOOOOOO:")
+        print(self.tipo)
         for instruccion in self.listaInstrucciones:
 
             #instruccion.ejecutar(entorno, helper)
@@ -67,17 +68,20 @@ class Funcion(Simbolo, Instruccion):
 
             if accion is not None:
                 if isinstance(accion, Return) or isinstance(accion, Retorno):
-                    if isinstance(accion.valor, int) or isinstance(accion.valor, float):
+                    if (isinstance(accion.valor, int) or isinstance(accion.valor, float)) and not isinstance(accion.valor, bool):
                         accion.tipo = TIPO_DATO.NUMERO
                     elif isinstance(accion.valor, str):
                         accion.tipo = TIPO_DATO.CADENA
                     elif isinstance(accion.valor, bool):
+                        print("le asigno acá que si es booleano")
                         accion.tipo = TIPO_DATO.BOOLEANO
                     #verificar que el tipo de dato que se retorna sea el mismo que el de la funcion
                     if accion.tipo is not TIPO_DATO.NULL or accion.tipo is not TIPO_DATO.ERROR:
                         helper.setFuncion(tempHelper)
                         if self.tipo is not None:
                             if isinstance(self.tipo, TIPO_DATO):
+                                print("TIPO DE DATO DE LA FUNCION: ", self.tipo)
+                                print("TIPO DE DATO DEL RETURN: ", accion.tipo)
                                 if self.tipo is not accion.tipo:
                                     s = SingletonErrores.getInstance()
                                     err = Error(self.linea, self.columna, "Error Semántico", "El tipo de dato de retorno no coincide con el de la funcion")

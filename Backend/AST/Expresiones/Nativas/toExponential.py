@@ -12,6 +12,7 @@ class ToExponential(Expresion):
         self.cantidad = cantidad
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         valor = self.expresion.ejecutar(entorno, helper)
@@ -32,6 +33,8 @@ class ToExponential(Expresion):
         formato = "{:." + str(int(cantidad.valor)) + "e}"
         return Retorno(formato.format(float(valor.valor)), TIPO_DATO.CADENA)
 
+    def genC3D(self, entorno, helper):
+        pass
     def genArbol(self) -> Nodo:
         nodo = Nodo("TO_EXPONENTIAL")
         nodo.agregarHijo(self.expresion.genArbol())

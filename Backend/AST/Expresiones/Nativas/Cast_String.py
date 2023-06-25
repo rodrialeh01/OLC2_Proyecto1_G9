@@ -9,6 +9,7 @@ class Cast_String(Expresion):
         self.expresion = expresion
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         valor = self.expresion.ejecutar(entorno, helper)
@@ -28,6 +29,9 @@ class Cast_String(Expresion):
         nodo = Nodo("STRING")
         nodo.agregarHijo(self.expresion.genArbol())
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        pass
 
     def ToStringArrays(self, arr, arrexist):
         for a in arrexist:

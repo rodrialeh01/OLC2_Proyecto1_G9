@@ -22,6 +22,7 @@ class DeclaracionArray(Instruccion):
 
     
     def ejecutar(self, entorno, helper):
+        print("Declaracion Array")
         exp = self.expresion.ejecutar(entorno, helper) #obtiene objeto Array
         if isinstance(self.tipo, TIPO_DATO):
             bandera = True

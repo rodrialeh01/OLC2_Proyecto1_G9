@@ -16,8 +16,11 @@ class Length(Expresion):
         super().__init__()
 
     def ejecutar(self, entorno, helper):
+        print("length")
         valor = self.exp1.ejecutar(entorno, helper)
-
+        print(valor)
+        print("AAAAAAAAAAAAAAAAAAAAA")
+        print(valor.tipo)
         if valor.tipo == TIPO_DATO.NUMERO or valor.tipo == TIPO_DATO.BOOLEANO:
             s = SingletonErrores.getInstance()
             err = Error(self.linea, self.columna, "Error Semántico", "No es posible obtener 'length' para una variable de tipo " + str(obtTipoDato(valor.tipo)) +"." )

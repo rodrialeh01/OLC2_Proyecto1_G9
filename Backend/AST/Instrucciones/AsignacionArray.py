@@ -12,6 +12,7 @@ class AsignacionArray(Instruccion):
         self.expresion = expresion
         self.linea = linea
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
 
@@ -114,3 +115,6 @@ class AsignacionArray(Instruccion):
         igual.agregarHijo(self.expresion.genArbol())
         nodo.agregarHijo(igual)
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        pass

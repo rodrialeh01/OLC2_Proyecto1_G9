@@ -21,11 +21,9 @@ class Declaracion(Instruccion):
         super().__init__()
     
     def ejecutar(self, entorno, helper):
-
-        print("Declaracion")
         identificador = self.id
         tipo = self.tipo
-        print(tipo)
+        
         existe = entorno.BuscarSimboloLocal(identificador)
         if not existe:
             existe = entorno.BuscarInterfaceLocal(identificador)

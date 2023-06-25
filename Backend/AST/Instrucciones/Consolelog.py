@@ -240,5 +240,9 @@ class Consolelog(Instruccion):
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("CONSOLE_LOG")
-        nodo.agregarHijo(self.expresion.genArbol())
+        if not isinstance(self.expresion, list):
+            nodo.agregarHijo(self.expresion.genArbol())
+        else:
+            for exp in self.expresion:
+                nodo.agregarHijo(exp.genArbol())
         return nodo

@@ -12,6 +12,7 @@ class Push(Instruccion):
         self.expresion = expresion
         self.linea = linea
         self.columna = columna
+        super().__init__()
     
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteSimbolo(self.id)
@@ -80,3 +81,6 @@ class Push(Instruccion):
         nodo.agregarHijo(str(self.id))
         nodo.agregarHijo(self.expresion.genArbol())
         return nodo
+    
+    def genC3D(self, entorno, helper):
+        pass

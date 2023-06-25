@@ -624,16 +624,16 @@ def p_funcion_5(t):
 
 def p_function_Array(t):
     '''
-    funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo CORIZQ CORDER bloque
+    funcion : FUNCTION ID PARIZQ lista_parametros PARDER DOSPUNTOS tipo listaCorchetes bloque
     '''
     if t[7] == TIPO_DATO.NUMERO:
-        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_NUMBER)
+        t[0] = Funcion(t[2], t[4], t[9], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_NUMBER)
     elif t[7] == TIPO_DATO.CADENA:
-        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_STRING)
+        t[0] = Funcion(t[2], t[4], t[9], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_STRING)
     elif t[7] == TIPO_DATO.BOOLEANO:
-        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_BOOLEAN)
+        t[0] = Funcion(t[2], t[4], t[9], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY_BOOLEAN)
     else:
-        t[0] = Funcion(t[2], t[4], t[10], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY)
+        t[0] = Funcion(t[2], t[4], t[9], t.lineno(1), t.lexpos(1), TIPO_DATO.ARRAY)
 
 # ? lista_parametros : lista_parametros COMA ID DOSPUNTOS tipo
 # ?                  | ID DOSPUNTOS tipo
@@ -664,17 +664,17 @@ def p_parametro0(t):
 
 def p_parametro_1(t):
     '''
-    parametro : ID DOSPUNTOS tipo CORIZQ CORDER
+    parametro : ID DOSPUNTOS tipo listaCorchetes
     '''
     #print("Parametro Array")
     if t[3] == TIPO_DATO.NUMERO:
         t[0] = Parametro(t[1], TIPO_DATO.ARRAY_NUMBER, None, t.lineno(1), t.lexpos(1), False)
     elif t[3] == TIPO_DATO.CADENA:
         t[0] = Parametro(t[1], TIPO_DATO.ARRAY_STRING, None, t.lineno(1), t.lexpos(1), False)
-    elif t[3] == TIPO_DATO.BOOLEAN:
+    elif t[3] == TIPO_DATO.BOOLEANO:
         t[0] = Parametro(t[1], TIPO_DATO.ARRAY_BOOLEAN, None, t.lineno(1), t.lexpos(1), False)
     else:
-        t[0] = Parametro(t[1], TIPO_DATO.ARRAY_ANY, None, t.lineno(1), t.lexpos(1), False)
+        t[0] = Parametro(t[1], TIPO_DATO.ARRAY, None, t.lineno(1), t.lexpos(1), False)
 
 # ? expresion : llamada_funcion
 def p_exp_llamada(t):
@@ -979,6 +979,12 @@ def p_casteo(t):
     '''
     t[0] = ToString(t[1], t.lineno(1), t.lexpos(1))
 
+def p_casteo_0(t):
+    '''
+    casteo : TOSTRING PARIZQ expresion PARDER
+    '''
+    t[0] = ToString(t[3], t.lineno(1), t.lexpos(1))
+
 def p_casteo_1(t):
     '''
     casteo : CAST_STRING PARIZQ expresion PARDER
@@ -1127,6 +1133,18 @@ def p_asignacionInterface2(t):
 # ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER
 # ?                  | LET ID DOSPUNTOS ID CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
 
+def p_listaCorchetes(t):
+    '''
+    listaCorchetes : listaCorchetes CORIZQ CORDER
+    '''
+    t[1].append(1)
+    t[0] = t[1]
+
+def p_listaCorchetes2(t):
+    '''
+    listaCorchetes : CORIZQ CORDER
+    '''
+    t[0] = [1]
 
 def p_declaracionArray3(t):
     '''
@@ -1151,17 +1169,19 @@ def p_declaracionArray5(t):
 
 def p_declaracionArray6(t):
     '''
-    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER
+    declaracionArray : LET ID DOSPUNTOS tipo listaCorchetes
     '''
+    print(t[5])
     exp = Array([], t.lineno(1), t.lexpos(1))
     t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
     
 
 def p_declaracionArray7(t):
     '''
-    declaracionArray : LET ID DOSPUNTOS tipo CORIZQ CORDER IGUAL CORIZQ lista_exp CORDER
+    declaracionArray : LET ID DOSPUNTOS tipo listaCorchetes IGUAL CORIZQ lista_exp CORDER
     '''
-    exp = Array(t[9], t.lineno(1), t.lexpos(1))
+    print("declaracion arrfsdsfsafsdfay")
+    exp = Array(t[8], t.lineno(1), t.lexpos(1))
     t[0] = DeclaracionArray(t[2], t[4], exp, t.lineno(1), t.lexpos(1))
     #[Expresion, Expresion, Expresion]
     #[Array, Array, Array]
@@ -1175,7 +1195,7 @@ def p_declaracionArray8(t):
 
 def p_declaracionArray9(t):
     '''
-    declaracionArray : LET ID IGUAL CORIZQ CORDER
+    declaracionArray : LET ID IGUAL listaCorchetes
     '''
     exp = Array([], t.lineno(1), t.lexpos(1))
     t[0] = DeclaracionArray(t[2], TIPO_DATO.ARRAY, exp, t.lineno(1), t.lexpos(1))
@@ -1191,8 +1211,13 @@ def p_declaracionArray10(t):
     '''
     declaracionArray : LET ID IGUAL CORIZQ lista_exp CORDER
     '''
+    print()
+    print(t[5])
+    print()
     exp = Array(t[5], t.lineno(1), t.lexpos(1))
+    print("**************************************")
     t[0] = DeclaracionArray(t[2], TIPO_DATO.ARRAY, exp, t.lineno(1), t.lexpos(1))
+    print("**************************************")
 
 def p_declaracionArray12(t):
     '''
@@ -1227,7 +1252,7 @@ def p_declaracionArray15(t):
 
 def p_lista_exp(t):
     '''
-    lista_exp : lista_exp COMA expresion
+    lista_exp : lista_exp COMA expresion 
     '''
     t[1].append(t[3])
     t[0] = t[1]
@@ -1254,11 +1279,12 @@ def p_array(t):
     '''
     arreglo : CORIZQ lista_exp CORDER
     '''
+    print("arreglo")
     t[0] = Array(t[2], t.lineno(1), t.lexpos(1))
 
 def p_array2(t):
     '''
-    arreglo : CORIZQ CORDER
+    arreglo : listaCorchetes
     '''
     t[0] = Array([], t.lineno(1), t.lexpos(1))
 

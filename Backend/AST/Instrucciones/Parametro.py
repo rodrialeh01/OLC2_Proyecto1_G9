@@ -21,8 +21,6 @@ class Parametro(Instruccion):
         self.valorRef = None 
 
     def ejecutar(self, entorno, helper):
-        #print("**********************PARAMETRO")
-        #print(self.tipo)
         #print(self.utilizado.tipo)
         #print(self.id)
         if self.valor != None or self.utilizado != None:

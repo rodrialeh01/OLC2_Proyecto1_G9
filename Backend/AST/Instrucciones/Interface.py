@@ -13,8 +13,7 @@ class Interface(Simbolo, Instruccion):
         self.listaParametros = listaParametros
         self.linea = linea
         self.columna = columna
-
-        #super().__init__()
+        super().__init__()
     
     def ejecutar(self, entorno, helper):
         self.crearInterface(self.id, self.listaParametros, self.linea, self.columna);
@@ -27,6 +26,9 @@ class Interface(Simbolo, Instruccion):
             s.addError(err)
             helper.setConsola("[ERROR] La interface " + self.id + " ya fue declarada anteriormente en el entorno actual en la línea "+ str(self.linea) +" y columna " + str(self.columna))
             return
+
+    def genC3D(self, entorno, helper):
+        pass
 
     def genArbol(self) -> Nodo:
         #print("ENTRO A CREAR INTERFACE")

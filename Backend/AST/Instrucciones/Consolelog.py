@@ -221,7 +221,7 @@ class Consolelog(Instruccion):
                     generador.printFalse()
 
                     generador.putLabel(tempLbl)
-                elif exp.tipo == TIPO_DATO.ARRAY_NUMBER :
+                elif exp.tipo == TIPO_DATO.ARRAY_NUMBER or exp.tipo == TIPO_DATO.ARRAY:
                     generador.fPrintArrayNums()
                     paramTemp = generador.addTemp()
                     generador.addExpresion(paramTemp, 'P', entorno.size , '+')
@@ -234,7 +234,8 @@ class Consolelog(Instruccion):
                     temp = generador.addTemp()
                     generador.getStack(temp, 'P')
                     generador.retornarEntorno(entorno.size)
-
+                else:
+                    generador.addComment(exp.tipo)
             generador.addPrintChar(10.0)
 
 

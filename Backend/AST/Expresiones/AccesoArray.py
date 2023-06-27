@@ -98,7 +98,7 @@ class AccesoArray(Expresion):
 
         
         print("ayno", len(sim.dimensiones))
-        if len(sim.dimensiones) == 1:
+        if len(sim.dimensiones) <= 1:
             print("UNA DIMENSION")
             if len(self.accesos) > 1:
                 generador.addComment("Solo se puede acceder a un indice a la vez")

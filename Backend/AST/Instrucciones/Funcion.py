@@ -207,7 +207,6 @@ class Funcion(Simbolo, Instruccion):
         generador.putLabel(labelRetorno)
         generador.addComment("Fin de la funcion " + self.nombre)
         generador.addEndFunc()
-        
         return
         
     def genArbol(self) -> Nodo:

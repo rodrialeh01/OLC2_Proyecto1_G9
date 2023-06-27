@@ -3,6 +3,7 @@ from AST.Error import Error
 from AST.Nodo import Nodo
 from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.SingletonErrores import SingletonErrores
+from AST.Simbolos.generador import Generador
 
 
 class AsignacionArray(Instruccion):
@@ -117,4 +118,64 @@ class AsignacionArray(Instruccion):
         return nodo
     
     def genC3D(self, entorno, helper):
-        pass
+        gen = Generador()
+        generador = gen.getInstance()
+        arr = entorno.ObtenerSimbolo(self.id)
+        tempAcceso = generador.addTemp()
+        acceso = self.accesos[0].genC3D(entorno, helper).valor
+        generador.addAsignacion(tempAcceso, acceso)
+        #C3D
+        generador.addComment("ACCESO ARRAY")
+
+        t0 = generador.addTemp()
+        t1 = generador.addTemp()
+        generador.getStack(t0, arr.posicion)
+        generador.getHeap(t1, t0)
+
+        t2 = generador.addTemp()
+        generador.addAsignacion(t2, "0") # contador
+        t3 = generador.addTemp()
+        generador.addExpresion(t3, t1, "1", "-") # length -1
+        if arr.tipo != TIPO_DATO.CADENA:
+            generador.addExpresion(t0, t0, "1", "+")
+        t4 = generador.addTemp()
+        L1 = generador.newLabel()
+        L2 = generador.newLabel()
+        L3 = generador.newLabel()
+        L4 = generador.newLabel()
+        L5 = generador.newLabel()
+
+        generador.addIf(acceso, t3, ">", L4)
+        generador.addGoto(L1)
+        
+        generador.putLabel(L1)
+        generador.addIndent()
+        generador.addIf(t2, t3, "<=", L2)
+        generador.addIndent()
+        generador.addGoto(L4)
+
+        generador.putLabel(L2)
+        generador.addIndent()
+        generador.addIf(t2, tempAcceso, "==", L3)
+        generador.addIndent()
+        generador.addExpresion(t2, t2, "1", "+")
+        generador.addExpresion(t0, t0, "1", "+")
+        generador.addGoto(L1)
+
+        generador.putLabel(L3)
+        generador.addIndent()
+        
+        generador.getHeap(t4, t0)
+        generador.setHeap(t0, self.expresion.genC3D(entorno, helper).valor)
+        generador.addGoto(L5)
+        
+
+        generador.putLabel(L4)
+        generador.addIndent()
+        generador.addComment("ERROR NO SE PUDO ACCESAR AL ARRAY")
+        generador.fPrintError()
+        generador.putLabel(L5)
+        generador.addComment("Fin del acceso del array")
+
+        print(arr)
+        

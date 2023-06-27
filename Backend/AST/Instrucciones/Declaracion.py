@@ -137,6 +137,10 @@ class Declaracion(Instruccion):
         return nodo
     
     def genC3D(self, entorno, helper):
+
+        print("9999999999999999999999999999999999999")
+        print(self.id)
+        print("9999999999999999999999999999999999999")
         gen = Generador()
         generador = gen.getInstance()
 

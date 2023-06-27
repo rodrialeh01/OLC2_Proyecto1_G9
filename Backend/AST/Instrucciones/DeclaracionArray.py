@@ -227,6 +227,7 @@ class DeclaracionArray(Instruccion):
                     posTemp = generador.addTemp()
                     generador.addExpresion(posTemp, "P", s_c3d.posicion, "+")
                 generador.setStack(posTemp, temp0)
+                
 
     def obtener_dimensiones(self, lista):
         if isinstance(lista, list):

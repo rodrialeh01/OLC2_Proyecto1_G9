@@ -19,6 +19,7 @@ class Length(Expresion):
         print("length")
         valor = self.exp1.ejecutar(entorno, helper)
         print(valor)
+        print(valor)
         print("AAAAAAAAAAAAAAAAAAAAA")
         print(valor.tipo)
         if valor.tipo == TIPO_DATO.NUMERO or valor.tipo == TIPO_DATO.BOOLEANO:
@@ -39,7 +40,8 @@ class Length(Expresion):
         valor = self.exp1.genC3D(entorno, helper)
         gen = Generador()
         generador = gen.getInstance()
-
+        print("SOY EL VALOR: ")
+        print(valor.tipo)
         generador.addComment("------- Length ---------")
         if valor.tipo == TIPO_DATO.CADENA:
             generador.flength()
@@ -54,3 +56,13 @@ class Length(Expresion):
             
 
             return Retorno2(temp, TIPO_DATO.NUMERO, True)            #return Retorno2('XD', TIPO_DATO.NUMERO, False)
+        elif valor.tipo == TIPO_DATO.ARRAY or valor.tipo == TIPO_DATO.ARRAY_NUMBER:
+            print("HOLAAAAAAAAAAAA")
+            #obteniendo el array:
+            generador.addComment("Obteniendo el array")
+            t0 = generador.addTemp()
+            t1 = generador.addTemp()
+            generador.getStack(t0, valor.valor)
+            generador.getHeap(t1, t0)
+            generador.addComment("Fin de obtener el array")
+            return Retorno2(t1, TIPO_DATO.NUMERO, True)

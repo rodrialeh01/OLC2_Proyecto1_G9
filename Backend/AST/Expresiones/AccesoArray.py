@@ -86,7 +86,7 @@ class AccesoArray(Expresion):
             return 
 
         sim = entorno.ObtenerSimbolo(self.id)
-
+        print(sim.dimensiones)
         if sim.tipo != TIPO_DATO.ARRAY and sim.tipo != TIPO_DATO.ARRAY_STRING and sim.tipo != TIPO_DATO.ARRAY_NUMBER and sim.tipo != TIPO_DATO.ARRAY_BOOLEAN and sim.tipo != TIPO_DATO.CADENA:
             generador.addComment("La variable " + self.id + " no es un array, es un " + obtTipoDato(sim.tipo))
             return
@@ -94,69 +94,93 @@ class AccesoArray(Expresion):
         posicion = sim.posicion
 
         #quemado que solo hay 1 acceso
-        if len(self.accesos) > 1:
-            generador.addComment("Solo se puede acceder a un indice a la vez")
-            return
+        print("aynooooooooooo", len(sim.dimensiones))
+
         
-        tempAcceso = generador.addTemp()
-        acceso = self.accesos[0].genC3D(entorno, helper).valor
-        generador.addAsignacion(tempAcceso, acceso)
-        #C3D
-        generador.addComment("ACCESO ARRAY")
+        print("ayno", len(sim.dimensiones))
+        if len(sim.dimensiones) == 1:
+            print("UNA DIMENSION")
+            if len(self.accesos) > 1:
+                generador.addComment("Solo se puede acceder a un indice a la vez")
+                return
+            
+            tempAcceso = generador.addTemp()
+            acceso = self.accesos[0].genC3D(entorno, helper).valor
+            generador.addAsignacion(tempAcceso, acceso)
+            #C3D
+            generador.addComment("ACCESO ARRAY")
 
-        t0 = generador.addTemp()
-        t1 = generador.addTemp()
-        generador.getStack(t0, posicion)
-        generador.getHeap(t1, t0)
+            t0 = generador.addTemp()
+            t1 = generador.addTemp()
+            generador.getStack(t0, posicion)
+            generador.getHeap(t1, t0)
 
-        t2 = generador.addTemp()
-        generador.addAsignacion(t2, "0") # contador
-        t3 = generador.addTemp()
-        generador.addExpresion(t3, t1, "1", "-") # length -1
-        if sim.tipo != TIPO_DATO.CADENA:
+            t2 = generador.addTemp()
+            generador.addAsignacion(t2, "0") # contador
+            t3 = generador.addTemp()
+            generador.addExpresion(t3, t1, "1", "-") # length -1
+            if sim.tipo != TIPO_DATO.CADENA:
+                generador.addExpresion(t0, t0, "1", "+")
+            t4 = generador.addTemp()
+            L1 = generador.newLabel()
+            L2 = generador.newLabel()
+            L3 = generador.newLabel()
+            L4 = generador.newLabel()
+            L5 = generador.newLabel()
+
+            generador.addIf(acceso, t3, ">", L4)
+            generador.addGoto(L1)
+            
+            generador.putLabel(L1)
+            generador.addIndent()
+            generador.addIf(t2, t3, "<=", L2)
+            generador.addIndent()
+            generador.addGoto(L4)
+
+            generador.putLabel(L2)
+            generador.addIndent()
+            generador.addIf(t2, tempAcceso, "==", L3)
+            generador.addIndent()
+            generador.addExpresion(t2, t2, "1", "+")
             generador.addExpresion(t0, t0, "1", "+")
-        t4 = generador.addTemp()
-        L1 = generador.newLabel()
-        L2 = generador.newLabel()
-        L3 = generador.newLabel()
-        L4 = generador.newLabel()
-        L5 = generador.newLabel()
+            generador.addGoto(L1)
 
-        generador.addIf(acceso, t3, ">", L4)
-        generador.addGoto(L1)
-        
-        generador.putLabel(L1)
-        generador.addIndent()
-        generador.addIf(t2, t3, "<=", L2)
-        generador.addIndent()
-        generador.addGoto(L4)
+            generador.putLabel(L3)
+            generador.addIndent()
+            
+            generador.getHeap(t4, t0)
+            generador.addGoto(L5)
+            
 
-        generador.putLabel(L2)
-        generador.addIndent()
-        generador.addIf(t2, tempAcceso, "==", L3)
-        generador.addIndent()
-        generador.addExpresion(t2, t2, "1", "+")
-        generador.addExpresion(t0, t0, "1", "+")
-        generador.addGoto(L1)
+            generador.putLabel(L4)
+            generador.addIndent()
+            generador.addComment("ERROR NO SE PUDO ACCESAR AL ARRAY")
+            generador.fPrintError()
+            generador.putLabel(L5)
+            generador.addComment("Fin del acceso del array")
 
-        generador.putLabel(L3)
-        generador.addIndent()
-        
-        generador.getHeap(t4, t0)
-        generador.addGoto(L5)
-        
+            if sim.tipo == TIPO_DATO.CADENA:
+                return Retorno2(t4, TIPO_DATO.CHAR, True)
+            return Retorno2(t4, TIPO_DATO.NUMERO, True)
+        else:
+            print("ACCESO MULSDAFASDFSATIPLE")
+            tempAcceso = generador.addTemp()
+            acceso = self.accesos[0].genC3D(entorno, helper).valor
+            generador.addAsignacion(tempAcceso, acceso)
+            #C3D
+            generador.addComment("ACCESO ARRAY")
 
-        generador.putLabel(L4)
-        generador.addIndent()
-        generador.addComment("ERROR NO SE PUDO ACCESAR AL ARRAY")
-        generador.fPrintError()
-        generador.putLabel(L5)
-        generador.addComment("Fin del acceso del array")
+            t0 = generador.addTemp()
+            t1 = generador.addTemp()
+            generador.getStack(t0, posicion)
+            generador.getHeap(t1, t0)
 
-        if sim.tipo == TIPO_DATO.CADENA:
-            return Retorno2(t4, TIPO_DATO.CHAR, True)
-        return Retorno2(t4, TIPO_DATO.NUMERO, True)
-
+            generador.addPrint('f', t1)
+            
+            if sim.tipo == TIPO_DATO.CADENA:
+                return Retorno2(t4, TIPO_DATO.CHAR, True)
+            return Retorno2(t4, TIPO_DATO.NUMERO, True)
+            pass
         
         '''
                 ACCESO:
@@ -165,7 +189,7 @@ class AccesoArray(Expresion):
                 2. obtener el simbolo.posicion para saber donde esta el array en el stack
                 3. comienza el algoritmo
 
-                Algotimo:
+                Algoritmo:
                 t0 = stack[int(posicion)] # obtenemos la posicion del arreglo
                 t1 = heap[int(t0)] # obtenemos la posicion donde inicia el arreglo y el length
                 t2 = 0 # inicializar el contador
@@ -186,6 +210,19 @@ class AccesoArray(Expresion):
 
                 L4:
                 #ERROR
+
+
+                ////////////////////////////////////////
+                Para el acceso multiple:
+                1. obtener el simbolo del array
+                2. obtener el simbolo.posicion para saber donde esta el array en el stack
+                3. comienza el algoritmo
+
+                Algoritmo:
+                t0 = stack[int(posicion)] # obtenemos la posicion del arreglo
+
+                t1 = heap[int(t0)] # obtenemos la posicion donde inicia el arreglo y el length del array principal
+                si 
             '''
 
     def genArbol(self) -> Nodo:

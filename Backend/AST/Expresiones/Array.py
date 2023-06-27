@@ -57,19 +57,22 @@ class Array(Expresion):
         return Nodo(mostrar)
     
     def genC3D(self, entorno, helper):
-        print("GENERACIÓN DE ARRAY: ")
         gen = Generador()
         generador = gen.getInstance()
+
         #verificar si es una llamada
         global arr
         arr = []
+        arrret = []
         if isinstance(self.expresiones, Llamada):
             pass
         else:
+            contador = 0
             for exp in self.expresiones:
-                print(exp)
-                exp.genC3D(entorno, helper)
-                arr.append(exp)
-
-            ret = Retorno2(arr, TIPO_DATO.ARRAY, False)
+                arrret.append(exp.genC3D(entorno, helper))
+                contador += 1
+            ret = Retorno2(arrret, TIPO_DATO.ARRAY, False)   
+            ret.test = contador 
+            arr = arrret
+            
             return ret

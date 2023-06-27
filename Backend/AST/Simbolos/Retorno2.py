@@ -10,3 +10,4 @@ class Retorno2:
         self.falseLabel = ''
         self.arr = []
         self.verifArraydec = False
+        self.test = ''

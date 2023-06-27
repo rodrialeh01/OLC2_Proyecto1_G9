@@ -9,10 +9,11 @@ class C3DSimbolo:
         #print('global var: ', globalVar)
         self.globalVar = globalVar
         self.inHeap = inHeap
-
+    
         self.valor = None
         self.tipoAux = ''
         self.length = 0
+        self.dimensiones = []
         self.esRef = False
         self.params = None
     

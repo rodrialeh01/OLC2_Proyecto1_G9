@@ -169,17 +169,17 @@ class Operacion(Expresion):
                 temp2 = generador.addTemp()
 
                 generador.addExpresion(temp, 'P', entorno.size, '+')
-                generador.addExpresion(temp2, temp2, '1', '+')
-
+                generador.addExpresion(temp, temp, '1', '+')
                 generador.setStack(temp, val1.valor)
                 generador.addExpresion(temp, temp, '1', '+')
-                generador.setStack(temp2, val2.valor)
+                generador.setStack(temp, val2.valor)
 
                 generador.crearEntorno(entorno.size)
                 generador.callFun('ConcatString')
                 generador.getStack(temp2, 'P')
                 generador.retornarEntorno(entorno.size)
-                return Retorno2(temp2, TIPO_DATO.CADENA, True)
+
+                return Retorno2(temp2, TIPO_DATO.CADENA, False)
         elif self.operador == TIPO_OPERACION_ARITMETICA.RESTA:
             operador = '-'
             temporal = generador.addTemp()
@@ -207,6 +207,6 @@ class Operacion(Expresion):
         elif self.operador == TIPO_OPERACION_ARITMETICA.MODULO:
             operador = '%'
             temporal = generador.addTemp()
-            generador.addExpresion(temporal, val1.valor, val2.valor, operador)
+            generador.addModulo(temporal, val1.valor, val2.valor)
             return Retorno2(temporal, TIPO_DATO.NUMERO, True)
     

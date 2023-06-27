@@ -219,7 +219,8 @@ class If(Instruccion):
         entornoLocal = Entorno(entorno)
         for instruccion in self.lista_instrucciones:     
             entornoLocal.returnLabel = entorno.returnLabel    
-            entornoLocal.continueLabel = entorno.continueLabel   
+            entornoLocal.continueLabel = entorno.continueLabel 
+            entornoLocal.breakLabel = entorno.breakLabel  
             accion = instruccion.genC3D(entornoLocal, helper)
             if isinstance(instruccion, Continue):
                 if entornoLocal.continueLabel != "":
@@ -258,6 +259,7 @@ class If(Instruccion):
 
                 entornoLocal.returnLabel = entorno.returnLabel    
                 entornoLocal.continueLabel = entorno.continueLabel  
+                entornoLocal.breakLabel = entorno.breakLabel
                 condicion2 =  elseif.expresion.genC3D(entornoLocal, helper)
                 labelTrueelif = condicion2.trueLabel
                 labelFalseelif = condicion2.falseLabel
@@ -300,9 +302,14 @@ class If(Instruccion):
             for instruccion in self.lista_instrucciones2:
                 entornoLocal.returnLabel = entorno.returnLabel    
                 entornoLocal.continueLabel = entorno.continueLabel  
+                entornoLocal.breakLabel = entorno.breakLabel
                 accion = instruccion.genC3D(entornoLocal, helper)
                 if isinstance(instruccion, Continue):
                     generador.addGoto(tempLabel)
+                if isinstance(instruccion, Break):
+                    if entornoLocal.breakLabel != "":
+                        generador.addGoto(entorno.breakLabel)
+                    
                 if isinstance(instruccion, Return):
 
                     if entornoLocal.returnLabel != '':

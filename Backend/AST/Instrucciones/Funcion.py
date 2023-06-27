@@ -178,7 +178,7 @@ class Funcion(Simbolo, Instruccion):
             if isinstance(i, Return):
                 print('retorno')
                 print(i)
-                if entornoLocal.returnLbl != '':
+                if entornoLocal.returnLabel != '':
                     if accion.trueLabel == '':
                         generador.addComment("Retorno de la funcion ")
                         generador.setStack('P', accion.valor)

@@ -280,6 +280,10 @@ var heap[30101999] float64;
         self.setImport('math')
         self.addCodigo(f'{res} = math.Pow({left},{right});\n')
 
+    def addModulo(self, res, left, right):
+        self.setImport('math')
+        self.addCodigo(f'{res} = math.Mod({left},{right});\n')
+
     #! --------------------------------------------------!
     #!                    FUNCIONES                        !
     #! --------------------------------------------------!

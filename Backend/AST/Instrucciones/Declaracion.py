@@ -5,6 +5,7 @@ from AST.Simbolos.Enums import TIPO_DATO, obtTipoDato
 from AST.Simbolos.generador import Generador
 from AST.Simbolos.Simbolo import Simbolo
 from AST.SingletonErrores import SingletonErrores
+from AST.Expresiones.Primitivo import Primitivo
 
 
 class Declaracion(Instruccion):
@@ -142,9 +143,17 @@ class Declaracion(Instruccion):
         generador.addComment("Declaracion de variable")
         s_C3D = None
         val = None
-
+        if self.valor == None:
+            if self.tipo == TIPO_DATO.NUMERO:
+                self.valor = Primitivo(TIPO_DATO.NUMERO, 0, self.fila, self.columna)
+            elif self.tipo == TIPO_DATO.CADENA:
+                self.valor = Primitivo(TIPO_DATO.CADENA, "", self.fila, self.columna)
+            elif self.tipo == TIPO_DATO.BOOLEANO:
+                self.valor = Primitivo( TIPO_DATO.BOOLEANO,False, self.fila, self.columna)
+    
         if self.tipo != None:
             val = self.valor.genC3D(entorno, helper)
+            print("VALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR: ", self.valor)
         else:
             val = self.valor.genC3D(entorno, helper)
             self.tipo = val.tipo
@@ -154,9 +163,10 @@ class Declaracion(Instruccion):
                 if self.tipo == val.tipo:
                     inHeap = val.tipo == TIPO_DATO.CADENA #or val.tipo == TIPO_DATO.INTERFACE or TIPO_DATO.ARRAY
                     s_C3D = entorno.setEntorno(self.id, val.tipo, inHeap, self.find)
+            
             else:
                 generador.addComment("Error: el tipo de dato no coincide al declarado")
-                
+                return
             
         else:
             pass
@@ -181,8 +191,9 @@ class Declaracion(Instruccion):
         if self.tipo != TIPO_DATO.BOOLEANO:
             generador.setStack(posicionTemp, val.valor)
         else:
-            if val.valor == True:
+            
+            if val.valor == '1':
                 generador.setStack(posicionTemp, '1')
-            else:
+            elif val.valor == '0':
                 generador.setStack(posicionTemp, '0')
         generador.addComment("Fin declaracion de variable")

@@ -113,6 +113,7 @@ class Relacional(Expresion):
         generador.addComment('Inicia Operacion Relacional')
 
         left = self.exp1.genC3D(entorno, helper)
+
         operador = ""
         if self.operador == TIPO_OPERACION_RELACIONAL.MAYOR_QUE:
             operador = '>'
@@ -135,6 +136,8 @@ class Relacional(Expresion):
             if right.valor != None:
                 if right.tipo == TIPO_DATO.NUMERO and left.tipo == TIPO_DATO.NUMERO:
                     self.checkLabels()
+                    print("OPERADOR RELACIONAL: ", operador)
+                    print(left.valor, right.valor, operador)
                     generador.addIf(left.valor, right.valor, operador, self.trueLabel)
                     generador.addGoto(self.falseLabel)
                 elif right.tipo == TIPO_DATO.CADENA and left.tipo == TIPO_DATO.CADENA:
@@ -173,13 +176,43 @@ class Relacional(Expresion):
                     else:
                         generador.addComment('Error Semantico: No se puede realizar una operacion relacional con strings que no sea == o !=')
         else:
+            labelS = generador.newLabel()
+            temp = generador.addTemp()
+
+            generador.putLabel(left.trueLabel)
+            generador.addExpresion(temp, '1', '', '')
+            generador.addGoto(labelS)
+
+            generador.putLabel(left.falseLabel)
+            generador.addExpresion(temp, '0', '', '')
+            generador.putLabel(labelS)
+
+            right = self.exp2.genC3D(entorno, helper)
+            if right.tipo != TIPO_DATO.BOOLEANO:
+                generador.addComment('No se pueden comparar')
+                return
+            
+            labelNew = generador.newLabel()
+            temp2 = generador.addTemp()
+
+            generador.putLabel(right.trueLabel)
+            generador.addExpresion(temp2, '1', '', '')
+            generador.addGoto(labelNew)
+
+            generador.putLabel(right.falseLabel)
+            generador.addExpresion(temp2, '0', '', '')
+            generador.putLabel(labelNew)
+
             self.checkLabels()
-            generador.addIf(left.valor, '1', '==', self.trueLabel)
+            generador.addIf(temp, temp2, operador, self.trueLabel)
             generador.addGoto(self.falseLabel)
 
-            result.trueLabel = self.trueLabel
-            result.falseLabel = self.falseLabel
-            return result
+            #generador.addIf(left.valor, '1', '==', self.trueLabel)
+            #generador.addGoto(self.falseLabel)
+
+            #result.trueLabel = self.trueLabel
+            #result.falseLabel = self.falseLabel
+            #return result
         generador.addComment('Finaliza Operacion Relacional')
             
         result.trueLabel = self.trueLabel

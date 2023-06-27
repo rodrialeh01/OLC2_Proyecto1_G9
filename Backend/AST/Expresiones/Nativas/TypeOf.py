@@ -30,6 +30,7 @@ class TypeOf(Expresion):
 
         generador.addComment("------- TypeOf ---------")
         exp = self.expresion.genC3D(entorno, helper)
+        print(exp.valor, "66666666666666666666666666666")
         if exp.tipo == TIPO_DATO.BOOLEANO:
             generador.putLabel(exp.trueLabel)
             generador.putLabel(exp.falseLabel)
@@ -41,6 +42,7 @@ class TypeOf(Expresion):
 
         if exp.tipo != TIPO_DATO.BOOLEANO:
             generador.setStack(temp, exp.valor)
+            print(temp, "999999999999999999999999999999999999999999999999999")
         else:
             print(exp.valor)
             if exp.valor:
@@ -62,6 +64,7 @@ class TypeOf(Expresion):
             generador.callFun('typeBoolean')
 
         generador.getStack(temp2, 'P')
+
         generador.retornarEntorno(entorno.size)
 
         return Retorno2(temp2, TIPO_DATO.CADENA, True)

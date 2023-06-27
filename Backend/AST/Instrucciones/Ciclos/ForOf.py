@@ -113,7 +113,7 @@ class ForOf(Instruccion):
         generador.addComment("Inicia ForOf")
         val = self.exp1.genC3D(entornoLocal, helper)
 
-        if val.tipo == TIPO_DATO.CADENA:
+        if val.tipo == TIPO_DATO.CADENA or val.tipo == TIPO_DATO.ARRAY:
             #se declara la variable
             temp = generador.addTemp() 
             entornoLocal2.setEntorno(self.variable, TIPO_DATO.CHAR, False)

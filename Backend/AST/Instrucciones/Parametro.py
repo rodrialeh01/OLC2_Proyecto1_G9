@@ -19,10 +19,12 @@ class Parametro(Instruccion):
         self.utilizado = None 
         self.entorno = None 
         self.valorRef = None 
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         #print(self.utilizado.tipo)
         #print(self.id)
+        print('ES UN PARAMETROOOOOOOOOOOOOO')
         if self.valor != None or self.utilizado != None:
             retorno = Retorno()
             if self.valor != None: 
@@ -57,7 +59,9 @@ class Parametro(Instruccion):
                     #print(simbolo.listaParams)
                     verificacion = True
                     lista_parametros_objeto = tipo_obj.listaParametros
+                    print("LISTA PARAMETROS OBJETO", lista_parametros_objeto)
                     listaParams = simbolo.listaParams
+                    print("LISTA PARAMETROS", listaParams)
                     lista_ya_Declarada = []
                     #recorremos la lista de parametros del objeto
                     for i in range(0, len(lista_parametros_objeto)):
@@ -67,20 +71,32 @@ class Parametro(Instruccion):
                             for j in range(0, len(listaParams)):
                                 if lista_parametros_objeto[i].id == listaParams[j].id:
                                     verificacion = True
-                                    exp = listaParams[j].expresion.ejecutar(entorno, helper)
-                                    if lista_parametros_objeto[i].tipo != exp.tipo and lista_parametros_objeto[i].tipo != TIPO_DATO.ANY:
-                                        #error semantico
-                                        s = SingletonErrores.getInstance()
-                                        err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
-                                        s.addError(err)
-                                        helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
-                                        return
-                                    
-                                    lista_ya_Declarada.append({
-                                        lista_parametros_objeto[i].id : exp
-                                    })
-
+                                    if not isinstance(listaParams[j].expresion, list):
+                                        exp = listaParams[j].expresion.ejecutar(entorno, helper)
+                                        if lista_parametros_objeto[i].tipo != exp.tipo and lista_parametros_objeto[i].tipo != TIPO_DATO.ANY:
+                                            #error semantico
+                                            s = SingletonErrores.getInstance()
+                                            err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
+                                            s.addError(err)
+                                            helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+                                            return
+                                        lista_ya_Declarada.append({
+                                            lista_parametros_objeto[i].id : exp
+                                        })
+                                    else:
+                                        print("TIPO: ", lista_parametros_objeto[i].tipo)
+                                        struct_interno = listaParams[j].expresion
+                                        print("STRUCT: ", struct_interno)
+                                        declarado = self.declarar_sub_interface(struct_interno, lista_parametros_objeto[i].tipo, entorno, helper)
+                                        print("DECLARADO: ", declarado)
+                                        if declarado is not None:
+                                            lista_ya_Declarada.append({
+                                                lista_parametros_objeto[i].id : declarado
+                                            })
                                     j = len(listaParams)
+                            print("LISTA YA DECLARADA FUNCION")
+                            for l in lista_ya_Declarada:
+                                print(l)
                         else:
                             break
                     simbolo.crearStructDeclarado(self.id, lista_ya_Declarada,self.tipo, self.fila, self.columna)
@@ -123,6 +139,46 @@ class Parametro(Instruccion):
             s.addError(err)
             helper.setConsola("[ERROR] El parametro" + self.id +" no tiene un valor asignado en la línea "+ str(self.fila) +" y columna " + str(self.columna))
             return
+
+    def declarar_sub_interface(self, lista_params_objeto,tipo, entorno, helper):
+        print("ENTRO A DECLARAR SUB INTERFACE")
+        sub_interface = entorno.ObtenerInterface(tipo)
+        print("SUB INTERFACE: ", sub_interface)
+        lista_parametros_objeto = sub_interface.listaParametros
+        print("LISTA PARAMETROS OBJETO: ", lista_parametros_objeto)
+        lista_ya_Declarada = []
+        verificacion = True
+        #recorremos la lista de parametros del objeto
+        for i in range(0, len(lista_parametros_objeto)):
+            if verificacion:
+                verificacion = False
+                for j in range(0, len(lista_params_objeto)):
+                    if lista_parametros_objeto[i].id == lista_params_objeto[j].id:
+                        verificacion = True
+                        if not isinstance(lista_params_objeto[j].expresion, list):
+                            exp = lista_params_objeto[j].expresion.ejecutar(entorno, helper)
+                            if lista_parametros_objeto[i].tipo != exp.tipo and lista_parametros_objeto[i].tipo != TIPO_DATO.ANY:
+                                #error semantico
+                                s = SingletonErrores.getInstance()
+                                err = Error(self.fila, self.columna, "Error Semántico", "El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide" )
+                                s.addError(err)
+                                helper.setConsola("[ERROR] El tipo de dato para el parametro " + lista_parametros_objeto[i].id + " no coincide en la línea "+ str(self.fila) +" y columna " + str(self.columna))
+                                return
+                            
+                            lista_ya_Declarada.append({
+                                lista_parametros_objeto[i].id : exp
+                            })
+                        else:
+                            struct = lista_params_objeto[j].expresion[0]
+                            declarado = self.declarar_sub_interface(struct, lista_parametros_objeto[i].tipo, entorno, helper)
+                            if declarado is not None:
+                                lista_ya_Declarada.append({
+                                    lista_parametros_objeto[i].id : declarado
+                                })
+                        j = len(lista_params_objeto)
+        print("LISTA YA DECLARADA")
+        print(lista_ya_Declarada)
+        return lista_ya_Declarada
 
     def genArbol(self) -> Nodo:
         nodo = Nodo("PARAMETRO")

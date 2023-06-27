@@ -11,6 +11,7 @@ class Entorno:
         self.tablaFunciones = {}
         self.tablaInterfaces = {}
         self.tablaInterfacesDeclaradas = {}
+        self.tablaSubinterfaces = {}
         self.actual = ""
 
         #! PARA EL C3D:
@@ -105,6 +106,7 @@ class Entorno:
 
 #guardar interface:
     def AgregarInterface(self, id, interface):
+        print("agregue la interfaz: ", id)
         self.tablaInterfaces[id] = interface
 
     def BuscarInterfaceLocal(self, id):
@@ -162,8 +164,32 @@ class Entorno:
                 env.tablaInterfacesDeclaradas[id] = interfazdeclarada
             env = env.anterior
 
+# -------------------------------- SUB-INTERFACES --------------------------------
+    def AgregarSubInterface(self, id_padre, atributo, subinterface):
+        self.subinterfaces[id_padre + "-" + atributo] = subinterface
+
+    def ExisteSubInterface(self, id_combinado):
+        env = self
+        while env != None:
+            if id_combinado in env.tablaSubinterfaces:
+                return True
+            env = env.anterior
+        return False
     
-        
+    def ObtenerSubInterface(self, id_combinado):
+        env = self
+        while env != None:
+            if id_combinado in env.tablaSubinterfaces:
+                return env.tablaSubinterfaces[id_combinado]
+            env = env.anterior
+        return None
+    
+    def ActualizarSubInterface(self, id_combinado, subinterface):
+        env = self
+        while env != None:
+            if id_combinado in env.tablaSubinterfaces:
+                env.tablaSubinterfaces[id_combinado] = subinterface
+            env = env.anterior
 
 
 # para la tabla de simbolos HTML:

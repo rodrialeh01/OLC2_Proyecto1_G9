@@ -11,6 +11,7 @@ class Pop(Expresion):
         self.arreglo = arreglo
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         array = self.arreglo.ejecutar(entorno, helper)

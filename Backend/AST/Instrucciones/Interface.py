@@ -16,10 +16,19 @@ class Interface(Simbolo, Instruccion):
         super().__init__()
     
     def ejecutar(self, entorno, helper):
-        self.crearInterface(self.id, self.listaParametros, self.linea, self.columna);
+        for pa in self.listaParametros:
+            if not isinstance(pa.tipo, TIPO_DATO):
+                existe = entorno.ExisteInterface(pa.tipo)
+                if not existe:
+                    s = SingletonErrores.getInstance()
+                    err = Error(self.linea, self.columna, "Error Semántico", "La interface " + pa.tipo + " no existe en el entorno actual")
+                    s.addError(err)
+                    helper.setConsola("[ERROR] ;;;;;;;;;; La interface " + pa.tipo + " no existe en el entorno actual en la línea "+ str(self.linea) +" y columna " + str(self.columna))
+                    return
+        self.crearInterface(self.id, self.listaParametros, self.linea, self.columna)
         verif = entorno.ExisteInterface(self.id)
         if not verif:
-            entorno.AgregarInterface(self.id , self)
+            entorno.AgregarInterface(self.id, self)
         else:
             s = SingletonErrores.getInstance()
             err = Error(self.linea, self.columna, "Error Semántico", "La interface " + self.id + " ya fue declarada anteriormente en el entorno actual")
@@ -33,10 +42,4 @@ class Interface(Simbolo, Instruccion):
     def genArbol(self) -> Nodo:
         #print("ENTRO A CREAR INTERFACE")
         nodo = Nodo("CREAR INTERFACE")
-        nodo.agregarHijo(self.id)
-        atribs = Nodo("ATRIBUTOS")
-        if self.listaParametros != None:
-            for param in self.listaParametros:
-                atribs.agregarHijo(param.genArbol())
-        nodo.agregarHijo(atribs)
         return nodo

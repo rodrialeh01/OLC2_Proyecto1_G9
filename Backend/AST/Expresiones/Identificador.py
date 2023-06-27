@@ -17,15 +17,21 @@ class Identificador(Expresion):
 
     def ejecutar(self, entorno, helper):
         #print("Desde Identificador (): ")
+        print('IDENTIFICADOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR')
         existe = entorno.ExisteSimbolo(self.nombre)
-        #print(existe)
+        print('existeeeeeeeeeeeee:',existe)
         if existe:
             ret = entorno.ObtenerSimbolo(self.nombre)
             ##print("Desde Identificador 2 (): ")
             ##print(ret)
+            print('SI RETORNO ALGO ', ret.valor)
             return Retorno(ret.valor, ret.tipo)
         else:
+            print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+            print(self.nombre)
+            print(entorno.ExisteInterfaceDeclarada(self.nombre))
             existe2 = entorno.ObtenerInterfaceDeclarada(self.nombre)
+            print('existeeeeeeeeeeeee22222222222:',existe2)
             if existe2 == None:
                 #error semántico
                 s = SingletonErrores.getInstance()

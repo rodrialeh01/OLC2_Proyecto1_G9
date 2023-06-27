@@ -1,5 +1,8 @@
 from AST.Abstract.Instruccion import Instruccion
 from AST.Error import Error
+from AST.Expresiones.Identificador import Identificador
+from AST.Expresiones.Primitivo import Primitivo
+from AST.Instrucciones.Instancia import Instancia
 from AST.Instrucciones.Transferencia.Return import Return
 from AST.Nodo import Nodo
 from AST.Simbolos.Entorno import Entorno
@@ -48,6 +51,7 @@ class Funcion(Simbolo, Instruccion):
         contador = 0
         ##print(paramsDecl)
         for param in paramsDecl:
+            print("PARAMETRO: ", exp[contador])
             param.utilizado = exp[contador].ejecutar(entornoPadre, helper)
             param.ejecutar(entorno, helper)
             contador += 1
@@ -65,7 +69,7 @@ class Funcion(Simbolo, Instruccion):
             if instruccion is None:
                 continue
             accion = instruccion.ejecutar(entorno, helper)
-
+            print("ACCION: ", accion)
             if accion is not None:
                 if isinstance(accion, Return) or isinstance(accion, Retorno):
                     if (isinstance(accion.valor, int) or isinstance(accion.valor, float)) and not isinstance(accion.valor, bool):
@@ -107,6 +111,7 @@ class Funcion(Simbolo, Instruccion):
                                 referencia = entorno.ObtenerInterface(self.tipo)
 
                                 lista_parametros_objeto = referencia.params
+                                print("LISTA DE PARAMETROS DEL OBJETO: ", lista_parametros_objeto)
                                 lista_ya_Declarada = []
                                 verificacion = True
                                 #recorremos la lista de parametros del objeto
@@ -135,7 +140,11 @@ class Funcion(Simbolo, Instruccion):
                                     s.addError(err)
                                     helper.setConsola("[ERROR] El tipo de dato que va a retornar no coincide con el tipo de objeto " + self.tipo + " que es de la funcion no coincide en la línea "+ str(self.linea) +" y columna " + str(self.columna))
                                     return
-                        
+                                print('RETORNO ACCION: ', accion.valor)
+                                for a in range(len(accion.valor.listaParams)):
+                                    if isinstance(accion.valor.listaParams[a].expresion, Identificador):
+                                        ret = accion.valor.listaParams[a].expresion.ejecutar(entorno, helper)
+                                        accion.valor.listaParams[a].expresion = Primitivo(ret.tipo, ret.valor, self.linea,self.columna)
                         helper.setTs(entorno)
                         return Retorno(accion.valor, accion.tipo)
                     else:

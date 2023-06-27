@@ -35,3 +35,10 @@ class Simbolo:
         self.objeto = objeto
         self.linea = linea
         self.columna = columna
+
+    def crearsubInterface(self, id_padre, atributo, paramsDeclarados, linea, columna):
+        self.id_padre = id_padre
+        self.atributo = atributo
+        self.paramDeclarados = paramsDeclarados
+        self.linea = linea
+        self.columna = columna

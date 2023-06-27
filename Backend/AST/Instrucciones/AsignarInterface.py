@@ -12,7 +12,7 @@ class AsignarInterface(Instruccion):
         self.expresion = expresion
         self.linea = linea
         self.columna = columna
-
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteInterfaceDeclarada(self.id_interface)
@@ -58,15 +58,10 @@ class AsignarInterface(Instruccion):
         helper.setConsola("[ERROR] Se ha encontrado un error en la Asignación, no existe el parametro " + self.id_param + " en la interface " + self.id_interface + " en la línea "+ str(self.linea) +" y columna " + str(self.columna))
         return
 
+    def genC3D(self, entorno, helper):
+        pass
     def genArbol(self) -> Nodo:
         nodo = Nodo("ASIGNAR INTERFACE")
-        nodo_p = Nodo(".")
-        nodo_i = Nodo("=")
-        nodo_p.agregarHijo(Nodo(self.id_interface))
-        nodo_p.agregarHijo(Nodo(self.id_param))
-        nodo_i.agregarHijo(nodo_p)
-        nodo_i.agregarHijo(self.expresion.genArbol())
-        nodo.agregarHijo(nodo_i)
         return nodo
 
 

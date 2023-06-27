@@ -1055,6 +1055,12 @@ def p_paramStruct(t):
     t[0] = Params_Interface(t[1], t[3], t.lineno(1),t.lexpos(1))
     #objeto de paramStruct
 
+def p_paramStruct1(t):
+    '''
+    param_struct : ID DOSPUNTOS ID PTOYCOMA
+    '''
+    t[0] = Params_Interface(t[1], t[3], t.lineno(1),t.lexpos(1))
+
 def p_paramStruct2(t):
     '''
     param_struct : ID PTOYCOMA
@@ -1067,6 +1073,18 @@ def p_decInterface(t):
     declaracionInterface : LET ID DOSPUNTOS ID IGUAL expresion_interface
     '''
     t[0] = Instancia(t[2],t[4], t[6], t.lineno(1), t.lexpos(1))
+
+def p_decInterface2(t):
+    '''
+    declaracionInterface : LET ID DOSPUNTOS ID IGUAL llamada_funcion
+    '''
+    t[0] = Instancia(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
+
+def p_decInterface3(t):
+    '''
+    declaracionInterface : LET ID DOSPUNTOS ID IGUAL ID
+    '''
+    t[0] = Instancia(t[2], t[4], t[6], t.lineno(1), t.lexpos(1))
 
 # ? expresion_interface : LLAIZQ lista_d LLADER
 def p_expresionInterface(t):
@@ -1104,9 +1122,22 @@ def p_parDecl(t):
 
 def p_accesoInterface(t):
     '''
-    expresion : ID PUNTO ID
+    expresion : ID acceso_i
     '''
-    t[0] = AccesoInterface(t[1], t[3], t.lineno(1), t.lexpos(1))
+    t[0] = AccesoInterface(t[1], t[2], t.lineno(1), t.lexpos(1))
+
+def p_accesoRecursivo(t):
+    '''
+    acceso_i : acceso_i PUNTO ID
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+
+def p_accesoRecursivo2(t):
+    '''
+    acceso_i : PUNTO ID
+    '''
+    t[0] = [t[2]]
 
 def p_asignacionInterface2(t):
     '''

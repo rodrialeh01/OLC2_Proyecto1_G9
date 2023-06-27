@@ -13,6 +13,7 @@ class AccesoArrayInterface(Expresion):
         self.id_param = id_param
         self.linea = linea
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteSimbolo(self.id)
@@ -88,3 +89,5 @@ class AccesoArrayInterface(Expresion):
         nodoPunto.agregarHijo(str(self.id_param))
         return nodo
     
+    def genC3D(self, entorno, helper):
+        pass

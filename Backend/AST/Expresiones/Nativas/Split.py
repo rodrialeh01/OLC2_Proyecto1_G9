@@ -12,6 +12,7 @@ class Split(Expresion):
         self.separador = separador
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         cadena = self.expresion.ejecutar(entorno, helper)
@@ -34,7 +35,8 @@ class Split(Expresion):
                 new_array.append(Retorno(i, TIPO_DATO.CADENA))
 
         return Retorno(new_array, TIPO_DATO.ARRAY_STRING)
-
+    def genC3D(self, entorno, helper):
+        pass
     def genArbol(self) -> Nodo:
         nodo = Nodo("SPLIT")
         nodo.agregarHijo(self.expresion.genArbol())

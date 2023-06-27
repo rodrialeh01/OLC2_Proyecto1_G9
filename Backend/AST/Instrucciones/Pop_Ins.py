@@ -10,6 +10,7 @@ class Pop_Ins(Instruccion):
         self.id = id
         self.fila = fila
         self.columna = columna
+        super().__init__()
 
     def ejecutar(self, entorno, helper):
         existe = entorno.ExisteSimbolo(self.id)

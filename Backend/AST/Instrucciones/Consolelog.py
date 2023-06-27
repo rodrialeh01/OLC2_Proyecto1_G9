@@ -14,6 +14,7 @@ class Consolelog(Instruccion):
         super().__init__()
         
     def ejecutar(self, entorno, helper):
+        print('VOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOY AAA IMPRIMIIIIIIIIIR')
         listTemp = []
         exp = None
         textoLog = ""

@@ -14,7 +14,8 @@ class Dec(Expresion):
         self.orden = orden
         self.fila = fila
         self.columna = columna
-
+        super().__init__()
+        
     def ejecutar(self, entorno, helper):
         obtenido = entorno.ObtenerSimbolo(self.id)
         if obtenido != None:
